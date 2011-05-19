@@ -1,0 +1,1027 @@
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>
+	Home | Portal
+</title><base href="https://my.pomona.edu/ics/">
+<link href="/ics/Portlets/CRM/Student/Portlet.CourseSchedules/CourseSchedules.css" type="text/css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="UI/Common/Styles/applicationStyle.css" /> 
+<link rel="stylesheet" type="text/css" href="UI/Common/Styles/controlStyle.css" /> 
+<link rel="stylesheet" type="text/css" href="UI/Common/Styles/menuStyle.css" /> 
+<link rel="stylesheet" type="text/css" href="UI/Common/Styles/portletStyle.css" /> 
+<link rel="stylesheet" type="text/css" href="UI/Common/Styles/moduleStyle.css" /> 
+<link rel="stylesheet" type="text/css" href="UI/Common/Styles/tableStyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="UI/Common/Styles/print.css" /> 
+<script type="text/javascript" src="UI/Common/Scripts/jcsfl.js?ver=062310.1"></script>
+<script type="text/javascript" src="UI/Common/Scripts/Utility.js?ver=042810.1"></script>
+<script type="text/javascript" src="UI/Common/Scripts/json2.js?ver=092409.1"></script>
+<script type="text/javascript" src="UI/Common/Scripts/jenz.js?ver=082109.1"></script>
+<script type="text/javascript" src="UI/Common/Scripts/PortletUtils.js?ver=082109.1"></script>
+<script type="text/javascript" src="UI/Common/Scripts/AJAX.js?ver=082109.1"></script>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
+
+<!--[if IE]>
+<style type="text/css" media="all">@import url( UI/Common/Styles/IEOnly.css );</style>
+<script type="text/javascript" language="JavaScript" src="UI/Common/Scripts/IEOnly.js"></SCRIPT>
+<![endif]-->
+<script type="text/javascript">
+
+	window.Portal =
+	{
+		url:		document.getElementsByTagName("base")[0].href,
+		uid:		null,
+		timeout:	2000
+		
+	};
+	
+	JCSL.JICS.get_session_monitor().start();
+	
+	
+    function pageLoad() {
+        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(EndRequestHandler);
+    }
+    function EndRequestHandler(sender, args) {
+        if (args.get_error()) {
+            var reg = new RegExp("Sys.*: ", "g");
+            alert(args.get_error().message.replace(reg, ""));
+            args.set_errorHandled(true);
+        }
+    }	
+</script>
+ 
+<link rel="Shortcut Icon" href="favicon.ico" type="image/x-icon"/>
+<style type="text/css" media="all">@import url( clientconfig/HtmlContent/custom.css );</style>
+
+</head>
+<body onload="doLoad();">
+    <table style="width:100%;" cellpadding="0" cellspacing="0" border="0"><tr><td>
+        <form name="MAINFORM" method="post" action="/ics/Portal_Homepage.jnz?portlet=Claremont_Undergraduate_Course_Schedule" id="MAINFORM" enctype="multipart/form-data" autocomplete="off">
+<div>
+<input type="hidden" name="_scriptManager_HiddenField" id="_scriptManager_HiddenField" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="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PT0gMTMpIHx8IChldmVudC5rZXlDb2RlID09IDEzKSkge2RvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdwZzAkViR0YWJSZWYkZ2J0blNlYXJjaFJlZicpLmNsaWNrKCk7cmV0dXJuIGZhbHNlO319IGVsc2Uge3JldHVybiB0cnVlfTsgZAIPDw8WAh8HaBYCHwYFtgFpZihldmVudC53aGljaCB8fCBldmVudC5rZXlDb2RlKXtpZiAoKGV2ZW50LndoaWNoID09IDEzKSB8fCAoZXZlbnQua2V5Q29kZSA9PSAxMykpIHtkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgncGcwJFYkdGFiUmVmJGdidG5TZWFyY2hSZWYnKS5jbGljaygpO3JldHVybiBmYWxzZTt9fSBlbHNlIHtyZXR1cm4gdHJ1ZX07IGQCEw8PFgIfB2gWAh8GBbYBaWYoZXZlbnQud2hpY2ggfHwgZXZlbnQua2V5Q29kZSl7aWYgKChldmVudC53aGljaCA9PSAxMykgfHwgKGV2ZW50LmtleUNvZGUgPT0gMTMpKSB7ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3BnMCRWJHRhYlJlZiRnYnRuU2VhcmNoUmVmJykuY2xpY2soKTtyZXR1cm4gZmFsc2U7fX0gZWxzZSB7cmV0dXJuIHRydWV9OyBkAhcPDxYCHwdoFgIfBgW2AWlmKGV2ZW50LndoaWNoIHx8IGV2ZW50LmtleUNvZGUpe2lmICgoZXZlbnQud2hpY2ggPT0gMTMpIHx8IChldmVudC5rZXlDb2RlID09IDEzKSkge2RvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdwZzAkViR0YWJSZWYkZ2J0blNlYXJjaFJlZicpLmNsaWNrKCk7cmV0dXJuIGZhbHNlO319IGVsc2Uge3JldHVybiB0cnVlfTsgZAIbDw8WAh8HaBYCHwYFtgFpZihldmVudC53aGljaCB8fCBldmVudC5rZXlDb2RlKXtpZiAoKGV2ZW50LndoaWNoID09IDEzKSB8fCAoZXZlbnQua2V5Q29kZSA9PSAxMykpIHtkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgncGcwJFYkdGFiUmVmJGdidG5TZWFyY2hSZWYnKS5jbGljaygpO3JldHVybiBmYWxzZTt9fSBlbHNlIHtyZXR1cm4gdHJ1ZX07IGQCHQ8PFgIfB2gWAh8IBSxmb3JtVHlwZSA9ICdyZWYnO3JldHVybiBjaGVja1NlYXJjaFZhbHVlcygpO2QCAg9kFgICAQ9kFhICAw8QD2QWAh8GBbUBaWYoZXZlbnQud2hpY2ggfHwgZXZlbnQua2V5Q29kZSl7aWYgKChldmVudC53aGljaCA9PSAxMykgfHwgKGV2ZW50LmtleUNvZGUgPT0gMTMpKSB7ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3BnMCRWJHRhYlNlYXJjaCRidG5TZWFyY2gnKS5jbGljaygpO3JldHVybiBmYWxzZTt9fSBlbHNlIHtyZXR1cm4gdHJ1ZX07IBAVBAtCZWdpbnMgV2l0aAlFbmRzIFdpdGgLRXhhY3QgTWF0Y2gIQ29udGFpbnMVBApCZWdpbnNXaXRoCEVuZHNXaXRoCkV4YWN0TWF0Y2gIQ29udGFpbnMUKwMEZ2dnZ2RkAgcPD2QWAh8GBbUBaWYoZXZlbnQud2hpY2ggfHwgZXZlbnQua2V5Q29kZSl7aWYgKChldmVudC53aGljaCA9PSAxMykgfHwgKGV2ZW50LmtleUNvZGUgPT0gMTMpKSB7ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3BnMCRWJHRhYlNlYXJjaCRidG5TZWFyY2gnKS5jbGljaygpO3JldHVybiBmYWxzZTt9fSBlbHNlIHtyZXR1cm4gdHJ1ZX07IGQCCw8QD2QWAh8GBbUBaWYoZXZlbnQud2hpY2ggfHwgZXZlbnQua2V5Q29kZSl7aWYgKChldmVudC53aGljaCA9PSAxMykgfHwgKGV2ZW50LmtleUNvZGUgPT0gMTMpKSB7ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3BnMCRWJHRhYlNlYXJjaCRidG5TZWFyY2gnKS5jbGljaygpO3JldHVybiBmYWxzZTt9fSBlbHNlIHtyZXR1cm4gdHJ1ZX07IBAVBAtCZWdpbnMgV2l0aAlFbmRzIFdpdGgLRXhhY3QgTWF0Y2gIQ29udGFpbnMVBApCZWdpbnNXaXRoCEVuZHNXaXRoCkV4YWN0TWF0Y2gIQ29udGFpbnMUKwMEZ2dnZ2RkAg8PD2QWAh8GBbUBaWYoZXZlbnQud2hpY2ggfHwgZXZlbnQua2V5Q29kZSl7aWYgKChldmVudC53aGljaCA9PSAxMykgfHwgKGV2ZW50LmtleUNvZGUgPT0gMTMpKSB7ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3BnMCRWJHRhYlNlYXJjaCRidG5TZWFyY2gnKS5jbGljaygpO3JldHVybiBmYWxzZTt9fSBlbHNlIHtyZXR1cm4gdHJ1ZX07IGQCEw8QD2QWAh8GBbUBaWYoZXZlbnQud2hpY2ggfHwgZXZlbnQua2V5Q29kZSl7aWYgKChldmVudC53aGljaCA9PSAxMykgfHwgKGV2ZW50LmtleUNvZGUgPT0gMTMpKSB7ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3BnMCRWJHRhYlNlYXJjaCRidG5TZWFyY2gnKS5jbGljaygpO3JldHVybiBmYWxzZTt9fSBlbHNlIHtyZXR1cm4gdHJ1ZX07IA8WE2YCAQICAgMCBAIFAgYCBwIIAgkCCgILAgwCDQIOAg8CEAIRAhIWExAFCEZBICAyMDAyBQcyMDAyO0ZBZxAFCFNQICAyMDAzBQcyMDAzO1NQZxAFCEZBICAyMDAzBQcyMDAzO0ZBZxAFCFNQICAyMDA0BQcyMDA0O1NQZxAFCEZBICAyMDA0BQcyMDA0O0ZBZxAFCFNQICAyMDA1BQcyMDA1O1NQZxAFCEZBICAyMDA1BQcyMDA1O0ZBZxAFCFNQICAyMDA2BQcyMDA2O1NQZxAFCEZBICAyMDA2BQcyMDA2O0ZBZxAFCFNQICAyMDA3BQcyMDA3O1NQZxAFCEZBICAyMDA3BQcyMDA3O0ZBZxAFCFNQICAyMDA4BQcyMDA4O1NQZxAFCEZBICAyMDA4BQcyMDA4O0ZBZxAFCFNQICAyMDA5BQcyMDA5O1NQZxAFCEZBICAyMDA5BQcyMDA5O0ZBZxAFCFNQICAyMDEwBQcyMDEwO1NQZxAFCEZBICAyMDEwBQcyMDEwO0ZBZxAFCFNQICAyMDExBQcyMDExO1NQZxAFCEZBICAyMDExBQcyMDExO0ZBZ2RkAhcPEA9kFgIfBgW1AWlmKGV2ZW50LndoaWNoIHx8IGV2ZW50LmtleUNvZGUpe2lmICgoZXZlbnQud2hpY2ggPT0gMTMpIHx8IChldmVudC5rZXlDb2RlID09IDEzKSkge2RvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdwZzAkViR0YWJTZWFyY2gkYnRuU2VhcmNoJykuY2xpY2soKTtyZXR1cm4gZmFsc2U7fX0gZWxzZSB7cmV0dXJuIHRydWV9OyAQFZsBA0FsbBhBY2NlbCBJbnRlZ3JhdGVkIFNjaWVuY2URQWVyb3NwYWNlIFN0dWRpZXMQQWZyaWNhbmEgU3R1ZGllcxBBbWVyaWNhbiBTdHVkaWVzDEFudGhyb3BvbG9neQZBcmFiaWMDQXJ0EEFydCBDb25zZXJ2YXRpb24LQXJ0IEhpc3RvcnkPQXJ0cyBNYW5hZ2VtZW50FkFzaWFuIEFtZXJpY2FuIFN0dWRpZXMNQXNpYW4gU3R1ZGllcwlBc3Ryb25vbXkHQmlvbG9neQZCb3RhbnkXQ2VudGVyIGZvciBTb2NpYWwgSW5xcnkJQ2hlbWlzdHJ5GENoaWNhbkAvTGF0aW5AIFRyYW5zbmF0bA9DaGljYW5vIFN0dWRpZXMHQ2hpbmVzZRdDaGluZXNlIExpdCwgRW5nbCBUcmFucwpDaG9pY2UgTGFiCENsYXNzaWNzGENvbW11bml0eSAmIEdsb2JhbCBIZWFsdBhDb21wdXRlciBTY2ktTWF0aGVtYXRpY3MQQ29tcHV0ZXIgU2NpZW5jZQxDb3JlIENvdXJzZXMQQ3JlYXRpdmUgU3R1ZGllcxdDdWx0L0xpdCBpbiBUcmFuc2xhdGlvbhBDdWx0dXJhbCBTdHVkaWVzBURhbmNlCUVjb25vbWljcwlFZHVjYXRpb24LRW5naW5lZXJpbmcYRW5nbGlzaCBvciBFbmdsIFdybGQgTGl0FkVudmlyb25tZW50YWwgQW5hbHlzaXMQRXVyb3BlYW4gU3R1ZGllcxBGaW5hbmNlIFNlcXVlbmNlEkZpcnN0IFllYXIgU2VtaW5hchFGb3JlaWduIExhbmd1YWdlcwZGcmVuY2gXRnJlc2htYW4gSHVtYW5pdGllcyBTZW0YRnJlc2htYW4gV3JpdGluZyBTZW1pbmFyGEdlbmRlciAmIFdvbWVuJ3MgU3R1ZGllcxdHZW5kZXIvRmVtaW5pc3QgU3R1ZGllcwdHZW9sb2d5Bkdlcm1hbhZHZXJtYW4gTGl0LCBFbmdsIFRyYW5zDkdlcm1hbiBTdHVkaWVzCkdvdmVybm1lbnQGSGVicmV3B0hpc3RvcnkQSGlzdG9yeSBvZiBJZGVhcxZIdW1hbiBSZXNvdXJjZXMgRGVzaWduCkh1bWFuaXRpZXMYSHVtYW5pdGllcyBNYWpvcjpDdWx0dXJlE0luZm9ybWF0aW9uIFNjaWVuY2UWSW50ZWdyYXRpdmUgRXhwZXJpZW5jZRhJbnRlcmRpc2MuL090aGVyIFNjaWVuY2UYSW50ZXJkaXNjaXBsaW5yeSBTdHVkaWVzF0ludGVybmF0aW9uYWwgUmVsYXRpb25zF0ludGwvSW50ZXJjdWx0dXJhbCBTdGRzB0l0YWxpYW4ISmFwYW5lc2UYSmFwYW5lc2UgTGl0LCBFbmdsIFRyYW5zDkpld2lzaCBTdHVkaWVzBktvcmVhbhhMYW5ndWFnZXMgYW5kIExpdGVyYXR1cmUWTGF0aW4gQW1lcmljYW4gU3R1ZGllcxNMZWFkZXJzaGlwIFNlcXVlbmNlDUxlZ2FsIFN0dWRpZXMLTGluZ3Vpc3RpY3MVTGluZ3Vpc3RpY3MgJiBDb2cgU2NpCkxpdGVyYXR1cmUKTWFuYWdlbWVudBNNYXN0ZXIncyBpbiBGaW5hbmNlC01hdGhlbWF0aWNzDU1lZGlhIFN0dWRpZXMWTWlkZGxlIEVhc3Rlcm4gU3R1ZGllcxhNaWRlYXN0ICYgTm8gQWZyaWNhIFN0ZHMYTWlsaXRhcnkgU2NpLiZMZWFkZXJzaGlwF01vZGVybiBMYW5nLCBMaXQgJiBDdWx0EU1vbGVjdWxhciBCaW9sb2d5BU11c2ljF05hdHVyYWwgU2NpOiBOb24tTWFqb3JzDE5ldXJvc2NpZW5jZQ9PbnRhcmlvIFByb2dyYW0WT3JnYW5pemF0aW9uYWwgU3R1ZGllcwpQaGlsb3NvcGh5GFBoaWxvc29waHksUG9saXRpY3MsRWNvbhJQaHlzaWNhbCBFZHVjYXRpb24HUGh5c2ljcxFQb2xpdGljYWwgU3R1ZGllcwhQb2xpdGljcxFQb2xpdGljcyAmIFBvbGljeRVQb2xpdGljcy9JbnQuIFN0dWRpZXMKUG9ydHVndWVzZQpQc3ljaG9sb2d5FlB1YmxpYyBQb2xpY3kgQW5hbHlzaXMRUmVsaWdpb3VzIFN0dWRpZXMTUm9tYW5jZSBMaXRlcmF0dXJlcwdSdXNzaWFuF1J1c3NpYW4gTGl0LCBFbmdsIFRyYW5zGFNjaWVuY2UsVGVjaG5sZ3ksU29jaWV0eQ1TZW5pb3IgVGhlc2lzDlNvY2lhbCBTY2llbmNlCVNvY2lvbG9neQdTcGFuaXNoF1NwYW5pc2ggTGl0LCBFbmdsIFRyYW5zBlNwZWVjaAdUaGVhdHJlEVRyYW5zZGlzY2lwbGluYXJ5GFdvbWVuJ3MvR2VuZC4gJiBGZW0uIFN0dQdXcml0aW5nFUNNQyBCaW9sb2dpY2FsIFNjaSBHRQ5DTUMgSGlzdG9yeSBHRRVDTUMgTGl0IEh1bWFuaXRpZXMgR0UXQ01DIEx2bC0xIEVjb24gRWxlY3RpdmUYQ01DIEx2bC0xIEVjb24tQWNjdCBFbGVjF0NNQyBMdmwtMiBFY29uIEVsZWN0aXZlGENNQyBMdmwtMiBFY29uLUFjY3QgRWxlYxJDTUMgTWF0aGVtYXRpY3MgR0URQ01DIFBoaWxvc29waHkgR0UXQ01DIFBoeXNpY2FsIFNjaWVuY2UgR0URQ01DIFBzeWNob2xvZ3kgR0UQQ29yZSBSZXF1aXJlbWVudBZFdGhpY3MgU2VxdWVuY2UgQ291cnNlGEhNQyBFbGVjdGl2ZSBSZXF1aXJlbWVudA5ITUMgTGl0ZXJhdHVyZRhIb2xvY2F1c3QgJiBIdW1hbiBSaWdodHMVUE8gQXJlYSAxIFJlcXVpcmVtZW50FVBPIEFyZWEgMiBSZXF1aXJlbWVudBVQTyBBcmVhIDMgUmVxdWlyZW1lbnQVUE8gQXJlYSA0IFJlcXVpcmVtZW50FVBPIEFyZWEgNSBSZXF1aXJlbWVudA5QTyBERFAgQ291cnNlcxdQTyBGb3JlaWduIExhbmd1YWdlIFJlcRZQTyBQaHlzIEVkIFJlcXVpcmVtZW50GFBaIEZvcm0gUmVhcy9NYXRoIEVkIE9iahRQWiBIdW1hbml0aWVzIEVkIE9iahVQWiBOYXQgU2NpZW5jZSBFZCBPYmoYUFogU29jIFJlc3BvbnNidHkgRWQgT2JqF1BaIFNvYy9CZWhhdiBTY2kgRWQgT2JqEVBaIFdyaXRpbmcgRWQgT2JqGFNDIEZpbmUgQXJ0cyBSZXF1aXJlbWVudBdTQyBGb3JlaWduIExhbmd1YWdlIFJlcRZTQyBMZXR0ZXJzIFJlcXVpcmVtZW50GFNDIExldHRlcnMgUnEgQmVnaW4gRkEwNhNTQyBNYXRoIFJlcXVpcmVtZW50FlNDIE5hdHVyYWwgU2NpZW5jZSBSZXEXU0MgUmFjZSAmIEV0aG5pYyBTdCBSZXEVU0MgU29jaWFsIFNjaWVuY2UgUmVxFlNDIFdvbWVuJ3MgU3R1ZGllcyBSZXEWU0MgV3JpdGluZyBSZXF1aXJlbWVudBWbAQAEQUlTUwJBUwRBRlJJBEFNU1QEQU5USARBUkJDA0FSVARBUkNOBEFSSEkEQU1HVARBU0FNBEFTSUEEQVNUUgRCSU9MA0JPVARTSVBaBENIRU0EQ0hMVARDSFNUBENISU4EQ0hOVAJDTARDTEFTA0NHSARDU01UBENTQ0kEQ09SRQRDUkVBBENMSVQEQ0xTVAREQU5DBEVDT04ERURVQwRFTkdSBEVOR0wCRUEERVVSTwRGSU5BAkZTBEZMQU4ERlJFTgNGSFMDRldTA0dXUwNHRlMER0VPTARHRVJNBEdSTVQER1JTVARHT1ZUBEhCUlcESElTVARIU0lEA0hSRANIVU0ESE1TQwJJUwJJRQRPU0NJAklEAklSA0lJUwRJVEFMBEpBUE4ESlBOVARKV1NUBEtPUkUETE5MVARMQVNUBExFQUQETEdTVARMSU5HBExHQ1MDTElUA01HVARNRklOBE1BVEgCTVMDTUVTBE1FTkEDTVNMBE1MTEMETU9CSQNNVVMETlNDSQRORVVSA09OVARPUlNUBFBISUwDUFBFAlBFBFBIWVMEUE9TVARQT0xJAlBQBFAvSVMEUE9SVARQU1lDA1BQQQRSTFNUBFJMSVQEUlVTUwRSVVNUA1NUUwRUSEVTBFNPU0MDU09DBFNQQU4EU1BOVARTUENIBFRIRUEEVE5EWQRXR0ZTBFdSSVQEM0JJTwQzSEdFBDNMSVQDM0UxBDNFQTEDM0UyBDNFQTIEM01BVAQzUEhJBDNQSFkEM1BTWQQyQ09SBDNFVEgENEVMRQQ0TElUBDNISFIDMUExAzFBMgMxQTMDMUE0AzFBNQQxRERQAzFGTAMxUEUENUZPUgQ1SFVNBDVOQVQENVNSUAQ1U09DBDVXUkkDMkZBAzJGTAMyTFQEMkxUNgQyTVRIAzJOUwQyUkVTAzJTUwMyV1MDMldSFCsDmwFnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2RkAhsPDxYCHwAFCFByb2dyYW06ZGQCHQ8QD2QWAh8GBbUBaWYoZXZlbnQud2hpY2ggfHwgZXZlbnQua2V5Q29kZSl7aWYgKChldmVudC53aGljaCA9PSAxMykgfHwgKGV2ZW50LmtleUNvZGUgPT0gMTMpKSB7ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3BnMCRWJHRhYlNlYXJjaCRidG5TZWFyY2gnKS5jbGljaygpO3JldHVybiBmYWxzZTt9fSBlbHNlIHtyZXR1cm4gdHJ1ZX07IBAVCANBbGwFQmxhbmsSQ29udGludWluZyBwcm9ncmFtEEdyYWR1YXRlIFByb2dyYW0MSE0gQWlyIEZvcmNlC0hpZ2ggU2Nob29sF1BaIEFtZXIgQ29sbGVnZSBFbmdsaXNoFVVuZGVyZ3JhZHVhdGUgUHJvZ3JhbRUIAAACQ0UER1JBRAJBRgJIUwRQQUNFBFVOREcUKwMIZ2dnZ2dnZ2dkZAIhDxYEHglpbm5lcmh0bWwFE01vcmUgU2VhcmNoIE9wdGlvbnMeBGhyZWYFdi9pY3MvUG9ydGFsX0hvbWVwYWdlLmpuej9wb3J0bGV0PUNsYXJlbW9udF9VbmRlcmdyYWR1YXRlX0NvdXJzZV9TY2hlZHVsZSZzY3JlZW49QWR2YW5jZWQrQ291cnNlK1NlYXJjaCZzY3JlZW5UeXBlPW5leHRkAgwPFgIfAWcWCAIBD2QWFAIBDzwrAAsCAA8WBh4IRGF0YUtleXMWAmRkHgxfIUl0ZW1Db3VudHMWAB4LXyFJdGVtQ291bnRmZAE8KwAHAQI8KwAEAQAWAh4KSGVhZGVyVGV4dAUFVGl0bGUWBGYPZBYEZg9kFgJmDw8WAh4KQ29sdW1uU3BhbgIHZGQCAQ9kFg5mDw8WAh8ABQREcm9wZGQCAQ8PFgIfAAUEQ29kZWRkAgIPDxYCHwAFBVRpdGxlZGQCAw8PFgIfAAUIU2NoZWR1bGVkZAIEDw8WAh8ABQhMb2NhdGlvbmRkAgUPDxYCHwAFB0NyZWRpdHNkZAIGDw8WAh8ABQYmbmJzcDtkZAIBD2QWAmYPZBYCZg8PFgQfDwIHHwBlZGQCAg8PZBYCHwgFFnJldHVybiBhZGREcm9wQ2hlY2soKTtkAgQPPCsACwEBPCsACAEDPCsABAEAFgIfDgUFVGl0bGVkAgUPD2QWAh8IBRdyZXR1cm4gd2FpdGxpc3RDaGVjaygpO2QCBw88KwALAQE8KwAIAQM8KwAEAQAWAh8OBQVUaXRsZWQCCw8PZBYCHwgFFnJldHVybiBhZHZpc29yQ2hlY2soKTtkAgwPD2QWAh8IBRVyZXR1cm4gYWR2QXBwQ2hlY2soKTtkAg4PFgIfAWgWAgIFD2QWAgIHDxBkZBYAZAIQDzwrAAsBATwrAAcBAzwrAAQBABYCHw4FBVRpdGxlZAISDzwrAAsAZAIDDzwrAAsBATwrAAcBAjwrAAQBABYCHw4FBVRpdGxlZAIHDw9kFgIfCAUWcmV0dXJuIG11c3RQYXlDaGVjaygpO2QCCA8PFgIfAWhkZAINDw8WAh8BaGRkAgUPZBYEAgEPZBYEAgEPFgIfAAUUUGVyc29uYWwgSW5mbyBVcGRhdGVkAgUPDxYEHg9Db21tYW5kQXJndW1lbnQFJGI1YmYzZGFkLWEwYzQtNGM0Yy1iOThhLTUyNzMwZjNiYzhjZR8ABSZDb21wbGV0ZSB0aGUgUGVyc29uYWwgSW5mbyBVcGRhdGUgZm9ybWRkAgMPZBYEAgEPFgIfAAUWUmVnaXN0cmF0aW9uIEFncmVlbWVudGQCBQ8PFgQfEAUkOWZiYTM3MmEtYmQ0Ni00NjgyLWJhYTEtNjdlMDMzNmNlOTljHwAFKENvbXBsZXRlIHRoZSBSZWdpc3RyYXRpb24gQWdyZWVtZW50IGZvcm1kZAIKDw8WAh8BaGRkAicPFgIfAAUNPC90cj48L3RhYmxlPmQCKQ8WAh8ABQ08L3RyPjwvdGFibGU+ZAIHDxYCHwAFEjwvdGQ+PC90cj48L3RhYmxlPmRk31fstyGvOWOGIR9NOjJJJTyvqvo=" />
+</div>
+
+
+<script src="/ics/Portlets/CRM/Student/Portlet.CourseSchedules/actb.js" type="text/javascript"></script>
+<script src="/ics/Portlets/CRM/Student/Portlet.CourseSchedules/common.js" type="text/javascript"></script>
+<script src="/ics/ScriptResource.axd?d=ReH74apjZKjhxAJRWtrHc7Z1zZa_y7SH79IQd3NTEPRInFdB1WIgilThg6ygoxjPoVj03LWA17cLTAh54KQrbJ9_vy1sXTxkrkmRXVW9sOz6lPZW0&amp;t=ffffffffe1726bd5" type="text/javascript"></script>
+
+            
+            
+            <input name="___BrowserRefresh" type="hidden" id="___BrowserRefresh" value="b0744b50-a355-433f-8765-4fef73e0935a" />
+                
+            
+            <p class="accessibility"><a href="#content" title="Skip to Content" class="accessibility">Skip To Content</a> </p>
+            <script src="./ui/common/scripts/jquery.js"></script>
+<!--[if IE]>
+  <script src="./clientconfig/HtmlContent/js/pngfix.js"></script>
+  <script type="text/javascript"> 
+    $(document).ready(function(){ 
+      $(document).pngFix(); 
+    }); 
+  </script>
+<![endif]-->
+<script src="./clientconfig/HtmlContent/js/pomona.js"></script>
+<link rel='stylesheet' href='./clientconfig/HtmlContent/css/print.css' type='text/css' media='print' />
+<link rel="Shortcut Icon" href="./clientconfig/HtmlContent/img/favicon.ico" type="image/x-icon"> 
+<div id="top-box">
+  <div id="role-nav">
+    <ul>
+    </ul>
+  </div>
+</div>
+<div id="header">
+  <div id="logo" title="Home"><a href="./" id="go-home-link">Pomona College</a></div>
+</div>
+            <div id="welcomeBackBar"><span id="userLogin"><label for="userName">User Name:</label><input type="text" name="userName" id="userName" value=""/><label for="password">Password:</label><input type="password" name="password" id="password"  /><input type="submit" name="btnLogin" value="Login" id="btnLogin" /></span></div>
+            <div id="errorMessage"></div>
+            
+            <div id="headerTabs"><ul><li style="visibility: hidden; margin:0; padding: 0;">&nbsp</li><li class="firstTab selected"><a href="/ics/">Home</a></li><li><a href="./inatpomona/" title="In at Pomona">In at Pomona</a></li><li><a href="./Academics/" title="Academics">Academics</a></li><li><a href="./Finances/" title="Finances">Finances</a></li><li class="lastTab"><a href="./Admissions_Password_Reset/" title="Admissions Password Reset">Admissions Password Reset</a></li></ul></div>
+            <div id="mainCrumbs">
+                
+	            <div id="youAreHere">
+		            <span class="crumbs">You are here:&nbsp; <a href="/ics/Portal_Homepage.jnz" title="Home">Home</a> &nbsp;</span>
+	            </div>
+            </div>
+            <table id="mainLayout" cellpadding="0" cellspacing="0"><tr>
+                <td id="sideBar">
+	                <div class="sideSection" id="thisContext"><h2><a href="/ics/" title="Portal">Portal</a></h2><ul id="contextPages"><li class="currentPage"><a href="/ics/Portal_Homepage.jnz" title="Home">Home</a><ul id="pagePortlets"><li><a href="/ics/Portal_Homepage.jnz?portlet=Campus_Announcements" title="Campus Announcements">Campus Announcements</a></li><li><a href="/ics/Portal_Homepage.jnz?portlet=Claremont_Undergraduate_Course_Schedule" title="Claremont Undergraduate Course Schedule">Claremont Undergraduate Course Schedule</a></li><li><a href="/ics/Portal_Homepage.jnz?portlet=Campus_Resources" title="Campus Resources">Campus Resources</a></li><li><a href="/ics/Portal_Homepage.jnz?portlet=Events_Calendar" title="Events Calendar">Events Calendar</a></li><li><a href="/ics/Portal_Homepage.jnz?portlet=Public_Page" title="Public Page">Public Page</a></li></ul></li><li><a href="/ics/Give_a_Gift_to_Pomona_College.jnz" title="Give a Gift to Pomona College">Give a Gift to Pomona College</a></li><li><a href="/ics/First-Year_and_Transfer_Applicant_Password_Reset.jnz" title="First-Year and Transfer Applicant Password Reset">First-Year and Transfer Applicant Password Reset</a></li></ul><div class="contexts"></div></div>
+	            </td>
+                <td id="portlets">
+	                <div id="pageTitle">
+		                <div ID="pageTitleButtons">
+			                
+			                <a title="" href="javascript:__doPostBack('btnPrintView','')" /><img src="/ics/UI/Common/Images/PortletImages/Icons/print.gif" alt="" /></a> <a title="" href="javascript:__doPostBack('btnPrintView','')"> Printer Friendly</a>
+		                </div>
+		                <h2><a href="/ics/" title="Portal" id="contextName">Portal</a></h2>
+	                </div>
+	                <a name="content"></a>
+	                <table id="PORTLETGRID" border="0" class="one_column"><tr><td class="pColumn pColumn1"><div id="pg0_CourseSchedules" class="portlet pt_CourseSchedules pi_Claremont_Undergraduate_Course_Schedule" style="z-index:0;"><div class="pHead"><h3><a href="/ics/Portal_Homepage.jnz?portlet=Claremont_Undergraduate_Course_Schedule" title="Go to main Claremont Undergraduate Course Schedule screen">Claremont Undergraduate Course Schedule</a> - Add/Drop Courses</h3><div> <a class="help" target="blank" href="Help/Student/course_schedules.htm" title="Get help using 'Claremont Undergraduate Course Schedule'"><img alt="help" src="/ics/ui/common/images/help.gif" title="Get help using 'Claremont Undergraduate Course Schedule'" /></a></div></div><div class="pToolbar"></div><div class="pContent CS">
+<style type="text/css">
+
+.divStyle {
+ 	display:none;
+ 	position:absolute;
+ 	z-index: 2;
+ 	background-color:#efefef;
+ 	border:1px solid #000;
+ 	padding:1em;
+ 	margin:3em;
+}
+
+</style>
+
+<script>
+var customarray=new Array();
+var custom2 = new Array('something','randomly','different');
+
+</script>
+<script>
+	var formType = "";
+	function checkSearchValues()
+	{
+		var crsCde1 = document.getElementById('pg0_V_tabAddCourse_tbCourse1').value;
+		var crsCde2 = document.getElementById('pg0_V_tabAddCourse_tbCourse2').value;
+		var crsCde3 = document.getElementById('pg0_V_tabAddCourse_tbCourse3').value;
+		var crsCde4 = document.getElementById('pg0_V_tabAddCourse_tbCourse4').value;
+		var crsCde5 = document.getElementById('pg0_V_tabAddCourse_tbCourse5').value;
+		var crsCde6 = document.getElementById('pg0_V_tabAddCourse_tbCourse6').value;
+		var divSelected = document.getElementById('pg0_V_ddlDivision').selectedIndex;
+		
+		// code validation for reference number
+		var crsRef1 = document.getElementById('pg0_V_tabRef_tbRefNum1').value;
+		var crsRef2 = document.getElementById('pg0_V_tabRef_tbRefNum2').value;
+		var crsRef3 = document.getElementById('pg0_V_tabRef_tbRefNum3').value;
+		var crsRef4 = document.getElementById('pg0_V_tabRef_tbRefNum4').value;
+		var crsRef5 = document.getElementById('pg0_V_tabRef_tbRefNum5').value;
+		var crsRef6 = document.getElementById('pg0_V_tabRef_tbRefNum6').value;
+		
+		
+		if( formType == "ref" ){
+			if ((crsRef1 != "" && !IsNumeric(crsRef1)) || (crsRef2 != "" && !IsNumeric(crsRef2)) || (crsRef3 != "" && !IsNumeric(crsRef3)) || (crsRef4 != "" && !IsNumeric(crsRef4)) || (crsRef5 != "" && !IsNumeric(crsRef5)) || (crsRef6 != "" && !IsNumeric(crsRef6)))
+			{
+				alert('You must enter a numeric value in the reference number field.');
+				return false;
+			}
+			
+			if( existsAndBlank(crsRef1) && existsAndBlank(crsRef2) && existsAndBlank(crsRef3) 
+			&& existsAndBlank(crsRef4) && existsAndBlank(crsRef5) && existsAndBlank(crsRef6) ){
+				alert('Please enter information for at least one course before submitting.');
+				return false;
+			}
+		}
+		
+		if( formType == "courseCode" ){
+		
+//			if (((crsCde1 != "" && crsSection1 == "") || (crsCde1 == "" && crsSection1 != "")) || ((crsCde2 != "" && crsSection2 == "") || (crsCde2 == "" && crsSection2 != "")) || ((crsCde3 != "" && crsSection3 == "") || (crsCde3 == "" && crsSection3 != "")) || ((crsCde4 != "" && crsSection4 == "") || (crsCde4 == "" && crsSection4 != "")) || ((crsCde5 != "" && crsSection5 == "") || (crsCde5 == "" && crsSection5 != "")) || ((crsCde6 != "" && crsSection6 == "") || (crsCde6 == "" && crsSection6 != "")))
+//			{
+//				alert('You must enter exact values in both the Course and Section.');
+//				return false;				
+//			}
+			
+			if( existsAndBlank(crsCde1) && existsAndBlank(crsCde2) && existsAndBlank(crsCde3) 
+			&& existsAndBlank(crsCde4) && existsAndBlank(crsCde5) && existsAndBlank(crsCde6) ){
+				alert('Please enter information for at least one course before submitting.');
+				//document.forms[0].
+				return false;
+			}
+		}
+			
+		return true;
+	}
+	
+	function IsNumeric(PossibleNumber)
+	{
+		var PNum = new String(PossibleNumber);
+		var regex = /[^0-9]/;
+		return !regex.test(PNum);
+	}
+	
+	function overrideCheck()
+	{
+		/*if(!checkBoxChecked('cbOverride'))
+		{
+			alert('Before you can use the Override Errors button, you must check the Override checkbox for at least one course.');
+			return false;
+		}*/
+		return true;
+	}
+	
+	function advAppCheck()
+	{
+		if(addDropChecked(false))
+		{
+			alert('Before you can use the Advisor Approval button, you must use the Add/Drop Courses button to process courses that you have marked for Drop or courses you have selected for Addition to the registration records.');
+			return false;
+		}
+		
+		if(!checkBoxChecked('cbApprove'))
+		{
+			alert('Before you can use the Advisor Approval button, you must check the Approve checkbox for at least one course.');
+			return false;
+		}
+		return true;
+	}
+	
+	function waitlistCheck()
+	{
+		if(!addDropChecked(false))
+		{
+			alert('Before you can use the Leave Waitlist button, you must check the Drop checkbox for at least one course.');
+			return false;
+		}
+		
+		return true;
+	}
+		function advisorCheck()
+	{
+		if(!addDropChecked(false))
+		{
+			alert('Before you can use the Cancel Selected Approval Request button, you must check the Drop checkbox for at least one course.');
+			return false;
+		}
+		
+		return true;
+	}
+		function mustPayCheck()
+	{
+		if(!addDropChecked(false))
+		{
+			alert('Before you can use the Remove Selected Courses button, you must check the Drop checkbox for at least one course.');
+			return false;
+		}
+		
+		return true;
+	}
+	
+	function addDropCheck()
+	{
+	    if (swapshown != '') return confirm('You have a pending swap option. Dropping the course you selected will NOT perform that swap, and you will lose the swap option you currently have. If you still want to perform the selected drop, click "OK." Otherwise, click "Cancel" and use the "Swap" button above to make an official swap.');
+		if(!addDropChecked(true))
+		{			
+			return false;
+		}		
+		else
+			return true;
+	}
+	
+	function swapCheck()
+	{
+	window.alert("swapCheck");
+		var frm = document.MAINFORM;
+		var addChecked = 0;
+		var dropChecked = 0;
+
+		for (i=0; i<frm.length; i++)
+		{			
+			if(isChecked(i, frm, 'cbDrop') ||
+				isChecked(i, frm, 'cbDropP') ||
+				isChecked(i, frm, 'cbDropA') ||
+				isChecked(i, frm, 'cbDropW'))
+			{
+				dropChecked = dropChecked + 1;
+			}
+			if(isChecked(i, frm, 'cbAdd') ||
+				isChecked(i, frm, 'cbAddE'))
+			{
+				addChecked = addChecked + 1;
+			}
+		}
+		if (addChecked != 1 || dropChecked != 1)
+		{
+			alert('You must have only one Add and one Drop selected in order to Swap.');
+			return false;
+		}
+		if (frm.canDrop.value == "0" || frm.canAdd.value == "0")
+		{
+			return confirm("You are attempting to Add or Drop a course when the registration period has passed.  Do you want to override the student's add/drop period?");
+		}
+		return true;
+	}
+	
+		function swapNullCheck()
+	{
+	
+		var frm = document.MAINFORM;
+		var dropChecked = 0;
+
+		for (i=0; i<frm.length; i++)
+		{			
+			if(isChecked(i, frm, 'cbDrop') ||
+				isChecked(i, frm, 'cbDropP') ||
+				isChecked(i, frm, 'cbDropA') ||
+				isChecked(i, frm, 'cbDropW'))
+			{
+				dropChecked = dropChecked + 1;
+			}
+
+		}
+		if (dropChecked < 1)
+		{
+			alert('You must select a course to swap.');
+			return false;
+		}
+		else
+		{
+		    return true;
+		}
+
+		
+	}
+	
+	function addDropChecked(forAddDropButton)
+	{
+		var frm = document.MAINFORM;
+		for (i=0; i<frm.length; i++)
+		{
+			if(isChecked(i, frm, 'cbDrop') ||
+				isChecked(i, frm, 'cbDropP') ||
+				isChecked(i, frm, 'cbDropA') ||
+				isChecked(i, frm, 'cbDropW'))
+			{
+				if (forAddDropButton)
+				{
+					if (frm.canDrop.value == "0")
+					{
+						return confirm("You are attempting to Add or Drop a course when the registration period has passed.  Do you want to override the student's add/drop period?");
+					}
+				}
+				return true;
+			}
+			if(isChecked(i, frm, 'cbAdd') ||
+				isChecked(i, frm, 'cbAddE'))
+			{
+				if (forAddDropButton)
+				{
+					if (frm.canAdd.value == "0")
+					{
+						return confirm("You are attempting to Add or Drop a course when the registration period has passed.  Do you want to override the student's add/drop period?");
+					}
+				}
+				return true;
+			}
+		}
+		if (forAddDropButton)
+		{
+			alert("Before you can use the Add/Drop Courses button, you must check the Add or Drop checkbox for at least one course.");
+		}
+		return false;
+	}
+	
+	function checkBoxChecked(cbWhat)
+	{
+		var frm = document.MAINFORM;
+		for (i=0; i<frm.length; i++)
+		{
+			if(isChecked(i, frm, cbWhat))
+				return true;
+		}
+		return false;
+	}
+	
+	function isChecked(iIndex, frm, cbName)
+	{
+		if(frm.elements[iIndex].name.indexOf(cbName) != -1)
+			return frm.elements[iIndex].checked;
+		return false;
+	}
+	
+	var whitespace = " \t\n\r";
+	function isEmpty(s){   
+		return ((s == null) || (s.length == 0));
+	}
+	function isStringWhitespace(s){   
+		var i;
+		if (isEmpty(s)) return true;
+		for (i = 0; i < s.length; i++){
+			var c = s.charAt(i);
+			if (whitespace.indexOf(c) == -1) return false;
+		}
+		return true;
+	}
+	function IsNull(obj){
+		return (obj == null);
+	}
+	function existsAndBlank(val){
+		if( !IsNull(val) ){
+			if( isStringWhitespace(val) ){
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+function showHideForm(obj, anchor) {
+	oDiv = document.getElementById(obj);
+	hideForm();
+	//window.alert(anchor);
+	var divAnchor = document.getElementById(anchor);
+	//window.alert(divAnchor);
+	var xlocation = findPos(divAnchor)[0];
+	var ylocation = findPos(divAnchor)[1];
+	//window.alert(xlocation + '|' + ylocation);
+	moveIt(obj, ylocation -75 , xlocation -75)
+	if(oDiv.style.display=='block')
+	{
+		oDiv.style.display='none';
+		return false;
+	}
+	else
+	{
+		oDiv.style.display='block';
+		return false;
+	}
+}
+
+
+function hideForm(){
+    var inputs = document.getElementsByTagName("div");
+    for (var i=0; i<inputs.length; i++)
+    {
+    var exclude = inputs[i].id.indexOf("divEmail")
+        if (exclude != -1)
+        {
+				inputs[i].style.display = 'none';
+        }
+    }
+
+}
+function moveIt(obj, mvTop, mvLeft) {
+oDiv = document.getElementById(obj);
+//window.alert(mvTop + '|' + mvLeft);
+	oDiv.style.position = "absolute";
+	oDiv.style.top = mvTop + 'px';
+	oDiv.style.left = mvLeft + 'px';
+}
+
+
+function findPos(obj) {
+	var curleft = curtop = 0;
+	if (obj.offsetParent) {
+		curleft = obj.offsetLeft
+		curtop = obj.offsetTop
+		while (obj = obj.offsetParent) {
+			curleft += obj.offsetLeft
+			curtop += obj.offsetTop
+		}
+	}
+	return [curleft,curtop];
+}
+
+</script>
+<h4>Add/Drop</h4>
+
+<div id="pg0_V_divMain" class="pSection">
+
+	<div id="pg0_V_divDropDowns" class="GrayBordered" style="MARGIN-BOTTOM: 3px">
+		<table cellSpacing="3" cellPadding="3" width="100%" border="0">
+			<tr>
+				<th width="10%">
+					<label for="pg0_V_ddlTerm" id="pg0_V_lblTerm">Semester:</label></th>
+				<td width="10%"><select name="pg0$V$ddlTerm" id="pg0_V_ddlTerm" onkeydown="if(event.which || event.keyCode){if ((event.which == 13) || (event.keyCode == 13)) {document.getElementById('pg0$V$tabSearch$btnSearch').click();return false;}} else {return true}; ">
+	<option value="2002;FA">FA  2002</option>
+	<option value="2003;SP">SP  2003</option>
+	<option value="2003;FA">FA  2003</option>
+	<option value="2004;SP">SP  2004</option>
+	<option value="2004;FA">FA  2004</option>
+	<option value="2005;SP">SP  2005</option>
+	<option value="2005;FA">FA  2005</option>
+	<option value="2006;SP">SP  2006</option>
+	<option value="2006;FA">FA  2006</option>
+	<option value="2007;SP">SP  2007</option>
+	<option value="2007;FA">FA  2007</option>
+	<option value="2008;SP">SP  2008</option>
+	<option value="2008;FA">FA  2008</option>
+	<option value="2009;SP">SP  2009</option>
+	<option value="2009;FA">FA  2009</option>
+	<option value="2010;SP">SP  2010</option>
+	<option value="2010;FA">FA  2010</option>
+	<option selected="selected" value="2011;SP">SP  2011</option>
+	<option value="2011;FA">FA  2011</option>
+
+</select></td>
+				<td width="30">&nbsp;</td>
+				<th width="10%">
+					<label for="pg0_V_ddlDivision" id="pg0_V_lblDivision">Program:</label></th>
+				<td><select name="pg0$V$ddlDivision" id="pg0_V_ddlDivision" onkeydown="if(event.which || event.keyCode){if ((event.which == 13) || (event.keyCode == 13)) {document.getElementById('pg0$V$tabSearch$btnSearch').click();return false;}} else {return true}; ">
+	<option selected="selected" value="">All</option>
+	<option value="">Blank</option>
+	<option value="CE">Continuing program</option>
+	<option value="GRAD">Graduate Program</option>
+	<option value="AF">HM Air Force</option>
+	<option value="HS">High School</option>
+	<option value="PACE">PZ Amer College English</option>
+	<option value="UNDG">Undergraduate Program</option>
+
+</select></td>
+			</tr>
+			<tr>
+				<td colSpan="5"></td>
+			</tr>
+
+ 			<tr>
+				<td colSpan="5"> 
+                                </td>
+			</tr>
+			
+			
+			<tr>
+				<td colSpan="5">&nbsp;<input 
+      type=hidden value="0" name=canAdd> <input type=hidden value="0" name=canDrop></td>
+			</tr>
+		</table>
+	</div>
+		<br>
+		<div id="pg0_V_divHiddenForRegAgreement">
+	<!-- Successful Register -->
+	
+	<!--********************* -->
+	
+	<!-- conflict -->
+	<!--total fail Error 9-->
+	<!--Variable register -->
+	
+	<!--variable-->
+	<!--fatal error-->
+	
+	
+	<br>
+	<table width="100%" align="center">
+		<tr>
+			<td align="center"></td>
+		</tr>
+	</table>
+	<div class="contentTabs">
+	<input type="hidden" name="pg0$V$DefaultPageTabs" value="2" /><ul>
+		<li style="visibility: hidden; margin:0; padding: 0;">&nbsp</li><li><a href="#" onclick="tabClick(this,1);preventDefault(event);"></a></li><li><a href="#" onclick="tabClick(this,2);preventDefault(event);"></a></li><li class="selected"><a href="#" onclick="tabClick(this,3);preventDefault(event);">Course Search</a></li>
+	</ul><div class="tabbox" style="display:none;">
+		
+			<div id="pg0_V_tabAddCourse_divSearch" style="MARGIN-BOTTOM: 3px">
+				<table cellSpacing="3" cellPadding="3" width="100%" border="0">
+					<tr>
+						<td colspan="6" valign="top">
+							To add a course, start typing its course code in the box below. A dropdown of courses that match what you have typed will appear. Select the course code and section number you want from the dropdown. You can add up to six courses at a time using this feature. <b>If you don't know the course or section codes you need, use the course search tab above.</b></td>
+					</tr>
+					<div id="pg0_V_tabAddCourse_panel1">
+			
+					<tr>
+						<td width="10">&nbsp;</td>
+						<td width="50">
+							Course Number:</td>
+						<td width="20">&nbsp;</td>
+						<td width="10">&nbsp;</td>
+						<td width="50">
+							Course Number:</td>
+						<td width="10">&nbsp;</td>
+
+					</tr>
+					<tr>
+							<td><label for="pg0_V_tabAddCourse_tbCourse1">1.</label></td>
+						<td>
+							<input name="pg0$V$tabAddCourse$tbCourse1" type="text" maxlength="30" id="pg0_V_tabAddCourse_tbCourse1" disabled="disabled" style="width:128px;" /></td>
+							<td>&nbsp;</td>
+							<td><label for="pg0_V_tabAddCourse_tbCourse4" id="pg0_V_tabAddCourse_Label1" NAME="Label1">2.</label></td>
+						<td>
+							<input name="pg0$V$tabAddCourse$tbCourse4" type="text" maxlength="30" id="pg0_V_tabAddCourse_tbCourse4" disabled="disabled" style="width:128px;" /></td>
+							<td>&nbsp;</td>
+					</tr>
+					<tr>
+							<td><label for="pg0_V_tabAddCourse_tbCourse2" id="pg0_V_tabAddCourse_Label2" NAME="Label2">3.</label></td>
+						<td>
+							<input name="pg0$V$tabAddCourse$tbCourse2" type="text" maxlength="30" id="pg0_V_tabAddCourse_tbCourse2" disabled="disabled" style="width:128px;" /></td>
+							<td>&nbsp;</td>
+							<td><label for="pg0_V_tabAddCourse_tbCourse5" id="pg0_V_tabAddCourse_Label3" NAME="Label3">4.</label></td>
+						<td>
+							<input name="pg0$V$tabAddCourse$tbCourse5" type="text" maxlength="30" id="pg0_V_tabAddCourse_tbCourse5" disabled="disabled" style="width:128px;" /></td>
+							<td>&nbsp;<td>
+					</tr>
+					<tr>
+							<td><label for="pg0_V_tabAddCourse_tbCourse3" id="pg0_V_tabAddCourse_Label4" NAME="Label4">5.</label></td>
+						<td>
+							<input name="pg0$V$tabAddCourse$tbCourse3" type="text" maxlength="30" id="pg0_V_tabAddCourse_tbCourse3" disabled="disabled" style="width:128px;" /></td>
+							<td>&nbsp;</td>
+							<td><label for="pg0_V_tabAddCourse_tbCourse6" id="pg0_V_tabAddCourse_Label5">6.</label></td>
+						<td>
+							<input name="pg0$V$tabAddCourse$tbCourse6" type="text" maxlength="30" id="pg0_V_tabAddCourse_tbCourse6" disabled="disabled" style="width:128px;" /></td>
+							<td>&nbsp;</td>
+
+					</tr>
+					<tr>
+						<td colspan="6" align="center">
+							<input type="submit" name="pg0$V$tabAddCourse$gbtnSearch" value="Add Course(s)" id="pg0_V_tabAddCourse_gbtnSearch" disabled="disabled" onClick="formType = 'courseCode';return checkSearchValues();" /></td>
+					</tr>
+					
+		</div>
+				</table>
+			</div>
+		
+	</div><div class="tabbox" style="display:none;">
+		
+			<div id="pg0_V_tabRef_Div2" style="MARGIN-BOTTOM: 3px">
+				<table cellSpacing="3" cellPadding="3" width="100%" border="0">
+					<tr>
+						<td colspan="10" valign="top">
+							To add courses, enter the reference number for up to six courses. <b>If you do not know the reference numbers you need, add the courses by Course Code or use the Course Search tab above.</b></td>
+					</tr>
+					<div id="pg0_V_tabRef_Panel2">
+			
+					<tr>
+						<td width="10">&nbsp;</td>
+						<td width="50">
+							Reference Number</td>
+						<td width="10">&nbsp;</td>
+						<td width="10">&nbsp;</td>
+						<td width="50">
+							Reference Number</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+							<td><label for="pg0_V_tabRef_tbRefNum1" id="pg0_V_tabRef_Label12">1.</label></td>
+						<td>
+							<input name="pg0$V$tabRef$tbRefNum1" type="text" maxlength="30" id="pg0_V_tabRef_tbRefNum1" disabled="disabled" onkeydown="if(event.which || event.keyCode){if ((event.which == 13) || (event.keyCode == 13)) {document.getElementById('pg0$V$tabRef$gbtnSearchRef').click();return false;}} else {return true}; " style="width:128px;" /></td>
+						<td>&nbsp;</td>
+							<td><label for="pg0_V_tabRef_tbRefNum2" id="pg0_V_tabRef_Label13">2.</label></td>
+						<td>
+							<input name="pg0$V$tabRef$tbRefNum2" type="text" maxlength="30" id="pg0_V_tabRef_tbRefNum2" disabled="disabled" onkeydown="if(event.which || event.keyCode){if ((event.which == 13) || (event.keyCode == 13)) {document.getElementById('pg0$V$tabRef$gbtnSearchRef').click();return false;}} else {return true}; " style="width:128px;" /></td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+							<td><label for="pg0_V_tabRef_tbRefNum3" id="pg0_V_tabRef_Label14">3.</label></td>
+						<td>
+							<input name="pg0$V$tabRef$tbRefNum3" type="text" maxlength="30" id="pg0_V_tabRef_tbRefNum3" disabled="disabled" onkeydown="if(event.which || event.keyCode){if ((event.which == 13) || (event.keyCode == 13)) {document.getElementById('pg0$V$tabRef$gbtnSearchRef').click();return false;}} else {return true}; " style="width:128px;" /></td>
+						<td>&nbsp;</td>
+							<td><label for="pg0_V_tabRef_tbRefNum4" id="pg0_V_tabRef_Label15">4.</label></td>
+						<td>
+							<input name="pg0$V$tabRef$tbRefNum4" type="text" maxlength="30" id="pg0_V_tabRef_tbRefNum4" disabled="disabled" onkeydown="if(event.which || event.keyCode){if ((event.which == 13) || (event.keyCode == 13)) {document.getElementById('pg0$V$tabRef$gbtnSearchRef').click();return false;}} else {return true}; " style="width:128px;" /></td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+							<td><label for="pg0_V_tabRef_tbRefNum5" id="pg0_V_tabRef_Label16">5.</label></td>
+						<td>
+							<input name="pg0$V$tabRef$tbRefNum5" type="text" maxlength="30" id="pg0_V_tabRef_tbRefNum5" disabled="disabled" onkeydown="if(event.which || event.keyCode){if ((event.which == 13) || (event.keyCode == 13)) {document.getElementById('pg0$V$tabRef$gbtnSearchRef').click();return false;}} else {return true}; " style="width:128px;" /></td>
+						<td>&nbsp;</td>
+							<td><label for="pg0_V_tabRef_tbRefNum6" id="pg0_V_tabRef_Label17">6.</label></td>
+						<td>
+							<input name="pg0$V$tabRef$tbRefNum6" type="text" maxlength="30" id="pg0_V_tabRef_tbRefNum6" disabled="disabled" onkeydown="if(event.which || event.keyCode){if ((event.which == 13) || (event.keyCode == 13)) {document.getElementById('pg0$V$tabRef$gbtnSearchRef').click();return false;}} else {return true}; " style="width:128px;" /></td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td colspan="10" align="center">
+							<input type="submit" name="pg0$V$tabRef$gbtnSearchRef" value="Add Course(s)" id="pg0_V_tabRef_gbtnSearchRef" disabled="disabled" onClick="formType = 'ref';return checkSearchValues();" /></td>
+					</tr>
+					
+		</div>
+				</table>
+			</div>
+		
+	</div><div class="tabbox" style="display:block;">
+		
+			<table cellSpacing="2" cellPadding="2" width="100%" border="0">
+				<div id="pg0_V_tabSearch_Panel3">
+			
+				<tr>
+					<td noWrap align="right">
+							<label for="pg0_V_tabSearch_ddlTitleRestrictor" id="pg0_V_tabSearch_lblTitle">Title</label>:</td>
+					<td noWrap align="left" colSpan="3">
+						<select name="pg0$V$tabSearch$ddlTitleRestrictor" id="pg0_V_tabSearch_ddlTitleRestrictor" onkeydown="if(event.which || event.keyCode){if ((event.which == 13) || (event.keyCode == 13)) {document.getElementById('pg0$V$tabSearch$btnSearch').click();return false;}} else {return true}; ">
+				<option value="BeginsWith">Begins With</option>
+				<option value="EndsWith">Ends With</option>
+				<option value="ExactMatch">Exact Match</option>
+				<option value="Contains">Contains</option>
+
+			</select>
+							<label for="pg0_V_tabSearch_txtTitleRestrictor" id="pg0_V_tabSearch_Label18" class="accessibility">restrict title by</label>
+						<input name="pg0$V$tabSearch$txtTitleRestrictor" type="text" size="40" id="pg0_V_tabSearch_txtTitleRestrictor" onkeydown="if(event.which || event.keyCode){if ((event.which == 13) || (event.keyCode == 13)) {document.getElementById('pg0$V$tabSearch$btnSearch').click();return false;}} else {return true}; " /></td>
+				</tr>
+				<tr>
+					<td noWrap align="right">
+							<label for="pg0_V_tabSearch_ddlCourseRestrictor" id="pg0_V_tabSearch_lblCourse">Course Number:</label></td>
+					<td noWrap align="left" colspan="3">
+						<select name="pg0$V$tabSearch$ddlCourseRestrictor" id="pg0_V_tabSearch_ddlCourseRestrictor" onkeydown="if(event.which || event.keyCode){if ((event.which == 13) || (event.keyCode == 13)) {document.getElementById('pg0$V$tabSearch$btnSearch').click();return false;}} else {return true}; ">
+				<option value="BeginsWith">Begins With</option>
+				<option value="EndsWith">Ends With</option>
+				<option value="ExactMatch">Exact Match</option>
+				<option value="Contains">Contains</option>
+
+			</select>
+							<label for="pg0_V_tabSearch_txtCourseRestrictor" id="pg0_V_tabSearch_Label19" class="accessibility">restrict course by</label>
+						<input name="pg0$V$tabSearch$txtCourseRestrictor" type="text" size="20" id="pg0_V_tabSearch_txtCourseRestrictor" onkeydown="if(event.which || event.keyCode){if ((event.which == 13) || (event.keyCode == 13)) {document.getElementById('pg0$V$tabSearch$btnSearch').click();return false;}} else {return true}; " /></td>
+				</tr>
+				<tr>
+					<td noWrap align="right" width="5%">
+							<label for="pg0_V_tabSearch_ddlTermSearch" id="pg0_V_tabSearch_lblTermSearch">Term</label>:</td>
+					<td align="left" colspan="3">
+						<select name="pg0$V$tabSearch$ddlTermSearch" id="pg0_V_tabSearch_ddlTermSearch" onkeydown="if(event.which || event.keyCode){if ((event.which == 13) || (event.keyCode == 13)) {document.getElementById('pg0$V$tabSearch$btnSearch').click();return false;}} else {return true}; ">
+				<option value="2002;FA">FA  2002</option>
+				<option value="2003;SP">SP  2003</option>
+				<option value="2003;FA">FA  2003</option>
+				<option value="2004;SP">SP  2004</option>
+				<option value="2004;FA">FA  2004</option>
+				<option value="2005;SP">SP  2005</option>
+				<option value="2005;FA">FA  2005</option>
+				<option value="2006;SP">SP  2006</option>
+				<option value="2006;FA">FA  2006</option>
+				<option value="2007;SP">SP  2007</option>
+				<option value="2007;FA">FA  2007</option>
+				<option value="2008;SP">SP  2008</option>
+				<option value="2008;FA">FA  2008</option>
+				<option value="2009;SP">SP  2009</option>
+				<option value="2009;FA">FA  2009</option>
+				<option value="2010;SP">SP  2010</option>
+				<option value="2010;FA">FA  2010</option>
+				<option selected="selected" value="2011;SP">SP  2011</option>
+				<option value="2011;FA">FA  2011</option>
+
+			</select></td>
+				</tr>
+				<tr>
+					<td noWrap align="right" width="5%">
+							<label for="pg0_V_tabSearch_ddlDept" id="pg0_V_tabSearch_lblDept">Course Area</label>:</td>
+					<td align="left" width="45%">
+						<select name="pg0$V$tabSearch$ddlDept" id="pg0_V_tabSearch_ddlDept" onkeydown="if(event.which || event.keyCode){if ((event.which == 13) || (event.keyCode == 13)) {document.getElementById('pg0$V$tabSearch$btnSearch').click();return false;}} else {return true}; ">
+				<option selected="selected" value=""> -- Select --</option>
+				<option value="AISS">Accel Integrated Science</option>
+				<option value="AS">Aerospace Studies</option>
+				<option value="AFRI">Africana Studies</option>
+				<option value="AMST">American Studies</option>
+				<option value="ANTH">Anthropology</option>
+				<option value="ARBC">Arabic</option>
+				<option value="ART">Art</option>
+				<option value="ARCN">Art Conservation</option>
+				<option value="ARHI">Art History</option>
+				<option value="AMGT">Arts Management</option>
+				<option value="ASAM">Asian American Studies</option>
+				<option value="ASIA">Asian Studies</option>
+				<option value="ASTR">Astronomy</option>
+				<option value="BIOL">Biology</option>
+				<option value="BOT">Botany</option>
+				<option value="SIPZ">Center for Social Inqry</option>
+				<option value="CHEM">Chemistry</option>
+				<option value="CHLT">Chican@/Latin@ Transnatl</option>
+				<option value="CHST">Chicano Studies</option>
+				<option value="CHIN">Chinese</option>
+				<option value="CHNT">Chinese Lit, Engl Trans</option>
+				<option value="CL">Choice Lab</option>
+				<option value="CLAS">Classics</option>
+				<option value="CGH">Community &amp; Global Healt</option>
+				<option value="CSMT">Computer Sci-Mathematics</option>
+				<option value="CSCI">Computer Science</option>
+				<option value="CORE">Core Courses</option>
+				<option value="CREA">Creative Studies</option>
+				<option value="CLIT">Cult/Lit in Translation</option>
+				<option value="CLST">Cultural Studies</option>
+				<option value="DANC">Dance</option>
+				<option value="ECON">Economics</option>
+				<option value="EDUC">Education</option>
+				<option value="ENGR">Engineering</option>
+				<option value="ENGL">English or Engl Wrld Lit</option>
+				<option value="EA">Environmental Analysis</option>
+				<option value="EURO">European Studies</option>
+				<option value="FINA">Finance Sequence</option>
+				<option value="FS">First Year Seminar</option>
+				<option value="FLAN">Foreign Languages</option>
+				<option value="FREN">French</option>
+				<option value="FHS">Freshman Humanities Sem</option>
+				<option value="FWS">Freshman Writing Seminar</option>
+				<option value="GWS">Gender &amp; Women's Studies</option>
+				<option value="GFS">Gender/Feminist Studies</option>
+				<option value="GEOL">Geology</option>
+				<option value="GERM">German</option>
+				<option value="GRMT">German Lit, Engl Trans</option>
+				<option value="GRST">German Studies</option>
+				<option value="GOVT">Government</option>
+				<option value="HBRW">Hebrew</option>
+				<option value="HIST">History</option>
+				<option value="HSID">History of Ideas</option>
+				<option value="HRD">Human Resources Design</option>
+				<option value="HUM">Humanities</option>
+				<option value="HMSC">Humanities Major:Culture</option>
+				<option value="IS">Information Science</option>
+				<option value="IE">Integrative Experience</option>
+				<option value="OSCI">Interdisc./Other Science</option>
+				<option value="ID">Interdisciplinry Studies</option>
+				<option value="IR">International Relations</option>
+				<option value="IIS">Intl/Intercultural Stds</option>
+				<option value="ITAL">Italian</option>
+				<option value="JAPN">Japanese</option>
+				<option value="JPNT">Japanese Lit, Engl Trans</option>
+				<option value="JWST">Jewish Studies</option>
+				<option value="KORE">Korean</option>
+				<option value="LNLT">Languages and Literature</option>
+				<option value="LAST">Latin American Studies</option>
+				<option value="LEAD">Leadership Sequence</option>
+				<option value="LGST">Legal Studies</option>
+				<option value="LING">Linguistics</option>
+				<option value="LGCS">Linguistics &amp; Cog Sci</option>
+				<option value="LIT">Literature</option>
+				<option value="MGT">Management</option>
+				<option value="MFIN">Master's in Finance</option>
+				<option value="MATH">Mathematics</option>
+				<option value="MS">Media Studies</option>
+				<option value="MES">Middle Eastern Studies</option>
+				<option value="MENA">Mideast &amp; No Africa Stds</option>
+				<option value="MSL">Military Sci.&amp;Leadership</option>
+				<option value="MLLC">Modern Lang, Lit &amp; Cult</option>
+				<option value="MOBI">Molecular Biology</option>
+				<option value="MUS">Music</option>
+				<option value="NSCI">Natural Sci: Non-Majors</option>
+				<option value="NEUR">Neuroscience</option>
+				<option value="ONT">Ontario Program</option>
+				<option value="ORST">Organizational Studies</option>
+				<option value="PHIL">Philosophy</option>
+				<option value="PPE">Philosophy,Politics,Econ</option>
+				<option value="PE">Physical Education</option>
+				<option value="PHYS">Physics</option>
+				<option value="POST">Political Studies</option>
+				<option value="POLI">Politics</option>
+				<option value="PP">Politics &amp; Policy</option>
+				<option value="P/IS">Politics/Int. Studies</option>
+				<option value="PORT">Portuguese</option>
+				<option value="PSYC">Psychology</option>
+				<option value="PPA">Public Policy Analysis</option>
+				<option value="RLST">Religious Studies</option>
+				<option value="RLIT">Romance Literatures</option>
+				<option value="RUSS">Russian</option>
+				<option value="RUST">Russian Lit, Engl Trans</option>
+				<option value="STS">Science,Technlgy,Society</option>
+				<option value="THES">Senior Thesis</option>
+				<option value="SOSC">Social Science</option>
+				<option value="SOC">Sociology</option>
+				<option value="SPAN">Spanish</option>
+				<option value="SPNT">Spanish Lit, Engl Trans</option>
+				<option value="SPCH">Speech</option>
+				<option value="THEA">Theatre</option>
+				<option value="TNDY">Transdisciplinary</option>
+				<option value="WGFS">Women's/Gend. &amp; Fem. Stu</option>
+				<option value="WRIT">Writing</option>
+				<option value="3BIO">CMC Biological Sci GE</option>
+				<option value="3HGE">CMC History GE</option>
+				<option value="3LIT">CMC Lit Humanities GE</option>
+				<option value="3E1">CMC Lvl-1 Econ Elective</option>
+				<option value="3EA1">CMC Lvl-1 Econ-Acct Elec</option>
+				<option value="3E2">CMC Lvl-2 Econ Elective</option>
+				<option value="3EA2">CMC Lvl-2 Econ-Acct Elec</option>
+				<option value="3MAT">CMC Mathematics GE</option>
+				<option value="3PHI">CMC Philosophy GE</option>
+				<option value="3PHY">CMC Physical Science GE</option>
+				<option value="3PSY">CMC Psychology GE</option>
+				<option value="2COR">Core Requirement</option>
+				<option value="3ETH">Ethics Sequence Course</option>
+				<option value="4ELE">HMC Elective Requirement</option>
+				<option value="4LIT">HMC Literature</option>
+				<option value="3HHR">Holocaust &amp; Human Rights</option>
+				<option value="1A1">PO Area 1 Requirement</option>
+				<option value="1A2">PO Area 2 Requirement</option>
+				<option value="1A3">PO Area 3 Requirement</option>
+				<option value="1A4">PO Area 4 Requirement</option>
+				<option value="1A5">PO Area 5 Requirement</option>
+				<option value="1DDP">PO DDP Courses</option>
+				<option value="1FL">PO Foreign Language Req</option>
+				<option value="1PE">PO Phys Ed Requirement</option>
+				<option value="5FOR">PZ Form Reas/Math Ed Obj</option>
+				<option value="5HUM">PZ Humanities Ed Obj</option>
+				<option value="5NAT">PZ Nat Science Ed Obj</option>
+				<option value="5SRP">PZ Soc Responsbty Ed Obj</option>
+				<option value="5SOC">PZ Soc/Behav Sci Ed Obj</option>
+				<option value="5WRI">PZ Writing Ed Obj</option>
+				<option value="2FA">SC Fine Arts Requirement</option>
+				<option value="2FL">SC Foreign Language Req</option>
+				<option value="2LT">SC Letters Requirement</option>
+				<option value="2LT6">SC Letters Rq Begin FA06</option>
+				<option value="2MTH">SC Math Requirement</option>
+				<option value="2NS">SC Natural Science Req</option>
+				<option value="2RES">SC Race &amp; Ethnic St Req</option>
+				<option value="2SS">SC Social Science Req</option>
+				<option value="2WS">SC Women's Studies Req</option>
+				<option value="2WR">SC Writing Requirement</option>
+
+			</select>
+						<span id="pg0_V_tabSearch_lblPCMessage"></span><!-- pomona -->
+				
+				</tr>
+				<tr>
+					<td noWrap align="right">
+							<label for="pg0_V_tabSearch_ddlDivisionSearch" id="pg0_V_tabSearch_lblDivisionSearch">Program:</label></td>
+					<td align="left" colspan="3">
+						<select name="pg0$V$tabSearch$ddlDivisionSearch" id="pg0_V_tabSearch_ddlDivisionSearch" onkeydown="if(event.which || event.keyCode){if ((event.which == 13) || (event.keyCode == 13)) {document.getElementById('pg0$V$tabSearch$btnSearch').click();return false;}} else {return true}; ">
+				<option value="">All</option>
+				<option value="">Blank</option>
+				<option value="CE">Continuing program</option>
+				<option value="GRAD">Graduate Program</option>
+				<option value="AF">HM Air Force</option>
+				<option value="HS">High School</option>
+				<option value="PACE">PZ Amer College English</option>
+				<option value="UNDG">Undergraduate Program</option>
+
+			</select></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td colSpan="2">
+						<input type="submit" name="pg0$V$tabSearch$btnSearch" value="Search" id="pg0_V_tabSearch_btnSearch" />
+							<a href="/ics/Portal_Homepage.jnz?portlet=Claremont_Undergraduate_Course_Schedule&screen=Advanced+Course+Search&screenType=next" id="pg0_V_tabSearch_lnkAdvSearch">More Search Options</a>
+					</td>
+				</tr>
+				
+		</div>
+			</table>
+		
+	</div>
+</div>
+
+	<div id="pg0_V_divActionButtons" class="smalltext">
+		<div id="pg0_V_divDataGrids">
+			<!--CONFIRMED COURSES--><table class="groupedGrid " id="pg0_V_ggConfCourses" cellspacing="0" cellpadding="-1" border="0">
+	<thead>
+		<tr>
+			<td colspan="7"><span class="left">
+					Your Schedule (Registered)
+				</span><span class="right"></span></td>
+		</tr><tr>
+			<th>Drop</th><th>Code</th><th>Title</th><th>Schedule</th><th>Location</th><th>Credits</th>
+		</tr>
+	</thead><tbody class="gbody">
+		<tr>
+			<td colspan="7">
+					<div id="pg0_V_ggConfCourses_sec2_row2_Div1" class="PortletError">
+						No Current Courses for the selected Term and Division.
+					</div>
+				</td>
+		</tr>
+	</tbody>
+</table>
+			<!--Waitlisted--><br>
+			
+			<!-- Advisor Approval --->
+			<br>
+
+			
+			
+			<table width=100%>
+			    <tr>
+			        <td></td>
+			        <td align=right width=30%>            </td>
+			    </tr>
+			</table>
+			
+			<!-- pending add
+	
+		-->
+			<!--errors--><br>
+			
+		</div>
+		<br>
+		
+			
+		</div>
+	<table cellSpacing="2" cellPadding="2" width="100%">
+		<tr>
+			<td colSpan="4"></td>
+		</tr>
+	</table>
+	<script language=javascript>
+	
+
+
+actb(document.getElementById('pg0_V_tabAddCourse_tbCourse1'),customarray);
+actb(document.getElementById('pg0_V_tabAddCourse_tbCourse2'),customarray);
+actb(document.getElementById('pg0_V_tabAddCourse_tbCourse3'),customarray);
+actb(document.getElementById('pg0_V_tabAddCourse_tbCourse4'),customarray);
+actb(document.getElementById('pg0_V_tabAddCourse_tbCourse5'),customarray);
+actb(document.getElementById('pg0_V_tabAddCourse_tbCourse6'),customarray);
+var swapshown = '';
+	</script>
+</div>
+
+   
+</div>
+</div></div>
+</td></tr></table>
+	            </tr></table>
+            </tr></table>
+            <div id="foot"><span id="policies"><a target="_blank" href="/ics/ClientConfig/HtmlContent/Privacy.html" title="Information about what personal information we collect and what we will do with it.">Privacy Policy</a>|<a target="_blank" href="/ics/ClientConfig/HtmlContent/AboutUs.html" title="Information about this university.">About Us</a>|<a target="_blank" href="/ics/ClientConfig/HtmlContent/ContactUs.html" title="Information on how to get in touch with us.">Contact Us</a>|<a href="javascript:__doPostBack('SiteFooter','CampusDirectory')" title="Directory of all users of this site.">Campus Directory</a></span><span id="copyright"> &copy; 2002-2020 Pomona.  All rights reserved.  v7.3.4</span></div>
+            
+        
+
+<script type="text/javascript">
+//<![CDATA[
+(function() {var fn = function() {$get("_scriptManager_HiddenField").value = '';Sys.Application.remove_init(fn);};Sys.Application.add_init(fn);})();var gridToggleImagePath = '/ics/ui/common/images/';Sys.Application.initialize();
+//]]>
+</script>
+</form>
+    </td></tr></table>
+
+</body>
+</html>
+
+

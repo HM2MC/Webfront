@@ -27,6 +27,8 @@ urlpatterns = patterns('',
     #(r'^servers', 'problems.views.browseNet'), # for maintenance, etc
     (r'^servers/', include('browseNet.urls')),
     
+	(r'^courses/', include('courses.urls')),
+	
     #(r'^(news|comments)/', 'problems.views.news'), # for maintenance, etc
     (r'^news/', include('basic.blog.urls')),
     (r'^comments/', include('django.contrib.comments.urls')),

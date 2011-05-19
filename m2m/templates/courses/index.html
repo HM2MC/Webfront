@@ -1,0 +1,365 @@
+{%extends 'base_page.html' %}
+{%block title %} M2M - Courses {% endblock %}
+
+{% block stylin %}
+<link rel='stylesheet' type='text/css' href='/media/scripts/courses/fullcalendar-1.5.1/fullcalendar/fullcalendar.css' />
+<link rel='stylesheet' type='text/css' href='/media/scripts/courses/fullcalendar-1.5.1/fullcalendar/fullcalendar.print.css' media='print' />
+{% endblock %}
+
+{% block scriptin %}
+<script type='text/javascript' src='/media/scripts/courses/fullcalendar-1.5.1/jquery/jquery-1.5.2.min.js'></script>
+<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/black-tie/jquery-ui.css" type="text/css" media="all" />
+<script type='text/javascript' src='/media/scripts/courses/fullcalendar-1.5.1/fullcalendar/fullcalendar.min.js'></script>
+
+<script type="text/javascript" src="/media/scripts/courses/js/fg-menu/fg.menu.js"></script>
+    
+    <link type="text/css" href="/media/scripts/courses/js/fg-menu/fg.menu.css" media="screen" rel="stylesheet" />
+    <link type="text/css" href="/media/scripts/courses/js/fg-menu/theme/ui.all.css" media="screen" rel="stylesheet" />
+
+<script type='text/javascript' src='/media/scripts/courses/courseData.js'></script>
+<link rel='stylesheet' type='text/css' href='/media/styles/courses/courses.css' />
+<script type='text/javascript'>
+
+//DIRTY HACK, FIND A WAY TO PASS TO DIALOG
+var eventForPERM;
+
+function removeEvent(calEvent) {
+	//Stop displaying event in calendar
+	$('#calendar').fullCalendar('removeEvents',calEvent.id);
+	// Check to see which credit tally to take from
+   if(calEvent.registered && !calEvent.pending)
+		$('#registered-credits').val(parseInt($('#registered-credits').val()) - parseInt(calEvent.credits));
+   else
+		$('#tentative-credits').val(parseInt($('#tentative-credits').val()) - parseInt(calEvent.credits));
+	//Display the course in the list on the left again
+	var toFind = "#" + calEvent.id;
+	$(toFind).show();
+	$("#dialog").dialog("close");
+}
+
+function showCourseInCalendar(obj,mouseOver) {
+	// retrieve the dropped element's stored Event Object
+	var originalEventObject = $(obj).data('eventObject');
+	
+	// retrieve the dropped element's partner, checking for mouseover
+	if(mouseOver) {
+		id2 = $(obj).data('eventObject').id.replace("mouse","a");
+		id3 = $(obj).data('eventObject').id.replace("mouse","b");
+	}
+	else {
+		id2 = $(obj).data('eventObject').id + "a";
+		id3 = $(obj).data('eventObject').id + "b";
+	}
+		
+	var originalEventObject2 = courses[id2];
+	
+	if(mouseOver && id2 in courses)
+		originalEventObject2.id += "mouse";
+	
+	// we need to copy it, so that multiple events don't have a reference to the same object
+	var copiedEventObject = $.extend({}, originalEventObject);
+	var copiedEventObject2 = $.extend({}, originalEventObject2);
+	
+	//Assign coloring if there is a problem
+	if(!copiedEventObject.prerequisites) {
+		copiedEventObject.color = "#900";
+		copiedEventObject2.color = "#900";
+	}
+	
+	// render the event on the calendar
+	// the last `true` argument determines if the event "sticks" 
+	// (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+	$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+	$('#calendar').fullCalendar('renderEvent', copiedEventObject2, true);
+	
+	// Check for 3 day case
+	if ($(obj).data('eventObject').id + "b" in courses) {
+		var originalEventObject3 = courses[id3];
+		var copiedEventObject3 = $.extend({}, originalEventObject3);
+		if(!copiedEventObject.prerequisites) {
+			copiedEventObject3.color = red;
+		}
+		$('#calendar').fullCalendar('renderEvent', copiedEventObject3, true);
+	}
+}
+	$(document).ready(function() {
+	
+		var date = new Date();
+		var d = date.getDate();
+		var m = date.getMonth();
+		var y = date.getFullYear();
+		
+		
+		/* Setup search */
+		$('#search-results').hide();
+		
+		$('#back-to-search').click(function() {$('#search-results').hide(); $('#search').show();});
+		
+		$('#enter-search').click(function() {$('#search').hide(); $('#search-results').show();});
+		
+		$('#professor-select').dialog({autoOpen:false, width:500});
+		
+		$('#professor').click(function() {$('#professor-select').dialog('open')});
+		
+		$('#evans').click(function() {$('#professors-selected').append("<div class='search-criteria'>Gary Evans</div>");});
+		
+		/* Setup the help dialog
+		-----------------------------------------------------------------*/
+		$("#helpDialog").dialog({autoOpen:false, maxHeight:200, width:500});
+		
+		/* initialize the external events
+		-----------------------------------------------------------------*/
+	
+		$('div.external-event').each(function() {
+		
+			// create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+			// We're loading from hardcoded data (courseData.js)
+			
+			var eventObject = courses[$(this).attr('id')];
+
+			// store the Event Object in the DOM element so we can get to it later
+			$(this).data('eventObject', eventObject);
+			
+			// make the event draggable using jQuery UI
+			$(this).draggable({
+				zIndex: 999,
+				revert: true,      // will cause the event to go back to its
+				revertDuration: 0  //  original position after the drag
+			});
+			
+			/* // Make a copy event with a slightly different id to show in mouseover
+			var mouseoverObj = this;
+			$(mouseoverObj).data('eventObject').id += "mouse";
+			$(this).mouseover(function() {
+				showCourseInCalendar(mouseoverObj,true);
+			  }).mouseout(function(){
+				$('#calendar').fullCalendar('removeEvents',function(event) {return event.id == null || event.id.search("mouse") != -1;});
+			  }); */
+		});
+		
+		
+		/* Initialize dialog for PERM requests
+		-----------------------------------------------------------------*/
+		$( "#perm" ).dialog({
+			autoOpen: false,
+			height: 500,
+			width: 600,
+			modal: true,
+			buttons: {
+				"Submit Request": function() {
+						if($("#passcode").val() != "") {
+							registerCourse(eventForPERM);
+						}
+						else {
+							eventForPERM.color = "#FA4";
+							eventForPERM.pending = true;
+							eventForPERM.registered = true;
+							$('#calendar').fullCalendar('updateEvent', eventForPERM);
+						}
+						$( this ).dialog( "close" );
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		});
+
+		/* initialize the calendar
+		-----------------------------------------------------------------*/
+		$('#calendar').fullCalendar({
+			year: 2011,
+			month: 8,
+			date: 4,
+			header: {
+				left: '',
+				center: '',
+				right: ''
+			},
+			editable: false,
+			droppable: true, // this allows things to be dropped onto the calendar !!!
+			defaultView: 'agendaWeek',
+			allDayDefault: false,
+			allDaySlot: false,
+			theme: true,
+			eventColor: "#9E208D",
+			minTime: 8,
+			maxTime: 22,
+			drop: function(date, allDay) { // this function is called when something is dropped
+			
+				showCourseInCalendar(this);
+
+				// Hide course in list
+				$(this).hide();
+				
+				// Calculate Credits
+				$('#tentative-credits').val(parseInt($('#tentative-credits').val()) + parseInt($(this).data('eventObject').credits));
+			},
+		eventClick: function(calEvent, jsEvent, view) {
+				$('#dialog').html(courseDescriptions[calEvent.id]);
+				if(calEvent.registered) {   // Already registered, display button to drop
+					if (calEvent.pending)
+						$("#dialog").append("<h2 style=\"color:red;\">Your PERM request is pending.</h2>");
+						
+					$("#dialog").dialog({
+					maxHeight:700, width:800,
+					buttons: { 
+						"Remove": function() { removeEvent(calEvent);},
+						"Drop Course (to tentative)": function() { 
+											if(calEvent.pending)
+												calEvent.color = "#900";
+											else {
+												calEvent.color = "#36C";
+												// Update credits
+												$('#tentative-credits').val(parseInt($('#tentative-credits').val()) + parseInt(calEvent.credits));
+												$('#registered-credits').val(parseInt($('#registered-credits').val()) - parseInt(calEvent.credits));
+											}
+											calEvent.registered = false;
+											calEvent.pending = false;
+											// Tell the calendar to redisplay
+											$('#calendar').fullCalendar('updateEvent', calEvent);
+											$("#dialog").dialog("close");
+										},
+						},
+					});
+				} else if(!calEvent.prerequisites) {  // Not registered and can't because PERM needs to be submitted
+					$("#dialog").append("<h2 style=\"color:red;\">You do not have the prerequisites for this class</h2>");
+					$("#dialog").dialog({
+					maxHeight:700, width:800,
+					buttons: { 
+						"Remove": function() { removeEvent(calEvent);},
+						"Request Permission": function() { 
+											$("#dialog").dialog("close");
+											// Open PERM dialog
+											eventForPERM = calEvent;
+											$("#perm").dialog("open");
+											// Tell the calendar to redisplay
+											$('#calendar').fullCalendar('updateEvent', calEvent);
+										},
+						},
+					});
+				}else {
+					$("#dialog").dialog({				// Not registered, display button to register
+						maxHeight:700, width:800,
+						buttons: { 
+							"Remove": function() { removeEvent(calEvent);},
+							"Register Course": function() { 
+											registerCourse(calEvent);
+											$("#dialog").dialog("close");
+										}
+							},
+						});
+				}
+			},
+		/*eventMouseover: function(calEvent, jsEvent, view) {
+				if ($(this).HasBubblePopup())
+					$(this).RemoveBubblePopup();
+					
+				$(this).CreateBubblePopup({ 
+					innerHtml: courseDescriptions[calEvent.id], 
+					themeName: 	'all-black',
+					themePath: 	'jQueryBubblePopup/Install/jquerybubblepopup-theme'
+				});
+			},*/
+		});
+		
+		/* Set up Register All Button
+		-----------------------------------------------------------------*/
+		$('#register-all').click(function() {
+			var events = $('#calendar').fullCalendar( 'clientEvents', function(event){return !event.registered && event.prerequisites;});
+			var seen = "";
+			for(var i in events) {
+				if(seen.search(events[i].id) == -1) {
+					registerCourse(events[i]);
+					seen += events[i].id;
+				}
+			}
+		});
+	});
+	
+function registerCourse(calEvent) {
+	calEvent.color = "#090";
+	calEvent.registered = true;
+	calEvent.pending = false;
+	// Update credits
+	$('#tentative-credits').val(parseInt($('#tentative-credits').val()) - parseInt(calEvent.credits));
+	$('#registered-credits').val(parseInt($('#registered-credits').val()) + parseInt(calEvent.credits));
+	$('#calendar').fullCalendar('updateEvent', calEvent);
+}
+function showHelp()
+{
+	$("#helpDialog").dialog("open");
+}
+
+</script>
+{% endblock%}
+{% block content %}
+<div id='wrap'>
+
+<div id='left'>
+<div id='external-events'>
+<h4>Major Requirements</h4>
+<div id="CSCI005HM-01" class='external-event'>CS 5<br>Intro Computer Science<br> Prof. Dodds</div>
+<div id="CSCI005LHM-04" class='external-event'>CS 5 Lab<br>Intro CS Lab<br>Prof. Hadas</div>
+<div id="CSCI060HM-01" class='external-event'>CS 60<br>Principles of Computer Science<br>Prof. Dodds</div>
+
+<h4>Credits</h4>
+Tentative: <input id="tentative-credits" value=0 READONLY> <br>
+Registered: <input id="registered-credits" value=0 READONLY> <br>
+<div id="need-help-link" onClick="showHelp();" style="color:blue; text-decoration:underline;">Need Help?</div>
+<br>
+<a href="menus.html">Go to browsing page</a>
+<br><br>
+<input type="button" id="register-all" value="Register All">
+</div>
+
+<div id='search'>
+<input id="tentative-credits" value="Enter Search Terms..." READONLY>
+<h2> Select Search Criteria </h2>
+<div id="professors-selected">
+<input type="button" value="Professor" id="professor">
+</div><br>
+<input type="button" value="Campus" id="campus"><br>
+<input type="button" value="Department" id="Department"><br>
+<h2> Search by Time </h2>
+<img src="/media/images/cal-icon.gif" height=50 /><br><br>
+<input style="float:right;" type="button" value="search" id="enter-search">
+</div>
+
+<div id='search-results'>
+<input type="button" value="back" id="back-to-search" /> <br>
+<div id="ECON104HM-01" class='external-event'>ECON 104<br>Financial Economics<br> Prof. Evans</div>
+</div>
+</div> <!-- End left -->
+
+
+<div id='calendar'></div>
+
+<div id="dialog" title="Modify Course Entry"></div>
+<div id="helpDialog" title="Help"> Drag a course to the calendar to tentatively add it. <br>Click on a tentative course to register for it or remove it.</div>
+
+<div id="perm" title="Request Permission to Register">
+	<p class="validateTips">Enter a PERM request or a cheatcode provided by the instructor.</p>
+
+	<form>
+	<fieldset>
+		<label for="explanation">Request Explanation</label>
+		<TEXTAREA name="explanation" id="explanation" class="text ui-widget-content ui-corner-all" >Enter a note to the professor here, or a passcode below if you have it.</TEXTAREA>
+		<br><label for="passcode">Passcode</label>
+		<input type="text" name="passcode" id="passcode" value="" class="text ui-widget-content ui-corner-all" />
+	</fieldset>
+	</form>
+</div>
+
+<div id="professor-select" title="Select Professor(s) to Search For">
+<input type="text" value="Enter Professor to Search for Here" /><br><br>
+<div id="evans" style="color:blue; text-decoration:underline;"> Gary Evans </div>
+</div>
+
+<div style='clear:both'></div>
+</div>
+{% endblock %}
+
+{% block extraContent %}
+
+{% endblock %}

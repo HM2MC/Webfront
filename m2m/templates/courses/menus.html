@@ -1,0 +1,210 @@
+{% extends 'base_page.html' %}
+{% block title %}M2M - Courses{% endblock %}
+{% block stylin %}
+    <script type='text/javascript' src='/media/scripts/courses/fullcalendar-1.5.1/jquery/jquery-1.5.2.min.js'></script>
+	<script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/media/scripts/courses/js/fg-menu/fg.menu.js"></script>
+{% endblock %}
+{% block scriptin %}    
+    <link type="text/css" href="/media/scripts/courses/js/fg-menu/fg.menu.css" media="screen" rel="stylesheet" />
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/black-tie/jquery-ui.css" type="text/css" media="all" />
+    
+    <!-- styles for this example page only -->
+	<style type="text/css">
+	#menuLog { font-size:1.4em; margin:20px; }
+	.hidden { position:absolute; top:0; left:-9999px; width:1px; height:1px; overflow:hidden; }
+	
+	.fg-button { clear:left; margin:0 4px 40px 20px; padding: .4em 1em; text-decoration:none !important; cursor:pointer; position: relative; text-align: center; zoom: 1; }
+	.fg-button .ui-icon { position: absolute; top: 50%; margin-top: -8px; left: 50%; margin-left: -8px; }
+	a.fg-button { float:left;  }
+	button.fg-button { width:auto; overflow:visible; } /* removes extra button width in IE */
+	
+	.fg-button-icon-left { padding-left: 2.1em; }
+	.fg-button-icon-right { padding-right: 2.1em; }
+	.fg-button-icon-left .ui-icon { right: auto; left: .2em; margin-left: 0; }
+	.fg-button-icon-right .ui-icon { left: auto; right: .2em; margin-left: 0; }
+	.fg-button-icon-solo { display:block; width:8px; text-indent: -9999px; }	 /* solo icon buttons must have block properties for the text-indent to work */	
+	
+	.fg-button.ui-state-loading .ui-icon { background: url(spinner_bar.gif) no-repeat 0 0; }
+	</style>
+	
+	<link rel='stylesheet' type='text/css' href='/media/styles/courses/courseStyling.css' />
+	
+	<!-- style exceptions for IE 6 -->
+	<!--[if IE 6]>
+	<style type="text/css">
+		.fg-menu-ipod .fg-menu li { width: 95%; }
+		.fg-menu-ipod .ui-widget-content { border:0; }
+	</style>
+	<![endif]-->	
+    
+    <script type="text/javascript">    
+    $(function(){
+    	// BUTTONS
+    	$('.fg-button').hover(
+    		function(){ $(this).removeClass('ui-state-default').addClass('ui-state-focus'); },
+    		function(){ $(this).removeClass('ui-state-focus').addClass('ui-state-default'); }
+    	);
+    	
+    	// MENUS    	
+		
+		$('#coremenu').menu({
+			content: $('#coremenu').next().html(),
+			backLink: false,
+			width: 300
+		});
+		
+		$('#majormenu').menu({
+			content: $('#majormenu').next().html(),
+			backLink: false,
+			width: 300
+		});
+		
+		$('#hsadistmenu').menu({
+			content: $('#hsadistmenu').next().html(),
+			backLink: false,
+			width: 300
+		});
+		
+		$('#hsaconcmenu').menu({
+			content: $('#hsaconcmenu').next().html(),
+			backLink: false,
+			width: 300
+		});
+		
+		$('#hsaoncampusmenu').menu({
+			content: $('#hsaoncampusmenu').next().html(),
+			backLink: false,
+			width: 300
+		});
+		
+		
+    });
+    </script>
+{% endblock %}
+
+{%block content %}
+
+<p id="menuLog">You chose: <span id="menuSelection"></span></p>
+
+
+
+
+<a tabindex="0" href="#core-requirements" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="coremenu"><span class="ui-icon ui-icon-triangle-1-s"></span>Core Requirements</a>
+<div id="core-requirements" class="hidden">
+<ul>
+	<li><a href="#">Biology</a></li>
+	<li><a href="#">Chemistry</a></li>
+	<li><a href="#">Computer Science</a>
+		<ul>
+			<li><a href="#"><div id="CSCI005HM-01" class='external-event'>CSCI 005 HM 01<br>Introduction to Computer Science<br> Prof. Dodds <br> </div></a></li>
+			<li><a href="#"><div id="CSCI005LHM-04" class='external-event'>CSCI 005L HM 04<br>Introduction to Computer Science Lab<br> Prof. Hadas <br> </div></a></li>
+			<li><a href="#"><div id="CSCI060HM-01" class='external-event'>CSCI 060 HM 01<br>Principles of Computer Science<br> Prof. Dodds <br> </div></a></li>
+		</ul>
+	</li>
+	
+	<li><a href="#">Engineering</a></li>
+	<li><a href="#">Math</a></li>
+	<li><a href="#">Physics</a></li>
+	</ul>
+</div>
+
+<a tabindex="0" href="#major-requirements" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="majormenu"><span class="ui-icon ui-icon-triangle-1-s"></span>Major Requirements</a>
+<div id="major-requirements" class="hidden">
+<ul>
+	<li><a href="#">Computer Science</a>
+	<ul>
+		<li><a href="#"><div id="CSCI005HM-01" class='external-event'>CSCI 005 HM 01<br>Introduction to Computer Science<br> Prof. Dodds <br> </div></a></li>
+		<li><a href="#"><div id="CSCI005LHM-04" class='external-event'>CSCI 005L HM 04<br>Introduction to Computer Science Lab<br> Prof. Hadas <br> </div></a></li>
+		<li><a href="#"><div id="CSCI060HM-01" class='external-event'>CSCI 060 HM 01<br>Principles of Computer Science<br> Prof. Dodds <br> </div></a></li>
+		</ul>
+	</li>
+	
+</div>
+
+<a tabindex="0" href="#hsa-distributions" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="hsadistmenu"><span class="ui-icon ui-icon-triangle-1-s"></span>HSA Distributions</a>
+<div id="hsa-distributions" class="hidden">
+<ul>
+	<li><a href="#">Literature</a></li>
+	<li><a href="#">Arts</a>
+		<ul>
+			<li><a href="#">Painting</a></li>
+			<li><a href="#">Sculpture</a></li>
+			<li><a href="#">Dance</a></li>
+			<li><a href="#">Music</a>
+				<ul>
+					<li><a href="#">Theory</a></li>
+					<li><a href="#">Performance</a>
+						<ul>
+							<li><a href="#">Voice</a></li>
+							<li><a href="#">Guitar</a></li>
+							<li><a href="#">Piano</a>
+								<ul>
+									<li><a href="#">Public Performance</a>
+									</li>
+									<li><a href="#">Group Lessons</a>
+										<ul>
+											<li><a href="#"><div id="MUS 085ASC-01" class='external-event'>MUS 085A SC 01<br>Group Piano: 1st and 2nd Year<br> Prof. Simon <br> </div></a></li>
+											<li><a href="#"><div id="MUS 085CSC-01" class='external-event'>MUS 085C SC 01<br>Group Piano: 3rd and 4th Year<br> Prof. Simon <br> </div></a></li>
+										</ul>
+									</li>
+									<li><a href="#">Individual Lessons</a>
+										<ul>
+											<li><a href="#"><div id="MUS 171ASC-01" class='external-event'>MUS 171A SC 01<br>Piano: 1st and 2nd Year<br> Prof. Huang <br> </div></a></li>
+											<li><a href="#"><div id="MUS 171CSC-01" class='external-event'>MUS 171C SC 01<br>Piano: 3rd and 4th Year<br> Prof. Blankenburg <br> </div></a></li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+							<li><a href="#">Violin</a></li>
+							<li><a href="#">Trumpet</a></li>
+							<li><a href="#">Flute</a></li>
+						</ul>
+					</li>
+					<li><a href="#">History</a></li>
+				</ul>
+			</li>
+			<li><a href="#">Theatre</a></li>
+		</ul>
+	</li>
+	
+	<li><a href="#">Social Science</a></li>
+	<li><a href="#">Language</a></li>
+	<li><a href="#">History</a></li>
+
+	</ul>
+</div>
+
+<a tabindex="0" href="#hsa-concentration-courses" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="hsaconcmenu"><span class="ui-icon ui-icon-triangle-1-s"></span>HSA Concentration Courses</a>
+<div id="hsa-concentration-courses" class="hidden">
+<ul>
+	<li><a href="#">Economics</a>
+	<ul>
+		<li><a href="#"><div id="ECON051PO-01" class='external-event'>ECON 051 PO 01<br>Principles of Macroeconomics<br> Prof. Chincar<br> </div></a></li>
+		<li><a href="#"><div id="ECON101CM-01" class='external-event'>ECON 101 CM 01<br>Intermediate Macroeconomics<br> Prof. Hirakawa<br> </div></a></li>
+		<li><a href="#"><div id="ECON102CM-01" class='external-event'>ECON 102 CM 01<br>Intermediate Macroeconomics<br> Prof. Chincar<br> </div></a></li>
+		<li><a href="#"><div id="ECON104HM-01" class='external-event'>ECON 104 HM 01<br>Financial Economics<br> Prof. Evans<br> </div></a></li>
+		<li><a href="#"><div id="ECON111SC-01" class='external-event'>ECON 111 SC 01<br>Behavioral Economics<br> Prof. Flynn<br> </div></a></li>
+		<li><a href="#"><div id="ECON121PO-01" class='external-event'>ECON 121 PO 01<br>Economics of Gender and the Family<br> Prof. Brown<br> </div></a></li>
+		<li><a href="#"><div id="ECON127PO-01" class='external-event'>ECON 127 PO 01<br>Environmental Economics<br> Prof. Evans<br> </div></a></li>
+	</li>
+	
+</div>
+
+<a tabindex="0" href="#hsa-on-campus-courses" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="hsaoncampusmenu"><span class="ui-icon ui-icon-triangle-1-s"></span>HSA On-Campus Courses</a>
+<div id="hsa-on-campus-courses" class="hidden">
+<ul>
+	<li><a href="#">Music</a></li>
+	<li><a href="#">History</a></li>
+	<li><a href="#">Economics</a>
+		<ul>
+			<li><a href="#"><div id="ECON104HM-01" class='external-event'>ECON 104 HM 01<br>Financial Economics<br> Prof. Evans<br> </div></a></li>
+		</ul>
+	</li>
+	
+	<li><a href="#">Language</a></li>
+	<li><a href="#">Media Studies</a></li>
+	</ul>
+</div>
+{% endblock %}
+{% block extraContent %}{% endblock %}
