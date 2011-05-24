@@ -92,7 +92,7 @@ def migrate():
     '''
     return count
 
-
+'''
 # This is the model for the comments that the old site used
 class Comments(models.Model):
     cid = models.IntegerField(primary_key=True, db_column='CID',editable=False) # Field name made lowercase.
@@ -113,7 +113,7 @@ class Comments(models.Model):
     
     class Meta:
         db_table = u'comments'
-
+'''
 # a cleaned up version of the old comments model, django-ready.
 class Comment(models.Model):
     CID = models.IntegerField(primary_key=True,unique=True,editable=False,)
@@ -132,7 +132,7 @@ class Comment(models.Model):
     server = models.CharField(max_length=60, null=True,blank=True)
     requestIP = models.IPAddressField(max_length=64,null=True,blank=True)
     # ala facebook
-    Likes = models.IntegerField(default=1)
+    Likes = models.IntegerField(default=0)
     
     def __unicode__(self):
         return self.request

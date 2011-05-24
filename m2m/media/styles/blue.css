@@ -2,7 +2,7 @@ body {
     background: #1e3042;/*#3C6184;*/ /*#48737B;*//*#e0f2f2;*/
 }
 
-a:link {
+a:link{
 	color: #4F6696;
 	text-decoration: none;
 }
@@ -21,14 +21,22 @@ a:link {
 
 #footer {
     background-image:url(/media/images/bottom_grad.png);
+    position:relative;
 }
 
-td.info {
+tr.info td {
     background-image:url(/media/images/table_grad.png);
+    font-weight:bold;
 }
 
 div.info {
     background-image:url(/media/images/table_grad.png);
+}
+
+#footer > * {
+    position: absolute;
+    bottom:-20px;
+    right: 0;
 }
 
 #footer a:link {
@@ -39,6 +47,8 @@ div.info {
 	color: #2F3D5A;
 	text-decoration: underline;
 }
+
+
 
 #pagelinks {
     font-weight: bold;
@@ -72,15 +82,32 @@ a:visited {
 	text-decoration: none;
 }
 
-a:hover, a:active {
+a:hover, a:active{
 	color: #000;
 	text-decoration: underline;
 }
 
-img.directLink{
+a.logolink { text-decoration: none;}
 
+a.directLink:hover{
+    background-color: none;
+    
+    text-decoration: none;
+    width:25px;
+    height:30px;
 }
 
+a.directLink img{
+    vertical-align:middle;
+    }
+
+a.directLink div {
+    background-color: none;
+    
+    text-decoration: none;
+    width:25px;
+    height:30px;
+}
 #container {
     border-right: 8px solid #90E6F6; 
 	border-left: 8px solid #90E6F6;

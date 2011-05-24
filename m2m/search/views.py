@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response
 from django.utils.safestring import mark_safe
 from django.db import transaction
 
@@ -306,7 +306,10 @@ def results(request,page='1'):
         elif sizeSpec == 8: #hostname, desc
             sorting = SPH_SORT_ATTR_ASC
             sortby = "HostName"
-        
+    if q2 == "" and sortby == "" and params['type'] == 'none':
+        sorting = SPH_SORT_ATTR_DESC
+        sortby = "DateAdded"
+        params['order'] = '-DateAdded'
     # create client instances, filling in required attrs 
     client = SphinxClient()
     client.SetServer('labrain.st.hmc.edu',3312)
@@ -519,6 +522,18 @@ def results(request,page='1'):
                                 'page': 'WTF',
                               },)
     
+
+def movies(request, page="q"):
+
+    if page == "q":
+        return render_to_response('base_page.html',
+                                {
+                                    'title':"M2M - Movies",
+                                    'search':'current',
+                                    'movies':'current',
+                                },)
+                                    
+
 # are you in tears?
 # call me, that i might bathe in them.
 # 703 - 943 - 9385

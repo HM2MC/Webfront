@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load search_extras %}
+{% load logo from search_extras %}
 <html>
     <head>
         <title>{% block title %}{{title|default:"M2M"}}{%endblock%}</title>
@@ -12,18 +12,6 @@
         <link rel="stylesheet" media="screen" href="/media/styles/blue.css" />
         <link rel="stylesheet" media="screen" href="/media/styles/845.css" />
         {% block stylin %}{% endblock %}
-        
-        
-        <script type="text/javascript" src="/media/jquery-1.4.4.js"></script>
-        <script type="text/javascript" src="/media/styles/javascript.js"></script>
-        <script type="text/javascript" src="/media/scripts/jquery.tools.min.js"></script>
-        {%block scriptin %}{%endblock%}
-        
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <meta name="robots" content="all" />
-        
-        <link rel="icon" href="/media/favicon.png" type="image/x-icon" />
-        <link rel="shortcut icon" href="/media/favicon.png" type="image/x-icon" />
         
         <script type="text/javascript">
 
@@ -38,20 +26,39 @@
           })();
 
         </script>
+
+        
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="robots" content="all" />
+        
+        <link rel="icon" href="/media/favicon.png" type="image/x-icon" />
+        <link rel="shortcut icon" href="/media/favicon.png" type="image/x-icon" />
+        
+
     </head>
     <body>
-        
+        {% block externalContent %} {% endblock %}
         <div id="container">
-            {% block navigator %}
+            
             <header id="pageHeader"><!-- Start page header -->
+            
                     <div id="logoContainer">
-                        <a href="{% url search.views.index %}">{% logo %}</a>
+                        {%block logohold%}{% logo None %}{%endblock %}
                     </div>
                     <div id="koi"></div>
+                    {% block navigator %}
                     <nav id="navcontainer"><!-- Start Navigation -->
                       <ul>
                         <li><a href="{% url search.views.index %}" id="search" rel="self" class="{{search|default:""}}">SEARCH</a></li>
+                          {% if search %}
+                            <ul>
+                                <li><a href="{%url advancedsearch.views.movieSplash %}" id="msearch" rel="self" class="{{movies|default:""}}">Movies</a></li>
+                                <!--<li><a href="{%url advancedsearch.views.showSplash %}" id="ssearch" rel="self" class="{{shows|default:""}}">Shows</a></li>
+                                <li><a href="{%url advancedsearch.views.musicSplash %}" id="musearch" rel="self" class="{{music|default:""}}">Music</a></li>-->
+                            </ul>
+                          {% endif %}
                         <li><a href="{% url requests.views.open %}" id="requests"  rel="self" class="{{requests|default:""}}">REQUESTS</a></li>
+
                         {% if requests %}
                         <ul>
                             <li><a href="{% url requests.views.open %}" id="oreq"  rel="self" class="{{openReq|default:""}}">Open Requests</a></li>
@@ -70,37 +77,44 @@
                                 <li><a href="" id="pstat"  class="{{pollStat|default:""}}">Polls</a></li>
                             </ul>
                         {%endif%}{%endcomment%}
+						<li><a href="{% url faq.views.basic %}" id="faq" class ="{{faq|default:""}}"> FAQ </a>
+							{% if faq %}
+							<ul style="left:auto;width:10em">
+								<li><a href="{%url faq.views.basic %}" id="bfaq" class="{{basic|default:""}}">General</a></li>
+								<li><a href="{%url faq.views.servers%}" id="sfaq" class="{{server|default:""}}">Server</a></li>
+							</ul>
+							{% endif %}
+						</li>
                       </ul>
                     </nav>
                     <!-- End navigation --> 
-            </header><!-- End page header -->
             {% endblock %}
+            </header><!-- End page header -->
+            
+            <br />
+            {% block searchbar %} {%include "searchbar.html" %}{% endblock%}
+            <br /> 
+            <br />
             <div id="contentContainer"><!-- Start main content wrapper -->
                     <section id="content"><!-- Start content -->
                         {% block content %}
-                            <div style="text-align:center;">
+                            
                                 
-                                {% include "searchbar.html" %}
+                                {#{% include "searchbar.html" %}#}
                                 
                                 
-                            </div>
+                            
                         {% endblock %}
                         <br />
                         <br />
                         <section id="extraContent">
                             {%block extraContent %}
                                 <div style='text-align:center;'>
-									Ok, look; summer is experiment time, yes. That said: M2M is breaking because
-									of a DHCP issue, not a coding issue. There isn't a whole lot I can do about
-									key components of the site changing their IPs every few hours.<br />
-									But I'm doing my best, and I'm really really sorry that you guys have to wait
-									for functionality to come back. I wish I could do more.
-									<br />
 									<br />
                                     Servers: check out <a href="news/2011/feb/27/direct-serving/"> this page</a>.
                                     <br />
                                     <br />
-                                    <p>M2M - Because We're Family&trade; (even in the summer)</p>
+                                    
                                     <br />
                                     <br />
                                     <script type=\"text/javascript\">
@@ -118,7 +132,7 @@
                     
                     <section id="endContent">
                     {% block endContent %}
-                    
+                    <p style='text-align:center'>M2M - Because We're Family&trade; (even in the summer)</p>
                     {%endblock%}
                     </section>
             </div><!-- end main content wrapper -->
@@ -129,7 +143,7 @@
             <div id="footer"><!-- Start Footer -->
             <footer>
             {% block footer %}
-                <div id="contact"><br/><br/><br/><br /> //<a href="mailto:hsaxberg@hmc.edu">Contact</a></span></div>
+                <div id="contact">//<a href="mailto:hsaxberg@hmc.edu">Contact</a></div>
             
                 <div id="breadcrumbcontainer"><!-- Start the breadcrumb wrapper -->
                             
@@ -138,5 +152,12 @@
             </footer>
             </div><!-- End Footer -->
         </div>
+		
+		{# scripts at the end, just in case #}
+	    <script type="text/javascript" src="/media/jquery-1.4.4.js"></script>
+        <script type="text/javascript" src="/media/styles/javascript.js"></script>
+        <script type="text/javascript" src="/media/scripts/jquery.tools.min.js"></script>
+        {%block scriptin %}{%endblock%}
+
     </body>
 </html>
