@@ -1,5 +1,7 @@
 from django.conf.urls.defaults import *
+from django.contrib import admin
 #from django.conf import settings
+admin.autodiscover()
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -45,7 +47,10 @@ urlpatterns = patterns('',
     (r'^faq&', 'faq.views.basic'),
     (r'^faq/', include('faq.urls')),
     
-
+    (r'^weblog/categories/', include('coltrane.urls.categories')),
+    (r'^weblog/links/', include('coltrane.urls.links')),
+    (r'^weblog/tags/', include('coltrane.urls.tags')),
+    (r'^weblog/', include('coltrane.urls.entries')),
     
     (r'^about/m2m$','faq.views.about',{'typeof':'m2m'}),
     
