@@ -1,17 +1,71 @@
 {% extends "base_page.html" %}
+{% load blog %}
+{% load comments %}
 
-{% block title %} {{block.super}} - Blog Index {% endblock %}
+{%block title%} M2M - News {%endblock%}
+{% block stylin %} <link rel="stylesheet" type="text/css" href="/media/styles/news.css" /> {% endblock %}
+{%block scriptin%}
+<script type="text/javascript" src="/media/scripts/news.js"></script>
+{%endblock%}
 
-{% block content %}
-<h1>Latest {{latest.count}} Entr{{latest.count|pluralize:"y, ies"}}</h1>
-{% for entry in latest %}
-	<h2> {{entry.title}}</h2>
-	<p>Published on {{entry.pub_date|date:"F j, Y"}}</p>
-	{% if entry.excerpt_html %}
-		{{entry.excerpt_html|safe}}
-	{% else %}
-		{{entry.body_html|truncatewords_html:"50"|safe}}
+{%block news%}current{%endblock%}
+
+{%block content%}
+{% if is_paginated %}
+Page:
+{% for pager in paginator.page_range %}
+	{% if pager != page_obj.number %}<a href="{% url coltrane_entry_archive_index %}?page={{pager}}">{{pager}}</a>
+	{% else %} {{pager}}
 	{% endif %}
-	<p><a href="{{entry.get_absolute_url}}">Read full entry</a></p>
 {% endfor %}
-{% endblock %}
+<br /><br />
+{% endif %}
+
+<div id="posts">
+{% for post in latest %}
+
+<div class="postWrap"><article>
+    <header>
+        <div class="postTitle"><h1><a href="{{post.get_absolute_url}}">{{post.title}}</a></h1></div>
+        <div class="postmeta">
+            <div class="postDate">
+                <time datetime="{{post.pub_date|timeTag}}" pubdate>{{post.pub_date|date:"M j, Y G:i"|linebreaksbr}}</time>
+            </div>
+            <div class="author">{{post.author}}</div>
+        </div>
+    </header>
+    {% if post.body|length > 5000 %}
+    <h3 class="postgSlug"><a class="togglebot" id="{{post.id}}t">
+        {{post.slug_html|safe}}</a></h3>
+    <div style="display:none;" class="postBody" id="{{post.id}}">{{post.body|formatBody}}</div>
+    <div class="postHider"><a class="togglebot" id="{{post.id}}h" style="display:none;">
+        close this post</a></div>
+    
+    {% else %}
+        <div class="postBody">{{post.body_html|safe}}</div>
+    {%endif%}
+    {% get_comment_count for post as comment_count %}
+    <div class="postCommentCount">
+        <p>
+            <a href="{{post.get_absolute_url}}">{{comment_count}} comment{{comment_count|pluralize}}</a>
+            <!-- h{{comment_count|pluralize:"as,ave"}} been posted-->
+        </p>
+    </div>
+</article></div>
+
+{%endfor%}
+</div>
+{% if is_paginated %}
+Page:
+{% for pager in paginator.page_range %}
+    {% if pager != page_obj.number %}<a href="{% url coltrane_entry_archive_index%}?page={{pager}}">{{pager}}</a>
+    {% else %} {{pager}}
+    {% endif %}
+{% endfor %}
+{% endif %}
+{%endblock%}
+
+{%block extraContent%}
+
+{%endblock%}
+

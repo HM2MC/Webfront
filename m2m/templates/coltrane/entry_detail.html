@@ -1,14 +1,66 @@
 {% extends "base_page.html" %}
-
+{% load comments %}
 
 {% block title %}{{block.super}} - {{object.title}}{% endblock %}
+
+{% block stylin %} <link rel="stylesheet" type="text/css" href="/media/styles/news.css" /> {% endblock %}
+{% block scriptin %}
+<script>
+
+function bindPostCommentHandler(){
+    $('#commentForm form').submit(function(){
+       $.ajax({
+            type: "POST",
+            data: $('#commentForm form').serialize(),
+            url: "{%comment_form_target%}",
+            cache: false,
+            dataType: "html",
+            success: function(html, textStatus){
+                $('#commentForm form').replaceWith("Thanks for your comment!");
+                bindPostCommentHandler();
+                $('#commentContainer').load('{{object.get_absolute_url}} #commentLister')
+            },
+            error: function( XMLHttpRequest,textStatus,errorThrown){
+                if($('#commentForm form #id_comment').value == ''){
+                    $('#commentForm form #id_comment').value = "Please write a comment!";
+                }
+            }
+        });
+       return false;
+    });
+}
+
+var edited = false;
+function toggleText(id){
+    if($(id)){
+        var $target = $(id);
+        if($target.attr('value') == "Anonymous" && edited == false){
+            $target.attr('value', "");
+        } else if(edited == false){
+            $target.attr('value',"Anonymous");
+        }
+    }
+}
+
+
+$(function(){ 
+	// bind submit function to the actual submit link   
+    $("#submitcomment").click(function(){
+        $(this).parents("form:first").submit();
+        return false;
+    });
+    
+    bindPostCommentHandler();
+});
+</script>
+{% endblock %}
 
 {% block content %}
 <h2> {{object.title}}</h2>
 {{object.pub_date|date:"F j, Y"}}
 <hr/>
 {{object.body_html|safe}}
-
+<div id="categories">
 {% if object.categories.count %}
 	<p> This entry is part of the categor{{object.categories.count|pluralize:"y,ies"}}
 		{% for category in object.categories.all %}
@@ -21,7 +73,9 @@
 {% else %}
 	<p>This entry isn't party of any categories.</p>
 {% endif %}
+</div>
 
+<div id="tags">
 {% if object.tags.count %}
 	<p> This entry is part of the tag{{object.categories.count|pluralize}}
 		{% for tag in object.tags.all %}
@@ -34,8 +88,15 @@
 {% else %}
 	<p>There are no tags on this entry.</p>
 {% endif %}
+</div>
 
-{% load comments %}
+<div id="commentForm"><h3>Post a comment</h3>
+    {%render_comment_form for object%}
+
+</div>
+<section>
+<div id="commentContainer" class="comments">
+<div id='commentLister'>
 <h3>Comments</h3>
 {% load markup %}
 {% get_comment_list for object as comment_list %}
@@ -44,8 +105,16 @@
 
 {{comment.comment|markdown:"safe"}}
 {% endfor %}
-<h3>Post a comment</h3>
-{% render_comment_form for object %}
+</div></div>
+</section>
+
+
 
 
 {% endblock %}
+
+{%block extraContent%}
+<section>
+    
+</section>
+{%endblock%}

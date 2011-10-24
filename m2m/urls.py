@@ -1,11 +1,14 @@
 from django.conf.urls.defaults import *
-from django.contrib import admin
 #from django.conf import settings
-admin.autodiscover()
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
+
+from m2m.coltrane.feeds import LatestEntriesFeed, CategoryFeed
+
+feeds = {'entries': LatestEntriesFeed,
+         'categories': CategoryFeed}
 
 #from datetime import datetime
 
@@ -36,7 +39,7 @@ urlpatterns = patterns('',
     (r'^servers/', include('browseNet.urls')),
     
     #(r'^(news|comments)/', 'problems.views.news'), # for maintenance, etc
-    (r'^news/', include('basic.blog.urls')),
+    #(r'^news/', include('basic.blog.urls')),
     (r'^comments/', include('django.contrib.comments.urls')),
     
     (r'^problems/', include('problems.urls')),
@@ -47,10 +50,14 @@ urlpatterns = patterns('',
     (r'^faq&', 'faq.views.basic'),
     (r'^faq/', include('faq.urls')),
     
-    (r'^weblog/categories/', include('coltrane.urls.categories')),
-    (r'^weblog/links/', include('coltrane.urls.links')),
-    (r'^weblog/tags/', include('coltrane.urls.tags')),
-    (r'^weblog/', include('coltrane.urls.entries')),
+    (r'^news/categories/', include('coltrane.urls.categories')),
+    (r'^news/links/', include('coltrane.urls.links')),
+    (r'^news/tags/', include('coltrane.urls.tags')),
+    (r'^news/', include('coltrane.urls.entries')),
+    
+    (r'^feeds/categories/(?P<bits>.*)$', CategoryFeed()),
+    (r'^feeds/latest/$', LatestEntriesFeed()),
+    
     
     (r'^about/m2m$','faq.views.about',{'typeof':'m2m'}),
     

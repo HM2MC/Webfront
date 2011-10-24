@@ -1,0 +1,27 @@
+{% load comments %}
+<form action="{%comment_form_target%}" method="post">
+        {% csrf_token %}
+        <input type = "hidden" name="url" id="id_url" value="m2m.st.hmc.edu" />
+        <input type= "hidden" name="email" id="id_email" value="anon@hmc.edu" />
+        {{form.content_type}}
+        {{form.object_pk}}
+        {{form.timestamp}}
+        {{form.security_hash}}
+    <table>
+        <tr>
+            <td valign="top" colspan=2><label for="id_comment">Comment:</label>{{form.comment}}
+        </td></tr>
+        <tr>
+            <td>
+                <span style="display:none;"><label> Honeypot(Entering text here will flag your comment as spam):
+                {{ form.honeypot }}</label></span>
+                <label for=id_name>Name: </label><input type="text" onfocus="toggleText('#id_name');"
+                              onblur="toggleText('#id_name');"
+                              name="name" id="id_name" value="Anonymous"
+                              onchange="if(this.value != ''){edited = true;}else{edited=false;}"/></td>
+                <td align='center'>
+    <a class="green button" type="submit" name="submit" id="submitcomment"><span>Post!</span></a>
+    </td></tr>
+    </table>
+    
+    </form>

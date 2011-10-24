@@ -4,7 +4,7 @@ from django.utils.safestring import mark_safe
 from datetime import datetime
 import re
 
-from basic.blog.models import Post
+from m2m.coltrane.models import Entry
 
 import urllib2
 
@@ -281,7 +281,7 @@ class NewNewsNode(template.Node):
     string = "<div id=\"newNews\"><p>+{:d}</p></div>"
     
     def __init__(self, *args, **kwargs):
-        self.number = Post.objects.filter(publish__gt=date.today()-timedelta(days=4)).count()
+        self.number = Entry.live.filter(pub_date__gt=date.today()-timedelta(days=4)).count()
         
     def render(self, context):
         try:

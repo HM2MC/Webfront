@@ -1,4 +1,4 @@
-
+{% load comments %}
 <form id="errorForm" action="{%comment_form_target %}" method="post">
             {% csrf_token %}
             <input type = "hidden" name="url" id="id_url" value="labryce.st.hmc.edu" />
@@ -20,7 +20,7 @@
             </td></label></tr>-->
             <tr> <td></td><td colspan=2>{{form.errors.comment}}</td></tr>
             <tr>
-            	{% load markdown %}
+            	{% load markup %}
                 <label><td valign="top" >Comment:</td><td colspan=2>{{form.comment|markdown:"safe"}}
             </td></label></tr>
             <!--<tr><td> {{form}} </td></tr>-->

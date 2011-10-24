@@ -6,26 +6,6 @@ from markdown import markdown
 
 import datetime
 # Create your models here.
-
-class Category(models.Model):
-    title = models.CharField(max_length=250, help_text="Max 250 chars")
-    slug = models.SlugField(unique=True, help_text="Suggested value automatically generated from title. Must be unique.")
-    description = models.TextField()
-    
-    class Meta:
-        ordering = ['title']
-        verbose_name_plural = "Categories"
-
-    def live_entry_set(self):
-        from m2m.coltrane.models import Entry
-        return self.entry_set.filter(status=Entry.LIVE_STATUS)
-
-    def __unicode__(self):
-        return self.title
-    
-    def get_absolute_url(self):    
-        return "categories/{}".format(self.slug)
-
 class LiveEntryManager(models.Manager):
     def get_query_set(self):
         return super(LiveEntryManager, self).get_query_set().filter(status=self.model.LIVE_STATUS)
@@ -51,7 +31,7 @@ class Entry(models.Model):
     featured = models.BooleanField(default=False)
     status = models.IntegerField(choices=STATUS_CHOICES, default=LIVE_STATUS)
     
-    categories = models.ManyToManyField(Category)
+    categories = models.ManyToManyField('Category')
     tags = TagField()
     
     excerpt_html = models.TextField(editable=False, blank=True)
@@ -82,6 +62,26 @@ class Entry(models.Model):
                                               'day': self.pub_date.strftime("%d"),
                                               'slug': self.slug
                                              })
+
+
+class Category(models.Model):
+    title = models.CharField(max_length=250, help_text="Max 250 chars")
+    slug = models.SlugField(unique=True, help_text="Suggested value automatically generated from title. Must be unique.")
+    description = models.TextField()
+    
+    class Meta:
+        ordering = ['title']
+        verbose_name_plural = "Categories"
+
+    def live_entry_set(self):
+        return self.entry_set.filter(status=Entry.LIVE_STATUS)
+
+    def __unicode__(self):
+        return self.title
+    
+    def get_absolute_url(self):    
+        return "categories/{}".format(self.slug)
+
         
 class Link(models.Model):
     title = models.CharField(max_length=250)
@@ -127,11 +127,12 @@ class Link(models.Model):
 #from akismet import Akismet
 #from django.conf import settings
 from django.contrib.comments.models import Comment
+#from django.contrib.comments.moderation import CommentModerator, moderator
 from django.contrib.comments.signals import comment_will_be_posted
 #from django.contrib.sites.models import Site
 #from django.utils.encoding import smart_str
 from django.core.mail import mail_managers
-
+'''
 def moderate_comment(sender, comment, request, **kwargs):
     if not comment.id:
         entry = comment.content_object
@@ -144,4 +145,10 @@ def moderate_comment(sender, comment, request, **kwargs):
                                     comment.content_object))
     
 comment_will_be_posted.connect(moderate_comment, Comment)
-            
+
+class EntryModerator(CommentModerator):
+    auto_moderate_field = 'pub_date'
+    moderate_after = 30
+    email_notification = True
+moderator.register(Entry, EntryModerator)
+'''

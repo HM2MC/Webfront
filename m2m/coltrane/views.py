@@ -1,4 +1,5 @@
 from django.shortcuts import render_to_response, get_object_or_404
+from django.http import Http404
 from django.views.generic.list_detail import object_list
 
 from m2m.coltrane.models import Entry, Category
@@ -6,9 +7,15 @@ from m2m.coltrane.models import Entry, Category
 # Create your views here.
 
 
-def entries_index(request):
-    return render_to_response('blog/entry_index.html',
-                              {'entry_list':Entry.objects.all()})
+def entries_index(request, queryset=None, date_field=None, paginate_by=None):
+    if queryset == None or date_field == None:
+        raise Http404
+    
+    
+    
+    return render_to_response('coltrane/entry_archive.html',
+                              {'latest':queryset.order_by("-{}".format(date_field))})
+    
     
 def entry_detail(request, year, month, day, slug="first"):
     import datetime, time
