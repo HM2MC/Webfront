@@ -1,5 +1,5 @@
 from django.contrib import admin
-from m2m.coltrane.models import Category, Entry, Link
+from models import Category, Entry, Link
 
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = { 'slug': ['title']}
