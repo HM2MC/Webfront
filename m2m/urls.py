@@ -58,6 +58,7 @@ urlpatterns = patterns('',
     (r'^feeds/categories/(?P<bits>.*)$', CategoryFeed()),
     (r'^feeds/latest/$', LatestEntriesFeed()),
     
+    (r'^accounts/', include('useraccounts.urls')),
     
     (r'^about/m2m$','faq.views.about',{'typeof':'m2m'}),
     
