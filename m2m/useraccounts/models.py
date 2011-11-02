@@ -14,8 +14,6 @@ class UserProfile(models.Model):
     
     studentid = models.IntegerField(unique=True)
     
-    fname = models.CharField(max_length=30)
-    lname = models.CharField(max_length=30)
     nname = models.CharField(max_length=10)
     birthday = models.DateField()
     
