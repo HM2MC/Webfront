@@ -1,0 +1,42 @@
+#page-contents div.crsdscrptn {
+  margin: 1.25em 0;
+  padding: 1em;
+  background-color: #DED9D6;
+  color: black;
+  -webkit-border-radius: 0.75em;
+  -moz-border-radius: 0.75em;
+}
+
+#page-contents div.crsdscrptn-header h2 {
+  border-bottom: 1px solid #332419;
+  margin: 0;
+  padding: 0 0 2px;
+  font-size: 1.25em;
+  font-weight: bold;
+}
+
+#page-contents div.crsdscrptn-header dl {
+  margin: 0.25em 0 0;
+  padding: 0.25em 0;
+}
+
+#page-contents div.crsdscrptn-header dl dt {
+display:inline;
+font-weight: bold;
+padding: 0 1em 0 0;
+margin: 0;
+}
+
+#page-contents div.crsdscrptn-header dl dd {
+display: inline;
+margin: 0;
+padding: 0;
+}
+
+#page-contents div.crsdscrptn-content {
+margin: 0.75em 0 0;
+padding: 0.75em;
+background-color: white;
+-webkit-border-radius: 0.75em;
+-moz-border-radius: 0.75em;
+}
