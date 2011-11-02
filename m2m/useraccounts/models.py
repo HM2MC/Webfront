@@ -17,12 +17,27 @@ class UserProfile(models.Model):
     fname = models.CharField(max_length=30)
     lname = models.CharField(max_length=30)
     nname = models.CharField(max_length=10)
+    birthday = models.DateField()
+    
+    DORMS = (
+             (1,'East' ),
+             (2,'West'),
+             (3,'North' ),
+             (4,'South'),
+             (5,'Atwood'),
+             (6,'Case'),
+             (7,'Sontag'),
+             (8,'Linde'),
+             (9,'CGU'),
+             (10,'BPA'),
+            )
+    dorm = models.IntegerField(choices=DORMS, default=5)
+    room = models.IntegerField()
     
     hosts = models.ManyToManyField(Host)
     
-    
     description = models.TextField(blank=True)
-
+    
     @models.permalink
     def get_absolute_url(self):
         return ('view_user', None, {'username': self.user.username})

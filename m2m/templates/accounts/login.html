@@ -1,0 +1,34 @@
+{% extends "base_page.html" %}
+
+{% block scriptin %}
+<script>
+	$(function(){
+		$("#submitrequest").click(function(){
+			$(this).parents('form:first').submit();
+		});
+	});
+</script>
+{% endblock %}
+
+{% block content %}
+{% if request.user.is_authenticated %} You're already signed in! {% else %} 
+<h1>You need to log in to access that feature.</h1>
+<h3>Let's take care of that:</h3>
+<div style="margin: 0 auto; 
+			width: 250px; 
+			text-align: center; 
+			background-color: #CCC; 
+			border-radius: 5px;
+			padding: 10px;" class="loginwrap">
+		<form method=POST action="{{form.action}}">
+			<ul>
+				{{form.as_ul}}
+			</ul>
+			<a class="green button" id="submitrequest"><span>Login!</span></a>
+		</form>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extraContent %}
+{% endblock%}

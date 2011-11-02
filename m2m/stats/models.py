@@ -3,7 +3,7 @@ from django.db import models
 
 # Create your models here.
 class Status(models.Model):
-    lastchange= models.CharField(max_length=90, db_column='LastChange',) # Field name made lowercase
+    lastchange= models.DateTimeField(max_length=90, db_column='LastChange',) # Field name made lowercase
     
     smbhosts = models.IntegerField(db_column='SMBHosts') # Field name made lowercase.
     ftphosts = models.IntegerField(db_column='FTPHosts') # Field name made lowercase.
