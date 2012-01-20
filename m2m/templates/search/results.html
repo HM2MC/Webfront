@@ -86,7 +86,7 @@ cursor:pointer;
         <tbody> 
         {% endif %}
             <tr style="font-size:12px;line-height:18px;height:24px;">
-                <td style="padding-left:3px;;"><a href="">
+                <td style="padding-left:3px;;"><a href="{% url browseNet.views.deepBrowse 'P' file.path.pid %}">
                     <img src="/media/images/{% if file.path.hid.flags == 24 %}online.gif{%else%}offline.gif{%endif%}" />
                     </a>
                 </td>
