@@ -1,0 +1,58 @@
+{% extends "advancedsearch/music/splash.html" %}
+
+{% load search_extras %}
+{% load advancedsearch_extras %}
+
+{% block scriptin %}
+{% with q|urlencode as q %}
+<script>
+$(document).ready(function(){
+    bindResultHandler('song');
+    bindResultHandler('album');
+    bindResultHandler('artist');
+    });
+    
+function bindResultHandler(type){
+        $.ajax({
+        type:"GET",
+        data: 'q={{q}}',
+        url: '/advanced/music/subresult/'+type+'?',
+        dataType: "html",
+        success: function(html,textStatus){
+            $('#'+type+'s div').load("/advanced/music/subresult/"+type+"?q={{q}}&{{urlparams}} .results");
+        },
+        error: function(XMLHttpRequest,textStatus,errorThrown){
+            $('#'+type+'s div').replaceWith("Couldn't get"+type+"s.");
+        }
+    });
+}
+</script>
+{% endwith %}
+{% endblock %}
+
+{% block content %}
+{% if params.type == 'all' or params.type == 'Song' %}
+
+<section id="songs"><h2>Songs</h2><div>
+<div style="width: 50px;margin-right: auto;margin-left:auto;text-align:center;"><img src="/media/images/ajax-loader.gif"/></div></div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block extraContent %}
+{% if params.type == 'all' or params.type == 'Album' %}
+<div id="aawrap">
+<section id="albums"><h2>Albums</h2>
+<div>
+<div style="width: 50px;margin-right: auto;margin-left:auto;text-align:center;"><img src="/media/images/ajax-loader.gif"/></div></div>
+</section>
+{% endif %}
+{% if params.type == 'all' or params.type == 'Artist' %}
+
+<section id="artists"><h2>Artists</h2>
+<div>
+<div style="width: 50px;margin-right: auto;margin-left:auto;text-align:center;"><img src="/media/images/ajax-loader.gif"/></div></div>
+</section>
+{% endif %}
+</div>
+{% endblock %}

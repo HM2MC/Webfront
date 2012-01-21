@@ -1,5 +1,5 @@
 {% extends 'advancedsearch/movies/splash.html' %}
-
+{% load advancedsearch_extras %}
 {% block scriptin%}
 <script>
 /*
@@ -65,6 +65,7 @@ $(document).ready(function(){
     </td>
 </tr>
 {% for movie in object_list %}
+{% if movie.files.count > 0 %}
 <tr class="{%cycle 'darkrow' ''%}" style="max-height:1em;">
     
     <td valign="top">
@@ -76,11 +77,14 @@ $(document).ready(function(){
     <td align="right"> {{movie.rating}} </td>
     <td valign="middle" align="right">{{movie.runtime|time:"g:i"}}</td>
 </tr>
+{% else %}
+    {% delete Movie movie.id %}
+{% endif %}
 {% endfor %}
 </table>
 </div>
 <br>
-{% if paginator.count > 1 %}
+{% if paginator.num_pages > 1 %}
     <div style="text-align:center;">
     {%if page.has_previous %}
         <a href="{%url advancedsearch.views.movieSearch page.previous_page_number %}">Prev</a>

@@ -3,7 +3,6 @@ from django.utils.safestring import mark_safe
 from django.db import transaction
 
 from djangosphinx.apis.api278 import *
-#from djangosphinx.manager import SphinxQuerySet
 
 from search.models import File
 from browseNet.models import Path
@@ -60,6 +59,7 @@ def index(request):
                               {
                                 'title':"M2M - Search",
                                 'search':'current',
+                                'files':'current',
                                 'debug':DEBUG,
                                })
     
@@ -234,17 +234,17 @@ def results(request,page='1'):
     
     # set the index and the appropriate model for later
     if params['mode']=="filesSubstr":
-        indexing ='files,files-delta'
+        indexing ='files'
         model = File
         
     elif params['mode']=='dirsSubstr':
-        indexing='directories,directories-delta'
+        indexing='directories'
         model = Path
     else:
-        indexing='filesdirs,filesdirs-delta'
+        indexing='filesdirs'
         model = File
     # type of file not specified? or searching directories
-    if params['type'] == 'none' or indexing == 'directories,directories-delta':
+    if params['type'] == 'none' or indexing == 'directories':
         moding = SPH_MATCH_EXTENDED
         q2 = q
         params['type'] = 'none'
@@ -254,7 +254,7 @@ def results(request,page='1'):
         typeSpec = allowedTypes.index(params['type'])
         
         # type specified -> dirs are not type.
-        indexing = 'files, files-delta'
+        indexing = 'files'
         # now 'switch' through them:
         
 # N.B. -- these indices are on line ~100
@@ -310,9 +310,10 @@ def results(request,page='1'):
         sorting = SPH_SORT_ATTR_DESC
         sortby = "DateAdded"
         params['order'] = '-DateAdded'
+        
     # create client instances, filling in required attrs 
     client = SphinxClient()
-    client.SetServer('labrain.st.hmc.edu',3312)
+    client.SetServer('laview.st.hmc.edu',9312)
     client.SetMatchMode(moding)
     client.SetSortMode(sorting,sortby)
     # this pre-slices the results:
@@ -339,11 +340,15 @@ def results(request,page='1'):
     # N.B. -- we have to 'try' this, because sometimes the sphinx indices have
     #         records that no longer exist in the actual database.
                 try:
-                    filesFound += [model.objects.get(pk=fileThing['id'])]
+                    filesFound += [File.objects.get(pk=fileThing['id'])]
                 except:
-                    # count the error hits
-                    fileErrors += 1
-                    errorids += [fileThing['id']]
+                    try:
+                        filesFound += [Path.objects.get(pk=fileThing['id'])]
+                        filesFound[-1].path = filesFound[-1] # for use in template
+                    except:
+                        # count the error hits
+                        fileErrors += 1
+                        errorids += [fileThing['id']]
             # something wierd happened - lots of errors
             if len(filesFound) < 1:
                 multiplier += 1
@@ -437,13 +442,6 @@ def results(request,page='1'):
             'dirsSubstr':2,
             'filesdirsSubstr':3,
         }
-        
-        from django.db import connection
-        
-        cursor = connection.cursor()
-        
-        cursor.execute('LOCK TABLES log WRITE')
-        
         # one day, this block will actually check if key exists,
         # rather than try/excepting it like a dirty migrant worker.
         try:
@@ -453,25 +451,16 @@ def results(request,page='1'):
          # unless we're on test server!
             client = request.META['REMOTE_ADDR']
             
-    # Do not fuck with this;
-    # it will make you its bitch.       
-        cursor.execute(
-            'INSERT INTO log (Time,Client,SearchString,Hits,Position,Mode,HostType,Flags,Duration,Found,Date,MinSize,MaxSize)\
-            VALUES (%(time)d, "%(client)s", "%(search)s",%(hits)d,%(pos)d,%(mode)d,%(hostT)d,%(type)d,0,0,0,0,0)' % {
-                'time':time.mktime(time.localtime()),
-                'client': client,
-                'search':"Search: %(query)s" % {'query':q},
-                'hits':result['total'],
-                'pos':int(page)*PERPAGE, # in case PERPAGE changes. this way we know exactly which results.
-                'mode':logType[params['mode']],
-                'hostT':3, # 3 means that we're searching SMB shares, which is all we do.
-                'type':logMode[params['type']],
-            }
-        )
-        cursor.execute('UNLOCK TABLES')
-        transaction.set_dirty()
-        transaction.commit()
-        connection.close()
+        from stats.models import Log
+        newest = Log(time=time.mktime(time.localtime()),
+             client=client,
+             found=result['total'],
+             position=int(page)*PERPAGE,
+             searchstring="Search: {}".format(q),
+             mode=logType[params['mode']],
+             flags=logMode[params['type']],
+             hosttype=3)
+        newest.save()    
     ######################################################
     
         try: 
@@ -482,6 +471,7 @@ def results(request,page='1'):
                               {
                                 'title':'M2M - Results: page '+str(page+1),
                                 'search':'current',
+                                'files':'current',
                                 'q': searchstring, #so it displays all pretty-like
                                 'filesfound':filesFound,
                                 #'searchmeta':searchMeta,
@@ -503,15 +493,15 @@ def results(request,page='1'):
     except Exception, e:
         # you should know what's up by now.
         # if not, 
-        try:
-            if client.GetLastError():
-                error = "Query Failed: %(error)s"%{'error':client.GetLastError()}
-            else:
-                error = "Something went wrong; Please change your search terms! \
-                        %s" % e
-        except AttributeError:
-            error = "Well, shit; I don't know. Probably we don't have %s" % q
-        
+        #try:
+            #if client.GetLastError():
+            #    error = "Query Failed: %(error)s"%{'error':client.GetLastError()}
+            #else:
+            #    error = "Something went wrong; Please change your search terms! <br/> \
+            #            %s" % e
+        #except AttributeError, e:
+        #    error = "Well, shit; I don't know. Probably we don't have {} <br/> ({})".format(q, e)
+        error = e
         return render_to_response('search/results.html',
                               {
                                 'title': "M2M - Resu-no, shit. What?",

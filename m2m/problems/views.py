@@ -18,7 +18,7 @@ def requests(request):
 def stats(request):
     
     message = " The stats page is under some heavy, heavy construction. You may\
-              have noticed that its sucked hardcore for about a month now. \
+              have noticed that it's been gone for a while now. \
               Maybe you haven't; let me tell you now: it has. It's a complicated\
               page, and alot of its old methods didn't translate very well to\
               our new set up, so it might be a little while before this is back\
@@ -60,10 +60,15 @@ def host(request,id):
     from browseNet.models import Host
     
     host = get_object_or_404(Host, pk=id)
-    
+    try:
+        problems = host.problems
+    except:
+        from browseNet.views import listAll
+        return listAll(request)
+
     return render_to_response("problems/host.html",
                                 {
                                 'host':host,
-                                'pset':host.problems,
+                                'pset':problems,
                                 'servers':'current'
                                 })

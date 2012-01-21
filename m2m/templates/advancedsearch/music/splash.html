@@ -1,0 +1,34 @@
+{% extends "base_page.html" %}
+{% load search_extras %}
+
+{% block logohold %}{% logo music%} {% endblock %}
+
+{% block searchbar %}
+{% include "advancedsearch/music/searchbar.html" %}
+{% endblock %}
+
+{% block stylin %}
+<link rel="stylesheet" media="screen" href="/media/styles/music.css">
+{% endblock %}
+
+{% block content %}
+<a href="{% url advancedsearch.views.musicBrowse %}">(BROWSE)</a>
+<h1>Latest Albums</h1>
+<div style="width: 950px;margin: 0 auto; text-align: center; margin-top: 10px; margin-bottom: 10px;">
+{% for album in latest %}<a href="{% url advancedsearch.views.albumDetail album.id%}#{{album.id}}"><img style="margin-left:2px;" src="{% firstof album.appleCover album.cover album.no_cover %}"/></a>{% empty %}
+No albums!
+{% endfor %}
+</div>
+{% endblock %}
+
+{% block extraContent %}
+Is your music not being seen? It's probably not named in a way that we recognized, or not placed in a location we can understand.
+Some notes:
+<ul>
+<li>Everything between {}'s will be ignored.</li>
+<li>Please only have the song's title in the file name, or have named it in the format <br><code>Album - # - Artist - Title.mp3</code></li>
+<li>Put music in subfolders of a directory with the word "music" (case insensitive) in its name.</li>
+<li>The bottom level of your music directory should look like this, for best results:<br><code>Artist/Album/Song.mp3</code></li>
+</ul>
+Following these guidelines will maximize our ability to catalogue your music collection.
+{% endblock %}

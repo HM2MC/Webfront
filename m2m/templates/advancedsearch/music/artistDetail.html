@@ -1,0 +1,38 @@
+{% extends 'advancedsearch/music/splash.html' %}
+{% load search_extras %}
+{% load advancedsearch_extras %}
+{% block title %} M2M - {{artist}} {%endblock %}
+{% block content %}
+
+<h1> {{artist}} </h1>
+
+<ul class="albumlist">
+{% for album in artist.albums %}
+<li>
+<a name="{{album.id}}"></a><img src="{{album.appleCover}}" valign="middle"/>{{ album }}, released {{album.releaseDate|date:"M d, Y"}}<br />
+<ol class="songlist">
+{% for song in album.song_set.all|order_by:"tracknum" %}
+{% if song.files.count > 0 %}
+<li  class="song{% cycle ' darkrow' ' lightrow'%}" ><div onclick="$('ul#{{song.id}}').slideToggle('normal');">{{song}} {{song.time|time:"i:s"}} [{% for genre in song.genres.all %} {{genre.name}} {% endfor %}]</div>
+<ul id="{{song.id}}" class="filelist" style="display:none;">
+{% for file in song.files.all|order_by:"path__hid" %}
+<li style="background-color:#fff"><a href="smb://{{file.path.hid}}{{file.path}}/"> {{file}} </a> {{file.filesize|sizeToReadable}}</li>
+{% endfor %}
+</ul>
+</li>
+{% else %}
+{# if it has no files, delete the song (silently) #}
+{% delete Song song.id %}
+{% endif %}
+{% empty %}
+{# no songs? remove album. #}
+{% delete Album album.id %}
+{% endfor %}
+</ol>
+</li>
+{% empty %}
+{# no album? remove artist #}
+{% delete Artist artist.id %}
+{% endfor %}
+</ul>
+{% endblock %}

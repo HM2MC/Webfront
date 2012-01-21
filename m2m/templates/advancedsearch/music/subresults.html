@@ -1,0 +1,81 @@
+<section class="results">
+{% for result in page.object_list %}
+{% if forloop.first %}
+<div class='tablewrap'>
+<table>
+<thead>
+<tr class="info">
+    <td>Name</td>
+    <td>
+        {% if type == 'Song' %}
+        {# duration #}
+        {% else %}
+        # Songs
+        {% endif %}
+    </td>
+    <td align=right>
+        {% if type == 'Artist'%}
+        # Albums
+        {% else %}
+        Artist
+        {% endif %}
+    </td>
+    {% if type == 'Song' %}<td align=right>Album</td><td align=right>Genre</td>{% endif %}
+</tr></thead><tbody>
+{% endif %}
+
+<tr class="{%cycle '' 'darkrow' %}">
+        <td> {% if type == 'Artist' %}<a href="{% url advancedsearch.views.artistDetail result.id %}">{{result.name}}</a> {% else %} {{result.name}}{%endif%}</td>
+<td style="padding-left:10px"> {% if type == 'Song' %} {{result.time|time:"i:s"}}{% else %} {{result.song_set.count}} {%endif%}</td>
+<td style="padding-left:10px" align=right> 
+    {% if type == 'Artist'%} 
+        {{result.album_set.count}} 
+    {% else %}
+        <a href="{% url advancedsearch.views.artistDetail result.artist.id %}">{{result.artist}}</a>
+    {% endif %}
+</td>
+{% if type == 'Song' %} 
+    <td style="padding-left:10px;" align=right>
+        <a href="{% url advancedsearch.views.artistDetail result.artist.id %}#{{result.album.id}}">{{result.album}}</a>
+    </td>
+    <td style="padding-left:10px;" align=right>
+        {{ result.genres.all.0.name}}
+    </td>
+{% endif %}
+
+</tr>
+
+{% if forloop.last %}
+</tbody>
+</table>
+</div>
+{% with q|urlencode as q %}
+
+{% if p.num_pages > 1 %}
+    <div style="text-align:center;">
+    {%if page.has_previous %}
+        <a style="cursor:pointer" onclick='$("#songs").load("/advanced/music/subresult/song/{{page.previous_page_number}}?q={{q}}&{{params}} .results")'>Prev</a>
+    {%endif %}
+    {% for pager in p.page_range %}
+        {% if pager != page.number %}<a style="cursor:pointer" 
+        onclick='$("#songs").load("/advanced/music/subresult/song/{{pager}}?q={{q}}&{{params}} .results")'>{{pager}}</a>
+        {% else %} {{pager}}
+        {% endif %}
+    {% endfor %}
+    {% if page.has_next %}
+        <a style="cursor:pointer" 
+        onclick='{% if type == 'Song' %}$("#songs div").load("/advanced/music/subresult/song/{%endif%}
+                 {%if type == 'Album' %}$("#albums div").load("/advanced/music/subresult/album/{%endif%}
+                 {%if type == 'Artist' %}$("#artists div").load("/advanced/music/subresult/artist/{%endif%}{{page.next_page_number}}?q={{q}}&{{params}} .results")'>Next</a>
+    {% endif %}    
+    </div>
+{% endif %}
+{% endwith %}
+{% endif %}
+
+{% empty %}
+
+No {{type}} results!
+
+{% endfor %}
+</section>

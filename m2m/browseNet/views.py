@@ -127,27 +127,6 @@ def deepBrowse(request,type="Q",id=-1):
     if type not in allowedTypes or id < 0:
         return HttpResponseRedirect(reverse('browseNet.views.listAll',args=(1,)))
 
-#
-# ---- Logging Stuff ---- #
-#
-    from django.db import connection
-    
-    cursor = connection.cursor()
-    
-    cursor.execute('LOCK TABLES log WRITE')
-    cursor.execute(
-        'INSERT INTO log (Time,Client,SearchString) VALUES (%(time)d, "%(client)s", "%(search)s")' % {
-            'time':time.mktime(time.localtime()),
-            'client': request.META['HTTP_X_FORWARDED_FOR'],
-            'search':"Browse: %s, %d"%(type,id),
-        }
-    )
-    cursor.execute('UNLOCK TABLES')
-    transaction.set_dirty()
-    transaction.commit()
-    connection.close()
-####################################
-
     
     if type == "H":
         # this is a host list - we only need return the all of its highest-level shares.
@@ -156,7 +135,7 @@ def deepBrowse(request,type="Q",id=-1):
         folderList = host.share_set.filter(totalfilesize__gte=1)
         
         #likewise, only files at the root
-        rootPID = Path.objects.filter(hid=id,ppid=0).order_by('-pid')[0].pid # a host's root PID is gotten by matching its HID to a path with PPID = 0.
+        rootPID = Path.objects.filter(hid=id,parent=0).order_by('-pid')[0].pid # a host's root PID is gotten by matching its HID to a path with PPID = 0.
         fileList = File.objects.filter(path=rootPID)
     
     elif type == "S":
@@ -172,7 +151,7 @@ def deepBrowse(request,type="Q",id=-1):
             sharepath = Path.objects.get(hid=hid,sid=id,fullname=path)
             pid = sharepath.pid # phew
             fileList = File.objects.filter(path=pid)
-            folderList = Path.objects.filter(ppid=pid, pid__gte=1)
+            folderList = Path.objects.filter(parent=pid, pid__gte=1)
         except: # sometimes a share has no path, due to permissions and shit
             folderList = ""
             fileList = ""
@@ -180,17 +159,37 @@ def deepBrowse(request,type="Q",id=-1):
     elif type == "P":
         # this is the simplest to do. theoretically.
     
-        folder = Path.objects.get(pk=id)
-        host = folder.hid
+
+        folder = get_object_or_404(Path,pk=id)
         
         
-        folderList = Path.objects.filter(ppid=id, pid__gte=1)
+        folderList = Path.objects.filter(parent=id, pid__gte=1)
         fileList = File.objects.filter(path=id)
+        host = folder.hid
         
     else:
         return HttpResponseRedirect(reverse('browseNet.views.listAll',args=(1,)))
         
-    
+    #
+    # ---- Logging Stuff ---- #
+    #
+        from django.db import connection
+
+        cursor = connection.cursor()
+
+        cursor.execute('LOCK TABLES log WRITE')
+        cursor.execute(
+            'INSERT INTO log (Time,Client,SearchString) VALUES (%(time)d, "%(client)s", "%(search)s")' % {
+                'time':time.mktime(time.localtime()),
+                'client': request.META['HTTP_X_FORWARDED_FOR'],
+                'search':"Browse: %s, %d"%(type,id),
+            }
+        )
+        cursor.execute('UNLOCK TABLES')
+        transaction.set_dirty()
+        transaction.commit()
+        connection.close()
+    ####################################
         
     return render_to_response("browseNet/deep.html",{
                                 'servers':'current',

@@ -1,0 +1,32 @@
+{% extends 'searchbar.html' %}
+
+{% block url %} {% url advancedsearch.views.musicSearch %} {% endblock %}
+
+{% block options%}
+    <select name="genre" TABINDEX = 2>
+        <option value="message" disabled="1">Genre: </option>
+        <option value='all'>Any</option>
+        {% for genre in genres %}
+        <option value="{{genre.name}}" {% if params.genre != genre.name%}{%else%}selected="selected"{%endif%}>{{genre}}</option>
+        {%endfor%}
+    </select>
+    
+    <select name="type">
+        <option value="message" disabled="1">Type: </option>
+        <option value="all" {% if params.type != 'all'%}{%else%}selected="selected"{%endif%}>All</option>
+        <option value="Song" {% if params.type != 'Song'%}{%else%}selected="selected"{%endif%}>Songs</option>
+        <option value="Album" {% if params.type != 'Album'%}{%else%}selected="selected"{%endif%}>Albums</option>
+        <option value="Artist" {% if params.type != 'Artist'%}{%else%}selected="selected"{%endif%}>Artists</option>
+    </select>
+    
+    <select name="order">
+        <option value="message" disabled="1">Sort by...</option>
+        <option value="none" {% if params.order != 'none'%}{%else%}selected="selected"{%endif%}>No sorting</option>
+        <option  value="-name" {% if params.order == '-name'%}selected="selected"{%endif%}>Name (D)</option>
+        <option  value="name" {% if params.order == 'name'%}selected="selected"{%endif%}>Name (A)</option>
+        <option  value="-dateadded" {% if params.order == '-dateddded'%}selected="selected"{%endif%}>Date Added (D)</option>
+        <option  value="dateadded" {% if params.order == 'dateadded'%}selected="selected"{%endif%}>Date Added (A)</option>
+        <option  value="-time" {% if params.order == '-time'%}selected="selected"{%endif%}>Duration (D)</option>
+        <option  value="time" {% if params.order == 'time'%}selected="selected"{%endif%}>Duration (A)</option>
+    </select>
+{% endblock %}

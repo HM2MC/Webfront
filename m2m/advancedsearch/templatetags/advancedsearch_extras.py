@@ -2,7 +2,8 @@ from django import template
 from django.utils.safestring import mark_safe
 from django.core.exceptions import ObjectDoesNotExist
 
-from advancedsearch.models import Movie, Music, Show
+from advancedsearch.models import *
+from problems.models import *
 from browseNet.models import Path
 
 
@@ -22,8 +23,8 @@ class DeleteNode(template.Node):
             self.target = globals()[self.model].objects.get(pk=int(target))
         except:
             raise ObjectDoesNotExist("Could not find a %r with id %r" % (globals()[self.model],self.id_var.resolve(context)))
-        
-        self.target.delete()
+        #delete the target, saving me the fucking hassle
+        #self.target.delete()
         
         return ''
         
@@ -38,3 +39,4 @@ def do_delete(parser,token):
     except:
         raise ValueError("Could not understand the id %r" % id)
     return DeleteNode(model,id,id_var)
+    
