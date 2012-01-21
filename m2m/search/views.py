@@ -344,6 +344,7 @@ def results(request,page='1'):
                 except:
                     try:
                         filesFound += [Path.objects.get(pk=fileThing['id'])]
+                        filesFound[-1].path = filesFound[-1] # for use in template
                     except:
                         # count the error hits
                         fileErrors += 1
@@ -492,15 +493,15 @@ def results(request,page='1'):
     except Exception, e:
         # you should know what's up by now.
         # if not, 
-        try:
-            if client.GetLastError():
-                error = "Query Failed: %(error)s"%{'error':client.GetLastError()}
-            else:
-                error = "Something went wrong; Please change your search terms! \
-                        %s" % e
-        except AttributeError:
-            error = "Well, shit; I don't know. Probably we don't have %s" % q
-        
+        #try:
+            #if client.GetLastError():
+            #    error = "Query Failed: %(error)s"%{'error':client.GetLastError()}
+            #else:
+            #    error = "Something went wrong; Please change your search terms! <br/> \
+            #            %s" % e
+        #except AttributeError, e:
+        #    error = "Well, shit; I don't know. Probably we don't have {} <br/> ({})".format(q, e)
+        error = e
         return render_to_response('search/results.html',
                               {
                                 'title': "M2M - Resu-no, shit. What?",

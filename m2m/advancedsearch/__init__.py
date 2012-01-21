@@ -174,7 +174,7 @@ def crawlForMovies(count=0):
         probablyTitle = probablyTitle.replace('  ',' ')
         
         # now, clean up MORE BULLSHIT;
-        # fuck you guys, we know it's 1080 or 720 or BLURAY
+        # screw you guys, we know it's 1080 or 720 or BLURAY
         # because it's a fucking HUGE file. Seriously.
  #       probablyTitle = probablyTitle.replace(' 1080p','').replace(' 720p','').replace(' bluray','')\
  #                       .replace(' hdtv','').replace(' 456p','').replace(' dvd','').replace(' 524p','')\
@@ -338,10 +338,7 @@ def crawlForMusic(count=0):
     # last.fm stuff; it's faster to use iTunes searching, for crawling.
     # maybe last.fm can be included to pages? for streaming - i like this idea
     import pylast
-    API_KEY = "283c7b1312dc8cbfc2f87c5295eaf1a4"
-    API_SECRET = "9039c6513dd4a9598a6925c44db1b24a"
-    username = 'm2mmusic'
-    password_hash = pylast.md5("skynet")
+    password_hash = pylast.md5(password)
     network = pylast.LastFMNetwork(api_key=API_KEY,api_secret=API_SECRET,
                                    username=username, password_hash=password_hash)
     '''
