@@ -1,6 +1,29 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+RATING_CHOICES = (
+					(1,'1'),
+					(2,'2'),
+					(3,'3'),
+					(4,'4'),
+					(5,'5'),
+					(6,'6'),
+					(7,'7'),
+					(8,'8'),
+					(9,'9'),
+					(10,'10'),
+				)
+
+DAY_CHOICES = (
+				('M', "Monday"),
+				("T", "Tuesday"),
+				("W", "Wednesday"),
+				("R", "Thursday"),
+				("F", "Friday"),
+				("S", "Saturday"),
+				("U", "Sunday")
+			)
+
 CAMPUS_CHOICES = (
 					('SC', 'Scripps'),
 					('PZ', 'Pitzer'),
@@ -130,11 +153,8 @@ class Course(models.Model):
 	campus_restricted = models.BooleanField(default=False)
 	
 	mudd_creds = models.DecimalField(decimal_places=2, max_digits=3, default=3.00)
-	
-	toughness = models.DecimalField(decimal_places=2, max_digits=3, default=5.00)
-	quality = models.DecimalField(decimal_places=2, max_digits=3, default=5.00)
-	
-	description = models.TextField()
+
+	description = models.TextField(blank=True, default="No description available for this course")
 
 	def __unicode__(self):
 		return u"{}{:03d} {}".format(self.codeletters, self.codenumbers, self.campus)
@@ -142,19 +162,31 @@ class Course(models.Model):
 class CourseReview(models.Model):
 	course = models.ForeignKey(Course)
 	reviewer = models.ForeignKey(User)
+	
+	toughness = models.PositiveIntegerField(choices=RATING_CHOICES, help_text="1 being the easiest")
+	quality = models.PositiveIntegerField(choices=RATING_CHOICES, help_text="1 being the worst")
+	
 	review = models.TextField()
+
+	class Meta:
+		unique_together = (('course','reviewer'))
+
+	def __unicode__(self):
+		return "Review of {} by {}".format(self.course, self.reviewer)
 
 class Section(models.Model):
 	course = models.ForeignKey(Course)
 	professor = models.ForeignKey('Professor')
 	number = models.IntegerField()
+	
 	seats = models.IntegerField()
 	openseats = models.IntegerField()
-	building = models.CharField(max_length=2, choices=BUILDING_CHOICES)
+	
+	buildings = models.CharField(max_length=300, choices=BUILDING_CHOICES)
 	room = models.CharField(max_length=30)
-	# meeting times are stored in "[['M','1:15','1:30'],['W','1:15','1:30']]" can be 
-	# easily loaded using eval() 
-	meeting_times = models.CharField(max_length=300, help_text="e.g., [['M', '1:15PM-4:00PM'],['W','1:15PM-4:00PM']]")
+	
+		
+	times = models.ManyToManyField('TimeSlot', related_name="sections")
 	
 	@property
 	def meet_times(self):
@@ -185,19 +217,41 @@ class Professor(models.Model):
 	''' a Professor at the 5C's '''
 	name = models.CharField(max_length=100)
 	departments = models.ManyToManyField('Department')
-	bio = models.TextField()
+	bio = models.TextField(blank=True, default="No bio available for this professor.")
+
+	@property
+	def toughness(self):
+		reviews = self.professorreview_set.all()
+		return float(sum([x.grading_toughness for x in reviews]))/len(reviews)
+
+	@property
+	def likeability(self):
+		reviews = self.professorreview_set.all()
+		return float(sum([x.likeability for x in reviews]))/len(reviews)
 	
-	grading_toughness = models.DecimalField(decimal_places=2, max_digits=3, default=5.00)
-	likeability = models.DecimalField(decimal_places=2, max_digits=3, default=5.00)
-	teaching_quality = models.DecimalField(decimal_places=2, max_digits=3, default=5.00)
-	
+	@property
+	def quality(self):
+		reviews = self.professorreview_set.all()
+		return float(sum([x.teaching_quality for x in reviews]))/len(reviews)
+
 	def __unicode__(self):
 		return u"{}".format(self.name)
 	
-class ProfessorReview(models.Model):	
+class ProfessorReview(models.Model):
 	professor = models.ForeignKey(Professor)
 	author = models.ForeignKey(User)
+	
+	grading_toughness = models.PositiveIntegerField(choices=RATING_CHOICES, help_text="1 being the easiest")
+	likeability = models.PositiveIntegerField(choices=RATING_CHOICES, help_text="1 being the least likable")
+	teaching_quality = models.PositiveIntegerField(choices=RATING_CHOICES, help_text="1 being the worst")
+	
 	text = models.TextField()
+
+	class Meta:
+		unique_together = (('professor','author'))
+		
+	def __unicode__(self):
+		return u"Review of {} by {}".format(self.professor, self.author)
 
 class Department(models.Model):
 	name = models.CharField(max_length=40)
@@ -209,3 +263,14 @@ class Department(models.Model):
 		
 	def __unicode__(self):
 		return u"{} ({})".format(self.name, self.campus)
+	
+class TimeSlot(models.Model):
+	day = models.CharField(max_length=1, choices=DAY_CHOICES)
+	start = models.TimeField()
+	end = models.TimeField()
+	
+	class Meta:
+		unique_together = (('start','end', 'day'))
+		
+	def __unicode__(self):
+		return u"{} -- {}-{}".format(self.day, self.start, self.end)
