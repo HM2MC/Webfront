@@ -1,19 +1,11 @@
 {% extends "base_page.html" %}
 
 {% block scriptin %}
-<script>
-	$(function(){
-		$("#submitrequest").click(function(){
-			$(this).parents('form:first').submit();
-		});
-	});
-</script>
 {% endblock %}
 
 {% block content %}
-{% if request.user.is_authenticated %} You're already signed in! Maybe you want to go to <a href="{% url useraccounts.views.view_home %}">your profile?</a>{% else %}
-<h1>You need to log in to access that feature.</h1>
-<h3>Let's take care of that:</h3>
+<h1>You've successfully logged out!</h1>
+<h3>Had a change of heart?</h3>
 <div style="margin: 0 auto; 
 			width: 250px; 
 			text-align: center; 

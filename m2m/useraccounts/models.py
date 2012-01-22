@@ -30,7 +30,7 @@ class UserProfile(models.Model):
              (10,'BPA'),
             )
     dorm = models.IntegerField(choices=DORMS, default=5)
-    room = models.IntegerField()
+    room = models.CharField(max_length=4)
     
     hosts = models.ManyToManyField(Host)
     
