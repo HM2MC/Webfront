@@ -156,6 +156,15 @@ class Course(models.Model):
 
 	description = models.TextField(blank=True, default="No description available for this course")
 
+	@property
+	def toughness(self):
+		reviews = self.coursereview_set.all()
+		return float(sum([x.toughness for x in reviews]))/len(reviews)
+	@property
+	def quality(self):
+		reviews = self.coursereview_set.all()
+		return float(sum([x.quality for x in reviews]))/len(reviews)
+
 	def __unicode__(self):
 		return u"{}{:03d} {}".format(self.codeletters, self.codenumbers, self.campus)
 
