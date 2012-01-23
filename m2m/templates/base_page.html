@@ -127,14 +127,14 @@
                     </nav>
                     <!-- End navigation -->
         <div id="container">
-            
+            {% block header %}
             <header id="pageHeader"><!-- Start page header -->
             
                     <div id="logoContainer">
                         <div id="logo">{%block logohold%}{% logo None %}{%endblock %}</div>
                     </div><div class="triangle-l-top"></div><div class="triangle-r-top"></div>
                     <div id="koi"></div>
-                    {% block navigator %}
+                    
                      
             {% endblock %}
             </header><!-- End page header -->

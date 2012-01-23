@@ -1,5 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import ValidationError
+
+def validate_is_year(value):
+	if len(str(value)) >= 4:
+		raise ValidationError(u"%s is not 4 digits" % value)
 
 RATING_CHOICES = (
 					(1,'1'),
@@ -140,8 +145,8 @@ class Course(models.Model):
 	title = models.CharField(max_length=50)
 	# e.g., Computer Science, Mathematics, etc.
 	department = models.ForeignKey('Department')
-	semester = models.CharField(max_length=4, help_text="e.g., <em>FA12</em>")
-	
+	semester = models.CharField(choices=(('FA',"Fall"),("SP","Spring")), max_length=2, help_text="e.g., <em>FA12</em>")
+	year = models.IntegerField(validators=[validate_is_year])
 	# the ECON in 'ECON104 HM' - should be able to get this from department,
 	# but sometimes the code doesn't match the dept. Which is dumb.
 	codeletters = models.CharField(max_length=50)
@@ -149,7 +154,9 @@ class Course(models.Model):
 	codenumbers = models.IntegerField()
 	# the HM in 'ECON104 HM'
 	campus = models.CharField(max_length=2, default="HM", choices=CAMPUS_CHOICES)
-	prerequisites = models.ForeignKey('self', blank=True)
+	prerequisites = models.ManyToManyField('self', blank=True)
+	concurrent_with = models.ManyToManyField('self', blank=True)
+	
 	campus_restricted = models.BooleanField(default=False)
 	
 	mudd_creds = models.DecimalField(decimal_places=2, max_digits=3, default=3.00)
@@ -158,12 +165,18 @@ class Course(models.Model):
 
 	@property
 	def toughness(self):
-		reviews = self.coursereview_set.all()
-		return float(sum([x.toughness for x in reviews]))/len(reviews)
+		try:
+			reviews = self.coursereview_set.all()
+			return float(sum([x.toughness for x in reviews]))/len(reviews)
+		except:
+			return 5.0
 	@property
 	def quality(self):
-		reviews = self.coursereview_set.all()
-		return float(sum([x.quality for x in reviews]))/len(reviews)
+		try:
+			reviews = self.coursereview_set.all()
+			return float(sum([x.quality for x in reviews]))/len(reviews)
+		except:
+			return 5.0
 
 	def __unicode__(self):
 		return u"{}{:03d} {}".format(self.codeletters, self.codenumbers, self.campus)
@@ -171,6 +184,7 @@ class Course(models.Model):
 class CourseReview(models.Model):
 	course = models.ForeignKey(Course)
 	reviewer = models.ForeignKey(User)
+	date = models.DateTimeField(auto_now=True)
 	
 	toughness = models.PositiveIntegerField(choices=RATING_CHOICES, help_text="1 being the easiest")
 	quality = models.PositiveIntegerField(choices=RATING_CHOICES, help_text="1 being the worst")
@@ -230,25 +244,35 @@ class Professor(models.Model):
 
 	@property
 	def toughness(self):
-		reviews = self.professorreview_set.all()
-		return float(sum([x.grading_toughness for x in reviews]))/len(reviews)
+		try:
+			reviews = self.professorreview_set.all()
+			return float(sum([x.grading_toughness for x in reviews]))/len(reviews)
+		except:
+			return 5.0
 
 	@property
 	def likeability(self):
-		reviews = self.professorreview_set.all()
-		return float(sum([x.likeability for x in reviews]))/len(reviews)
+		try:
+			reviews = self.professorreview_set.all()
+			return float(sum([x.likeability for x in reviews]))/len(reviews)
+		except:
+			return 5.0
 	
 	@property
 	def quality(self):
-		reviews = self.professorreview_set.all()
-		return float(sum([x.teaching_quality for x in reviews]))/len(reviews)
-
+		try:
+			reviews = self.professorreview_set.all()
+			return float(sum([x.teaching_quality for x in reviews]))/len(reviews)
+		except:
+			return 5.0
+		
 	def __unicode__(self):
 		return u"{}".format(self.name)
 	
 class ProfessorReview(models.Model):
 	professor = models.ForeignKey(Professor)
 	author = models.ForeignKey(User)
+	date = models.DateTimeField(auto_now=True)
 	
 	grading_toughness = models.PositiveIntegerField(choices=RATING_CHOICES, help_text="1 being the easiest")
 	likeability = models.PositiveIntegerField(choices=RATING_CHOICES, help_text="1 being the least likable")

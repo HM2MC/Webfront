@@ -20,3 +20,10 @@ def search(request, q=''):
 						{
 						}
 						,)
+	
+def calendar(request):
+	
+	return render_to_response('courses/course_base.html',
+						{
+						},
+						)

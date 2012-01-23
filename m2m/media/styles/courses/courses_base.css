@@ -1,0 +1,37 @@
+#container{
+	width: 90%!important;
+	min-width:1100px;
+}
+
+#cal_container {
+	min-height: 800px;
+}
+
+#calendar_panel {
+	width: 55%;
+	margin: 0;
+	padding: 0;
+	float: left;
+}
+
+#search_panel {
+	width: 45%;
+	padding: 0;
+	float: right;
+	margin: 0;
+	max-height: 55em;
+	overflow-y: scroll;
+}
+
+#logoContainer{
+	width: 110%!important;
+}
+
+
+#footer {
+	width: 110%!important;
+}
+
+footer {
+	width: 100%;
+}

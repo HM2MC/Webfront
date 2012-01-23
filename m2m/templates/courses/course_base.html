@@ -1,0 +1,29 @@
+{% extends "base_page.html" %}
+
+{%block stylin %}
+<link rel="stylesheet" href="/media/styles/courses/courses_base.css" />
+<link rel="stylesheet" href="/media/styles/courses/calendar.css" />
+{%endblock%}
+
+{% block scriptin %}
+<script src="/media/scripts/courses/courses_base.js"></script>
+{%endblock %}
+
+{%block searchbar %}
+
+{% endblock %}
+
+{% block content %}
+<div id="cal_container">
+	<div id="calendar_panel">
+		{% include "courses/calendar.html" %}
+	</div>
+	<div id="search_panel">
+		Side panel!
+	</div>
+</div>
+{% endblock %}
+
+{% block extraContent %}
+
+{% endblock%}

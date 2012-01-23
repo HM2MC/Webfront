@@ -1,0 +1,29 @@
+#calendar {
+	clear: both;
+	padding: 0 2%;
+	margin-bottom: 1em;
+}
+
+#calendar .wc-container {
+	border: 1px solid #AAA;
+}
+
+.wc-scrollable-grid {
+	overflow: auto;
+	overflow-x: hidden !important;
+	overflow-y: auto !important;
+	position: relative;
+	background-color: white;
+	width: 100%;
+}
+
+table.wc-time-slots {
+	width: 100%;
+	table-layout: fixed;
+	cursor: default;
+	overflow: hidden;
+}
+
+tr.wc-grid-row-timeslot {
+	height: 0;
+}
