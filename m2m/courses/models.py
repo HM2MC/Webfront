@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.core.validators import ValidationError
 
 def validate_is_year(value):
-	if len(str(value)) >= 4:
+	if len(str(value)) > 4:
 		raise ValidationError(u"%s is not 4 digits" % value)
 
 RATING_CHOICES = (
@@ -20,22 +20,23 @@ RATING_CHOICES = (
 				)
 
 DAY_CHOICES = (
-				('M', "Monday"),
-				("T", "Tuesday"),
-				("W", "Wednesday"),
-				("R", "Thursday"),
-				("F", "Friday"),
-				("S", "Saturday"),
-				("U", "Sunday")
+				('M', "Mon"),
+				("T", "Tues"),
+				("W", "Weds"),
+				("R", "Thurs"),
+				("F", "Fri"),
+				("S", "Sat"),
+				("U", "Sun")
 			)
 
 CAMPUS_CHOICES = (
-					('SC', 'Scripps'),
-					('PZ', 'Pitzer'),
-					('PO', 'Pomona'),
-					('CM', 'CMC'),
-					('HM', 'Harvey Mudd'),
-					('CG', 'CGU'),
+					('SC', 'SC'),
+					('PZ', 'PZ'),
+					('PO', 'PO'),
+					('CM', 'CM'),
+					('HM', 'HM'),
+					('CG', 'CG'),
+					('KG', 'KG')
 				)
 
 BUILDING_CHOICES = (
@@ -46,6 +47,7 @@ BUILDING_CHOICES = (
 						('JA', "Jacobs"),
 						("KE", "Keck"),
 						("LAC", "LAC"),
+						("MD", "Modular"),
 						("ON", "Olin"),
 						("PA", "Parsons"),
 						("PL", "Platt"),
@@ -145,7 +147,7 @@ class Course(models.Model):
 	title = models.CharField(max_length=50)
 	# e.g., Computer Science, Mathematics, etc.
 	department = models.ForeignKey('Department')
-	semester = models.CharField(choices=(('FA',"Fall"),("SP","Spring")), max_length=2, help_text="e.g., <em>FA12</em>")
+	semester = models.CharField(choices=(('FA',"Fall"),("SP","Spring")), max_length=2,)
 	year = models.IntegerField(validators=[validate_is_year])
 	# the ECON in 'ECON104 HM' - should be able to get this from department,
 	# but sometimes the code doesn't match the dept. Which is dumb.
@@ -156,8 +158,10 @@ class Course(models.Model):
 	campus = models.CharField(max_length=2, default="HM", choices=CAMPUS_CHOICES)
 	prerequisites = models.ManyToManyField('self', blank=True)
 	concurrent_with = models.ManyToManyField('self', blank=True)
-	
+	crosslisted_as = models.ManyToManyField('self', blank=True)
 	campus_restricted = models.BooleanField(default=False)
+	
+	classtype = models.CharField(choices=(('L',"Lecture"),('S', "Seminar"),('B', 'Lab')), max_length=2, default='L')
 	
 	mudd_creds = models.DecimalField(decimal_places=2, max_digits=3, default=3.00)
 
@@ -177,6 +181,9 @@ class Course(models.Model):
 			return float(sum([x.quality for x in reviews]))/len(reviews)
 		except:
 			return 5.0
+	@property
+	def code(self):
+		return u"{}{:03d}".format(self.codeletters,self.codenumbers)
 
 	def __unicode__(self):
 		return u"{}{:03d} {}".format(self.codeletters, self.codenumbers, self.campus)
@@ -193,6 +200,7 @@ class CourseReview(models.Model):
 
 	class Meta:
 		unique_together = (('course','reviewer'))
+		
 
 	def __unicode__(self):
 		return "Review of {} by {}".format(self.course, self.reviewer)
@@ -217,6 +225,29 @@ class Section(models.Model):
 	
 	class Meta:
 		unique_together = (('course','number'))
+
+	def save(self, *args, **kwargs):
+		updating = kwargs.pop('updating') if kwargs.has_key('updating') else False
+		super(Section,self).save(*args, **kwargs)
+		# if this is a section for the crosslisted course, we
+		# need to update those sections as well.
+		if not updating:
+			if self.course.crosslisted_as.count() > 0:
+				for course in self.course.crosslisted_as.all():
+					# uniquely identify the section -- they should have the same number.
+					s = course.section_set.get_or_create(number=self.number)[0] # we don't care if a new section was made or not
+					# propogate all possible changes
+					s.professor = self.professor
+					s.seats = self.seats
+					s.openseats = self.openseats
+					s.buildings = self.buildings
+					s.room = self.room
+					s.times.clear()
+					for t in self.times.all():
+						s.times.add(t)
+					kwargs['updating'] = True
+					s.save(*args, **kwargs)
+		
 
 	def __unicode__(self):
 		return u"{} - {:02d}".format(self.course, self.number)

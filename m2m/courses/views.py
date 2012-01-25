@@ -1,5 +1,6 @@
 from django.shortcuts import render_to_response
 
+from forms import CourseSearch
 # Create your views here.
 
 def index(request):
@@ -25,5 +26,13 @@ def calendar(request):
 	
 	return render_to_response('courses/course_base.html',
 						{
+						'form':CourseSearch()
 						},
 						)
+
+def course_match(request):
+	
+	results = {}
+	
+	
+	return render_to_response('courses/result_list.html',{'results':results, 'get':request.GET})

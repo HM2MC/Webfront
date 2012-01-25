@@ -8,27 +8,35 @@ class SectionInline(admin.TabularInline):
     can_delete = True
 
 class CourseAdmin(admin.ModelAdmin):
+    list_display = ( 'code', 'title', 'campus', 'mudd_creds')
+    filter_horizontal = ['prerequisites','concurrent_with', 'crosslisted_as']
+    list_filter = ['codeletters', 'campus', 'mudd_creds',]
     inlines = [SectionInline]
 
 class ProfessorAdmin(admin.ModelAdmin):
     pass
 
 class DepartmentAdmin(admin.ModelAdmin):
-    pass
+    list_filter = ('campus',)
 
 class MajorAdmin(admin.ModelAdmin):
     pass
 
 class SectionAdmin(admin.ModelAdmin):
-    pass
+    filter_horizontal = ['times']
+
 class TimeSlotAdmin(admin.ModelAdmin):
     pass
 
 class ProfessorReviewAdmin(admin.ModelAdmin):
     form = ProfReviewForm
+    list_display = ('professor', 'author', 'grading_toughness', 'likeability', 'teaching_quality', 'date')
+    list_filter = ('professor', 'author', 'date')
 
 class CourseReviewAdmin(admin.ModelAdmin):
     form = CourseReviewForm
+    list_display = ('course', 'reviewer', 'toughness', 'quality', 'date')
+    list_filter = ('course','reviewer', 'date')
     
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Professor, ProfessorAdmin)

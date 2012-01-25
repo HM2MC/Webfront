@@ -1,0 +1,25 @@
+{{form.non_field_errors}}
+
+
+<form action="{% url courses.views.course_match %}" method="GET">
+	
+	<table class="field">
+	<tr><td colspan=2>I want a course</td></tr>
+	<tr><div class="field"><td><label for="id_title">called:</label></td><td>{{form.title}}</td></div></tr>
+	<tr><div class="field"><td><label for="id_codelike">with a code like:</label></td><td>{{form.codelike}}</td></div></tr>
+	<tr><div class="field"><td><label for="id_department">in the </label></td><td>{{form.department}} department(s)</div></td> </tr> 
+	<tr><td colspan=2>which meets </tr><tr><td>on</td><td>
+	<div class="field campus">
+		{{form.campus}}
+	</div></td></tr>
+	<tr><td>between</td><td> 
+	<div class="field">{{form.timestart}} and {{form.timeend}}
+			<div class='helper'>e.g., 10:00 or 13:15</div></td>
+	</div></tr>
+	<tr><td><div class="field"> on {{form.day_limit}} </td><td>{{form.days}}</td></div></tr>
+
+	<tr><td>and is taught by</td><td>
+	<div class="field">{{form.professor}}</div></td></tr>
+	</table>
+	<input type='submit' value='go!'/>
+</form>

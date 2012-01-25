@@ -26,8 +26,71 @@
 #logoContainer{
 	width: 110%!important;
 }
+/*
+ * Search Form Styles
+ */
+.field {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
 
+.field ul li{
+	display: inline;
+	list-style-type: none;
+	margin-left: 5px;
+	line-height: 2em;
+}
 
+.field .helper{
+	opacity: 0.7; 
+	display: inline;
+}
+
+.field.campus label{
+	padding: 2px 6px 2px 6px;
+}
+
+.field.campus label[for$="0"]{
+	background-color: rgb(136, 158, 90);
+	color: white;
+}
+
+.field.campus label[for$="1"]{
+	background-color: rgb(244, 151, 0);
+	color: white;
+}
+
+.field.campus label[for$="2"]{
+	background-color: rgb(24, 96, 204);
+	color: white;
+}
+
+.field.campus label[for$="3"]{
+	background-color: rgb(113, 16, 27);
+	color: white;
+}
+
+.field.campus label[for$="4"]{
+	background-color: rgb(202, 154, 10);
+	color: white;
+}
+
+.field.campus label[for$="5"]{
+	background-color: rgb(218, 61, 56);
+	color: white;
+}
+
+.field.campus label[for$="6"]{
+	background-color: rgb(57, 24, 88);
+	color: white;
+}
+
+input[type="submit"]{
+	padding: 2px 6px;
+}
+/*     
+ * 
+ */
 #footer {
 	width: 110%!important;
 }

@@ -7,6 +7,9 @@
 
 {% block scriptin %}
 <script src="/media/scripts/courses/courses_base.js"></script>
+<script>
+       
+</script>
 {%endblock %}
 
 {%block searchbar %}
@@ -19,7 +22,7 @@
 		{% include "courses/calendar.html" %}
 	</div>
 	<div id="search_panel">
-		Side panel!
+		{%include "courses/search_form.html" %}
 	</div>
 </div>
 {% endblock %}
