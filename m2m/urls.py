@@ -28,6 +28,8 @@ urlpatterns = patterns('',
     #(r'^requests', 'problems.views.requests'), # for maintenance, etc
     (r'^requests/', include('requests.urls')),
     
+    (r'^menu/', include('menu.urls')),
+    
     (r'^polls', 'problems.views.polls'), # for maintenance, etc
     (r'^polls/', include('polls.urls')),
     
