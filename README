@@ -7,6 +7,9 @@ Projects you need:
 		basic
 		Markdown
 		tagging
+		requests
+		BeautifulSoup
+		reportlab
 
 	You need django, obviously
 	You also need a package-path in your python site-dists folder that looks like

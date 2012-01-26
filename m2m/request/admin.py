@@ -1,6 +1,5 @@
-from requests.models import Comment
+from models import Comment
 from django.contrib import admin
-
 
 def markDeleted(modeladmin,request,queryset):
     queryset.update(isDeleted=True)

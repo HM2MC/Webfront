@@ -66,21 +66,21 @@
                                 </li>
                                 {% endblock %}
                             </ul>
-                        <a href="{% url requests.views.open %}" 
+                        <a href="{% url request.views.open %}" 
                         id="requests"  rel="self" 
                         class="{{requests|default:""}}"><li>Requests</li></a>
 
                         {% if requests %}
                         <ul id="subset">
-                            <a href="{% url requests.views.open %}" 
+                            <a href="{% url request.views.open %}" 
                                 id="oreq"  rel="self"><li class="{{openReq|default:""}}">
                                 Open Requests
                             </li></a>
-                            <a href="{% url requests.views.completed %}" 
+                            <a href="{% url request.views.completed %}" 
                                 id="creq"  rel="self"><li class="{{closedReq|default:""}}">
                                 Completed Requests
                             </li></a>
-                            <a href="{% url requests.views.deleted %}" 
+                            <a href="{% url request.views.deleted %}" 
                                 id="dreq" rel="self"><li class="{{delReq|default:""}}">
                                 Deleted Requests
                             </li></a>

@@ -4,8 +4,84 @@
 <link rel="stylesheet" type="text/css" href="/media/styles/menu/main.css"/>
 {%endblock%}
 
-{% block content %}
+{%block scriptin %}
+<script>
+$(function(){
+	
+	
+	$("ul.tabs").tabs("div.panes > div");
+	
+	
+	// Make the tables fit nicely in a pane
 
+	$(".multi-table-wrap").width(function(){
+		if ($(this).siblings().length > 0){
+			w = 100/($(this).siblings().length+1)-2;
+		} else {
+			w = 100;
+		}
+		return ""+w+"%";
+	});
+	/*
+	$("div > div.multi-table-wrap").each(function(){
+		$this.parent().css('min-height','800px';);
+	});/**/
+	
+	/*$("#content").height(function(){
+		var max = -1;
+		$(".mealtable").each(function(){
+			h = $(this).height();
+			max = h > max ? h : max; 
+		});
+		return max;
+	});*/
+	
+	$("#modifiers").remove();
+	
+});
+</script>
+{% endblock %}
+
+{% block searchbar %}
+
+{% endblock %}
+
+{% block content %}
+<div id="menuwrapper">
+<ul class="tabs">
+	<li><a href="#">Mudd</a></li>
+	<li><a href="#">Pitzer</a></li>
+	<li><a href="#">Scripps</a></li>
+	<li><a href="#">CMC</a></li>
+	<li><a href="#">Pomona</a></li>
+</ul>
+<div class="panes">
+	<div>
+		{%firstof hmtable|safe "Don't have Scripps yet!"%}
+	</div>
+	<div>
+		{%firstof pztable|safe "Don't have McConnell yet!"%}
+	</div>
+	<div>
+		{%firstof sctable|safe "Don't have Malott Commons yet!"%}
+	</div>
+	<div>
+		{%firstof cmtable|safe "Don't have Collins yet!"%}
+	</div>
+	<div style="height: 800px;">
+		<div class="multi-table-wrap">
+			{%firstof frank|safe "Don't have Frank yet!"%}
+		</div>
+		<div class="multi-table-wrap">
+			{%firstof frary|safe "Don't have Frary yet!"%}
+		</div>
+	{%comment %}
+		<div class="multi-table-wrap">
+			{%firstof olden|safe "Don't have Oldenborg yet!"%}
+		</div>{% endcomment %}
+	</div>
+</div>
+</div>
 {% endblock %}
 
 {%block extraContent %}

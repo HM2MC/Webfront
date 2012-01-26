@@ -4,8 +4,8 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 #from django.db import transaction
 
-from m2m.requests.models import Comment
-from m2m.requests.formClasses import RequestForm, ModifyForm
+from models import Comment
+from formClasses import RequestForm, ModifyForm
 
 from datetime import datetime
 # Set some nice globals here
@@ -14,7 +14,7 @@ PERPAGE = 20 # how many requests per page?
 # Create your views here.
 
 def open(request,page=1,error=''):
-    '''Handles the display of the open requests. Seriously, this isn't rocket science or anything.'''
+    '''Handles the display of the open request. Seriously, this isn't rocket science or anything.'''
       
     try:
         page = int(page) - 1 # switch to zero indexing
@@ -71,7 +71,7 @@ def open(request,page=1,error=''):
                 '''
                 
                 test = 3
-                return HttpResponseRedirect(reverse('requests.views.open',args=(1,)))
+                return HttpResponseRedirect(reverse('request.views.open',args=(1,)))
             except Exception, e:
                 form.non_field_errors = e
                 test = 2
@@ -175,7 +175,7 @@ def edit(request,id):
     entry = Comment.objects.get(pk=id)
     
     if entry.isDeleted or entry.completed: # no editing completed or deleted things!
-        return HttpResponseRedirect(reverse('requests.views.open',args=(1,)))
+        return HttpResponseRedirect(reverse('request.views.open',args=(1,)))
     
     
     if request.method == "POST":
@@ -196,7 +196,7 @@ def edit(request,id):
             
             entry.save()
             #cursor.execute('UNLOCK TABLES')
-            return HttpResponseRedirect(reverse('requests.views.open',args=(1,)))
+            return HttpResponseRedirect(reverse('request.views.open',args=(1,)))
         test = form.errors
     else:
         form = ModifyForm(instance=entry,initial={'completingServer':""})
@@ -220,7 +220,7 @@ def complete(request,id):
     entry = Comment.objects.get(pk=id)
     
     if entry.isDeleted or entry.completed: # no double completes! nor completing deleted things.
-        return HttpResponseRedirect(reverse('requests.views.completed',current_app='requests'))
+        return HttpResponseRedirect(reverse('request.views.completed',current_app='requests'))
     
     if request.method == 'POST':
         form = ModifyForm(request.POST)
@@ -249,7 +249,7 @@ def complete(request,id):
                     recipients,
                     )
                     test = 3
-                    return HttpResponseRedirect(reverse('requests.views.completed',current_app='requests'))
+                    return HttpResponseRedirect(reverse('request.views.completed',current_app='requests'))
                 except Exception,e:
                     form.non_field_errors = e
                     test = 2
@@ -284,10 +284,10 @@ def delete(request,id):
         
         entry.save() 
         #cursor.execute('UNLOCK TABLES')
-        return HttpResponseRedirect(reverse('requests.views.open',current_app='requests'))
+        return HttpResponseRedirect(reverse('request.views.open',current_app='requests'))
     except SyntaxError:
         
-        return HttpResponseRedirect(reverse('requests.views.open',args=(2,),current_app='requests'))
+        return HttpResponseRedirect(reverse('request.views.open',args=(2,),current_app='requests'))
 
 def like(request,id='q',page='q'):
     try:
@@ -295,9 +295,9 @@ def like(request,id='q',page='q'):
         entry.Likes += 1
         entry.save()
         
-        return HttpResponseRedirect(reverse('requests.views.open',current_app='requests'))
+        return HttpResponseRedirect(reverse('request.views.open',current_app='requests'))
     except:
         entry = None
     finally:
-        return HttpResponseRedirect(reverse('requests.views.open',current_app='requests'))
+        return HttpResponseRedirect(reverse('request.views.open',current_app='requests'))
         

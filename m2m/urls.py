@@ -26,7 +26,7 @@ urlpatterns = patterns('',
     (r'^search/', include('search.urls')),
     (r'^advanced/', include('advancedsearch.urls')),
     #(r'^requests', 'problems.views.requests'), # for maintenance, etc
-    (r'^requests/', include('requests.urls')),
+    (r'^requests/', include('request.urls')),
     
     (r'^menu/', include('menu.urls')),
     

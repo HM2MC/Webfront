@@ -25,6 +25,9 @@ class Comment(models.Model):
     def __unicode__(self):
         return self.request
     
+    class Meta:
+        db_table = 'requests_comment' # this is necessary due to a namespace conflict from a recently install library
+    
     def save(self,*args,**kwargs):
         if not self.CID:
             i = Comment.objects.raw('SELECT * FROM requests_comment ORDER BY CID DESC LIMIT 1')[0]
