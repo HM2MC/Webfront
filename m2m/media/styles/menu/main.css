@@ -55,6 +55,14 @@
 	background-position: -652px -31px;	
 	color:#fff;	
 }
+
+div.panes div:not(.multi-table-wrap) table:only-child {
+	max-width: 600px;
+	margin: 0 auto;
+	padding-top: 1%;
+	display: block;
+}
+
 .multi-table-wrap {
 	float:left;
 	padding:1%;
@@ -64,7 +72,7 @@
 .mealtable {
 	width: 100%;
 	/*float:left;*/
-	margin: .5%
+	margin: .5%;
 }
 
 .mealtable:first-child{
