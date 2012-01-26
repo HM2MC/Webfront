@@ -2,7 +2,7 @@ from django.conf.urls.defaults import *
 
 # Urls go here!
 
-urlpatterns = patterns('requests.views',
+urlpatterns = patterns('request.views',
         
         (r'^$','open'),
         (r'^(?P<page>\d*)$','open'),

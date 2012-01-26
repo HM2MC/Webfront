@@ -39,9 +39,9 @@ $(function(){
                     {{entry.requestTime|dateSlice}}
                 
                     <strong>
-                        {%if complete or delete%}<a  href="{% url requests.views.edit entry.CID %}">Edit</a>{%endif%}
-                        {% if edit or delete %}<a  href="{% url requests.views.complete entry.CID %}">Complete</a>{%endif%}
-                        {% if complete or edit%}<a href="{% url requests.views.delete entry.CID %}">Delete</a>{%endif%}
+                        {%if complete or delete%}<a  href="{% url request.views.edit entry.CID %}">Edit</a>{%endif%}
+                        {% if edit or delete %}<a  href="{% url request.views.complete entry.CID %}">Complete</a>{%endif%}
+                        {% if complete or edit%}<a href="{% url request.views.delete entry.CID %}">Delete</a>{%endif%}
                     </strong>
                     
                 </td>
