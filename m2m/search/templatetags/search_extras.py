@@ -207,6 +207,7 @@ class LogoNode(template.Node):
         'movies':styling % (reverse('advancedsearch.views.movieSplash'),'ovies'),
         'music': styling % (reverse('advancedsearch.views.musicSplash'),'usic'),
         'shows': styling % (reverse('advancedsearch.views.showSplash'),'TV'),
+        'menus': styling % (reverse('menu.views.main'),'eals'),
         'None':"",
     }
     
