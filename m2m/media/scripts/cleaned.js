@@ -20,7 +20,7 @@ $(function(){
     
     
     
-	alert($('#searchParams').css('left'));
+	//alert($('#searchParams').css('left'));
     	
     // move, replace searchbar stuff with images
     $('#searchbarActual').prepend($('ul#modifiers'));
@@ -29,12 +29,15 @@ $(function(){
     });
     
     $('#wrapper').width(function(){
-    	w = $('#container').width()
-    	final = w + $('#searchParams').width();
+    	w = $('#container').outerWidth()
+    	final = w + $('#searchParams').outerWidth();
     	//alert(w);
     	//alert(final);
-    	return final;//final;
-    }); $('#wrapper').css('margin', '0 auto');
+    	return w;//final;
+    });/**/ 
+    $('#wrapper').css('padding-left', function(){
+    	return $('#searchParams').outerWidth();
+    });
     
     /*#('#container').css('margin-left',function(index, value){
     //	alert($('#searchParams').css('left'));
