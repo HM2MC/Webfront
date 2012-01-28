@@ -196,7 +196,8 @@ class LogoNode(template.Node):
                 'Mmagneto',
                 'M_andrew_ho',
                 'Mcompass',
-                'Mdoctor',]
+                'Mdoctor',
+                'M_jessi_peck']
     arrows = ['Arrowmath',] * 10 # also the old arrow
     
     styling = "<a class='logolink' href=\"%s\">\
