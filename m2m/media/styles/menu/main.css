@@ -56,6 +56,10 @@
 	color:#fff;	
 }
 
+#logo * {
+	vertical-align: bottom!important;
+}
+
 div.panes div:not(.multi-table-wrap) table:only-child {
 	max-width: 600px;
 	margin: 0 auto;

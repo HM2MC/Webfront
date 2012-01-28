@@ -12,25 +12,35 @@
 {% endblock %}
 
 {% block stylin %}
-
+{{block.super}}
 <style>
-#content div {
-	display:block;
-	margin-left: 25%;
+
+#poster {
+	float: right;
+	margin: 
 }
 
-#extraContent table{
-	position: relative;
-	left: 25%;
+.movie.file-list {
+	max-width: 50%!important;
+	width: auto;
 }
+
+.movie.file-list td {
+	padding: 1% 2%;
+}
+
+.movie.file-list td:not(:last-child), .movie.file-list th:not(:last-child){
+	border-right: 1px solid rgba(0,0,0,.25);
+}
+
 </style>
 
 {% endblock %}
 
 {% block content %}
-<img id='poster' style='z-index:10000;position:fixed;margin-right:25px;' src="{{movie.poster}}"/>
+<img id='poster' src="{{movie.poster}}"/>
 
-<div>
+<div style="display: inline">
 <header><h1><a href="{{movie.url}}">{{movie}}</a></h1>
 <h3>{{movie.rating}}/10</h3>
 
@@ -53,20 +63,21 @@ Genres:
 {%block extraContent %}
 
 {% for file in movie.files.all %}
-{% if forloop.first %}<table>{% endif %}
+{% if forloop.first %}<table class='movie file-list'>
+<thead><th></th><th>File</th><th>Host</th><th>Size</th><th>?</th></thead>{% endif %}
 <tr><td>{%if file.path.hid.servesDirect %}
 	<a class="directLink" href="{{file|makeLink:'True'}}" title="direct download!">
                         <img valign="top" src="/media/images/arrowBlueDown2.png" width="15px" id="directImg"/>
                         </a>
     {%endif%}</td>
-    <td style="padding-right:15px;">
+    <td>
 		<a href="{{file|makeLink}}"
       	 title="{{file}}"
 	     class="fileLink" rel="nofollow">{{file}}</a></td> 
-    <td align="right">{% with file|host as host %}
+    <td>{% with file|host as host %}
         <a href="smb://{{host}}">{{host.smb}}</a>
     {% endwith %} </td>
-    <td align="right">   {% with file|size as size %}
+    <td>   {% with file|size as size %}
     {{size|sizeToReadable}}
     {% endwith %}</td>
     <td>{% if file.goodfile == 1 %}

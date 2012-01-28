@@ -97,10 +97,14 @@ def clean_slate(candidate):
     candidate.remove_problems()
     try:
         pset = candidate.path.hid.problems
-    except:
-        pset = ProblemSet()
-        pset.host = candidate.path.hid
-        pset.save()
+    except Exception, e:
+        try:
+            pset = ProblemSet()
+            pset.host = candidate.path.hid
+            pset.save()
+        except:
+            candidate.delete()
+            return None
     return pset
 def crawlForMovies(count=0):
     ''' Imports things that are recognized as Movies from File table'''
@@ -110,7 +114,7 @@ def crawlForMovies(count=0):
     print "Filtering out non-({})".format(File.videoEndings)
     candidates = File.objects.filter(filenameend__regex=r'({})'.format(File.videoEndings))
     
-    dirExcludes = "pornography"
+    dirExcludes = "^[pP]orn"
     print "Filtering out things in ({}) directories, things not in movies".format(dirExcludes)
     candidates = candidates.exclude(path__fullname__regex='({})'.format(dirExcludes))\
                            .filter(path__fullname__icontains='Movies')\
@@ -139,6 +143,8 @@ def crawlForMovies(count=0):
             print "Marked as bad file; skipping..."
             continue
         pset = clean_slate(candidate)
+        if pset == None:
+            continue
         count += 1
         # skip all of this if the file already has a movie
         print candidate.id
@@ -262,7 +268,7 @@ def crawlForMovies(count=0):
                             dateadded=datetime.datetime.now(),
                             url=movie['url'],
                             overview=movie['overview'] if movie['overview'] else 'No overview available',
-                            popularity=int(movie['popularity']),
+                            popularity=int(float(movie['popularity'])),
                             imdb_id=movie['imdb_id'] if movie['imdb_id'] else None, # in case we ever want to use imdb data
                             released=movie['released'] if movie['released'] else None,
                             adult=True if movie['adult']=='true' else False,
@@ -469,82 +475,88 @@ def crawlForMusic(count=0):
         results = resultDump['results']
         for result in results:
             try:
-                print u"Result: {}:{} by {}".format(result['collectionName'],result['trackName'],result['artistName'])
-            except UnicodeEncodeError:
-                print u"Can't print some part of the result. OH WELL"
-                
-            if unicode(result['artistName']).lower() == probablyArtist.lower() \
-                and (unicode(result['collectionName']).lower() == probablyAlbum.lower() or \
-                    unicode(result['collectionCensoredName']).lower() == probablyAlbum.lower()) \
-                and (unicode(result['trackName'].lower()) == probablyTitle.lower() or \
-                    unicode(result['trackCensoredName']).lower() == probablyTitle.lower()):
-                # an exact match! yessss
                 try:
-                    artist,new = Artist.objects.get_or_create(name=probablyArtist,
-                                                          appleID=result['artistId'])
-                except:
-                    continue
+                    print u"Result: {}:{} by {}".format(result['collectionName'],result['trackName'],result['artistName'])
+                except UnicodeEncodeError:
+                    print u"Can't print some part of the result. OH WELL"
+                except Exception, e:
+                    print u'whoopsie! {}'.format(e)
                     
-                if new:
-                    print u"New artist added to database: {}".format(artist)
-                    artist.dateadded = datetime.datetime.now()
-                    artist.save()
-                else:
-                    print u"Already have artist: {}".format(artist)
+                if unicode(result['artistName']).lower() == probablyArtist.lower() \
+                    and (unicode(result['collectionName']).lower() == probablyAlbum.lower() or \
+                        unicode(result['collectionCensoredName']).lower() == probablyAlbum.lower()) \
+                    and (unicode(result['trackName'].lower()) == probablyTitle.lower() or \
+                        unicode(result['trackCensoredName']).lower() == probablyTitle.lower()):
+                    # an exact match! yessss
+                    try:
+                        artist,new = Artist.objects.get_or_create(name=probablyArtist,
+                                                              appleID=result['artistId'])
+                    except:
+                        continue
+                        
+                    if new:
+                        print u"New artist added to database: {}".format(artist)
+                        artist.dateadded = datetime.datetime.now()
+                        artist.save()
+                    else:
+                        print u"Already have artist: {}".format(artist)
+                        
+                    try:
+                        album,new = Album.objects.get_or_create(name=probablyAlbum,
+                                                            appleID=result['collectionId'])
+                    except:
+                        # some appleID shit got fucked
+                        continue
+                        
+                    if new:
+                        print u"New album added to database: {}".format(album)
+                        album.appleCover = result['artworkUrl100']
+                        album.explicit = True if result['collectionExplicitness'] != 'notExplicit' else False
+                        album.releaseDate = datetime.datetime.strptime(result['releaseDate'], "%Y-%m-%dT%I:%M:%SZ")
+                        album.dateadded = datetime.datetime.now()
+                        album.no_cover = u"/imaging/music/album/no_cover/{}".format(album.id)
+                        album.save()
+                        print u"Adding {} to {}'s album set...".format(album,artist)
+                        artist.album_set.add(album)
                     
-                try:
-                    album,new = Album.objects.get_or_create(name=probablyAlbum,
-                                                        appleID=result['collectionId'])
-                except:
-                    # some appleID shit got fucked
-                    continue
                     
-                if new:
-                    print u"New album added to database: {}".format(album)
-                    album.appleCover = result['artworkUrl100']
-                    album.explicit = True if result['collectionExplicitness'] != 'notExplicit' else False
-                    album.releaseDate = datetime.datetime.strptime(result['releaseDate'], "%Y-%m-%dT%I:%M:%SZ")
-                    album.dateadded = datetime.datetime.now()
-                    album.no_cover = u"/imaging/music/album/no_cover/{}".format(album.id)
-                    album.save()
-                    print u"Adding {} to {}'s album set...".format(album,artist)
-                    artist.album_set.add(album)
-                
-                
-                genre, new = MusicGenre.objects.get_or_create(name=result['primaryGenreName'])
-                if new:
-                    print u"Found new genre: {}".format(genre)
-                else:
-                    print u"Not a new genre: {}".format(genre)
-                
-                duration = datetime.timedelta(0,0,0,result['trackTimeMillis'])
-                print u"Duration: {}".format(duration)
-                try:
-                    track,new = Song.objects.get_or_create(name=probablyTitle,artist=artist,album=album,
-                                                       appleID=result['trackId'],
-                                                       tracknum=result['trackNumber'],
-                                                       applePreview=result['previewUrl'],
-                                                       time = str(datetime.timedelta(milliseconds=result['trackTimeMillis'])),
-                                                       matchtype = 1)
-                except IntegrityError: # this is BULLSHIT
-                    track = Song.objects.get(appleID=result['trackId'])
-                    new = False
-                if new:
-                    print u"New Song - {}".format(track)
-                    track.dateadded = datetime.datetime.now()
-                    track.save()
-                    print u"Adding to {}'s song set...".format(album)
-                    album.song_set.add(track)
-                    print u"Adding to {}'s song_set...".format(artist)
-                    artist.song_set.add(track)
-                    print u"Adding song to genre {}'s song_set...".format(genre)
-                    genre.songs.add(track)
-                    genre.save()
-                else:
-                    print "Not a new song."
-                print u"Adding File {} to track's file set...".format(candidate.filename)
-                track.files.add(candidate)
-                # since this is a perfect match, we don't need to look through any other results
-                break
+                    genre, new = MusicGenre.objects.get_or_create(name=result['primaryGenreName'])
+                    if new:
+                        print u"Found new genre: {}".format(genre)
+                    else:
+                        print u"Not a new genre: {}".format(genre)
+                    
+                    duration = datetime.timedelta(0,0,0,result['trackTimeMillis'])
+                    print u"Duration: {}".format(duration)
+                    try:
+                        track,new = Song.objects.get_or_create(name=probablyTitle,artist=artist,album=album,
+                                                           appleID=result['trackId'],
+                                                           tracknum=result['trackNumber'],
+                                                           applePreview=result['previewUrl'],
+                                                           time = str(datetime.timedelta(milliseconds=result['trackTimeMillis'])),
+                                                           matchtype = 1)
+                    except IntegrityError: # this is BULLSHIT
+                        track = Song.objects.get(appleID=result['trackId'])
+                        new = False
+                    if new:
+                        print u"New Song - {}".format(track)
+                        track.dateadded = datetime.datetime.now()
+                        track.save()
+                        print u"Adding to {}'s song set...".format(album)
+                        album.song_set.add(track)
+                        print u"Adding to {}'s song_set...".format(artist)
+                        artist.song_set.add(track)
+                        print u"Adding song to genre {}'s song_set...".format(genre)
+                        genre.songs.add(track)
+                        genre.save()
+                    else:
+                        print "Not a new song."
+                    print u"Adding File {} to track's file set...".format(candidate.filename)
+                    track.files.add(candidate)
+                    # since this is a perfect match, we don't need to look through any other results
+                    break
+            except Exception, e:
+                print e
+                continue
             
                 
