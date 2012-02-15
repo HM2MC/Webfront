@@ -2,7 +2,7 @@ from django.shortcuts import render_to_response
 from django.utils.safestring import mark_safe
 from django.db import transaction
 
-from djangosphinx.apis.api278 import *
+from sphinx.api278 import *
 
 from search.models import File
 from browseNet.models import Path
