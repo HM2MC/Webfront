@@ -9,6 +9,7 @@ server {
 	error_log /Users/haak/M2M/SiteCode/m2m/logs/nginx_error.log;
 	location / {
 		proxy_pass http://backend;
+		proxy_set_header X-Real-IP $remote_addr;
 		#include /usr/local/etc/nginx;
 	}
 	location /media/ {

@@ -29,11 +29,20 @@ def test(request):
     debug = {}
 
     debug['session'] = request.session
-    
+    try:
+        ipaddr = request.META['REMOTE_ADDR']
+    except:
+        ipaddr = "Couldn't get ipaddr"
+    try:
+        forwardaddr = request.META['HTTP_X_REAL_IP']
+    except:
+        forwardaddr = "Couldn't get forwarded addr"
     return render_to_response('test.html',
                               {
                                 'title':'M2M - TEST',
-                                'debug':debug,
+                                'ipaddr': ipaddr,
+                                'forwardaddr':forwardaddr,
+                                'debug':request.META,
                               })
 
 def index(request):
