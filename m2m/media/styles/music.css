@@ -47,15 +47,20 @@ div#aawrap {
 }
 
 section#albums {
-    display: inline-block;
+    /*display: inline-block;*/
+   	float: right;
     width: 49%;
     border-right: 3px solid rgba(0,0,0,0.15);
     border-left:  3px solid rgba(0,0,0,0.15);
 }
 
 section#artists {
-    display: inline-block;
+    float:left;
     width: 49%;
     border-left: 3px solid rgba(0,0,0,0.15);
     border-right: 3px solid rgba(0,0,0,0.15);
+}
+
+section.subresultsec {
+	min-height: 100px;
 }

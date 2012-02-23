@@ -32,13 +32,16 @@ def open(request,page=1,error=''):
     
                 #cursor = connection.cursor()
                 #cursor.execute('LOCK TABLES requests_comment WRITE')
-                
+                try:
+                    reqip = request.META['HTTP_X_REAL_IP']
+                except:
+                    reqip = request.META['REMOTE_ADDR']
                 newRequest = Comment(
                                 request=form.cleaned_data['request'],
                                 name=form.cleaned_data['name'],
                                 server=form.cleaned_data['server'].upper(),
                                 email=form.cleaned_data['email'],
-                                requestIP=request.META['HTTP_X_FORWARDED_FOR'],
+                                requestIP=reqip,
                                 requestTime = datetime.now()
                                 )
                 
@@ -58,7 +61,7 @@ def open(request,page=1,error=''):
                     'INSERT INTO log (Time,Client,SearchString)\
                     VALUES (%(time)d, "%(client)s", "%(search)s")' % {
                         'time':time.mktime(time.localtime()),
-                        'client': request.META['HTTP_X_FORWARDED_FOR'],
+                        'client': reqip,
                         'search':"Request: %(query)s" % {'query':newRequest.request},
                     }
                 )
@@ -233,7 +236,7 @@ def complete(request,id):
                     if len(form.cleaned_data['completingServer']) > 1:
                         entry.completingServer = form.cleaned_data['completingServer'].upper().replace('\\','')
                     else:
-                        entry.completingServer = request.META['HTTP_X_FORWARDED_FOR']
+                        entry.completingServer = request.META['REMOTE_ADDR']
                     entry.completerComment = form.cleaned_data['completerComment']
                 
                     entry.completedTime = datetime.now()
@@ -279,7 +282,7 @@ def delete(request,id):
         
         entry = Comment.objects.get(pk=id)
         entry.isDeleted = True
-        entry.deleterIP = request.META['HTTP_X_FORWARDED_FOR']
+        entry.deleterIP = request.META['REMOTE_ADDR']
         entry.deletedTime = datetime.now()
         
         entry.save() 

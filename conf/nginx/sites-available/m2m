@@ -5,14 +5,15 @@ upstream backend {
 server {
 	listen 80;
 	server_name localaccess;
-	access_log /home/haak/M2M/m2m/logs/nginx_access.log;
-	error_log /home/haak/M2M/m2m/logs/nginx_error.log;
+	access_log /Users/haak/M2M/SiteCode/m2m/logs/nginx_access.log;
+	error_log /Users/haak/M2M/SiteCode/m2m/logs/nginx_error.log;
 	location / {
 		proxy_pass http://backend;
-		include /etc/nginx/proxy.conf;
+		proxy_set_header X-Real-IP $remote_addr;
+		#include /usr/local/etc/nginx;
 	}
 	location /media/ {
-		root /home/haak/M2M/m2m/;
+		root /Users/haak/M2M/SiteCode/m2m/;
 	}
 }
 

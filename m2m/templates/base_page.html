@@ -126,6 +126,7 @@
                       </ul>
                     </nav>
                     <!-- End navigation -->
+    	<div id='wrapper'>
         <div id="container">
             {% block header %}
             <header id="pageHeader"><!-- Start page header -->
@@ -176,7 +177,7 @@
                                     Servers: check out <a href="news/2011/feb/27/direct-serving/"> this page</a>.
                                     <br />
                                     <br />
-                                    
+                                    <!--Oh so we heard you wanted some <a href="{% url menu.views.main %}">menus</a>-->
                                     <br />
                                     <br />
                                     <script type=\"text/javascript\">
@@ -222,7 +223,7 @@
             </footer>
             </div><!-- End Footer -->
         </div>
-        
+        </div>
         {# scripts at the end, just in case #}
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
         <script type="text/javascript" src="http://ui.jquery.com/latest/ui/jquery.effects.core.js"></script>

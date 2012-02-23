@@ -113,9 +113,13 @@ nav#sitewide ul a.current li{
     background: none;
 }
 
+div#wrapper{
+	margin: 0 auto;
+}
+
 div#container{ 
     width: 1000px;
-    margin: 0 auto;
+    /*margin: 0 auto;*/
     padding: 25px;
     padding-top: 0px;
     

@@ -196,7 +196,8 @@ class LogoNode(template.Node):
                 'Mmagneto',
                 'M_andrew_ho',
                 'Mcompass',
-                'Mdoctor',]
+                'Mdoctor',
+                'M_jessi_peck']
     arrows = ['Arrowmath',] * 10 # also the old arrow
     
     styling = "<a class='logolink' href=\"%s\">\
@@ -207,6 +208,7 @@ class LogoNode(template.Node):
         'movies':styling % (reverse('advancedsearch.views.movieSplash'),'ovies'),
         'music': styling % (reverse('advancedsearch.views.musicSplash'),'usic'),
         'shows': styling % (reverse('advancedsearch.views.showSplash'),'TV'),
+        'menu': styling % (reverse('menu.views.main'),'eals'),
         'None':"",
     }
     

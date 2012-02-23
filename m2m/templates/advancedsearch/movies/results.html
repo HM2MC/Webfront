@@ -33,6 +33,7 @@ $(document).ready(function(){
     padding: 0px;
     /* this is a hack */
     background-color:#1E3042;
+    z-index: 100;
 }
 .moviename {
 
@@ -45,7 +46,7 @@ $(document).ready(function(){
 <div style="text-align:center;">{{page}}</div><br/><br />
 <div class='tablewrap'>
 <table>
-<tr class="info">
+<thead>
     <td>
         <a href="{%url advancedsearch.views.movieSearch page.number %}?q={{q}}&order={%spaceless%}
         {%if params.order == 'name'%}-name{%else%}{%if params.order == '-name'%}{%else%}name{%endif%}{%endif%}{%for key,value in params.items%}{%if key != 'order' %}&{{key}}={{value}}{%endif%}{%endfor%}{%endspaceless%}">
@@ -63,7 +64,7 @@ $(document).ready(function(){
         Runtime
         </a>
     </td>
-</tr>
+</thead>
 {% for movie in object_list %}
 {% if movie.files.count > 0 %}
 <tr class="{%cycle 'darkrow' ''%}" style="max-height:1em;">

@@ -17,13 +17,32 @@ $(function(){
                 });
                 return -31 - parseInt($(this).width());
             }).css('visibility','visible');
-            
+    
+    
+    
+	//alert($('#searchParams').css('left'));
+    	
     // move, replace searchbar stuff with images
     $('#searchbarActual').prepend($('ul#modifiers'));
     $('ul#modifiers li a').html(function(){
         return "<img src='/media/images/"+$(this).attr('id')+".png'/>"
     });
     
+    $('#wrapper').width(function(){
+    	w = $('#container').outerWidth()
+    	final = w + $('#searchParams').outerWidth();
+    	//alert(w);
+    	//alert(final);
+    	return w;//final;
+    });/**/ 
+    $('#wrapper').css('padding-left', function(){
+    	return $('#searchParams').outerWidth();
+    });
+    
+    /*#('#container').css('margin-left',function(index, value){
+    //	alert($('#searchParams').css('left'));
+    	return "138px";//$('#searchParams').css('left');
+    });/**/
     // move subset lists out of navbar
     $('#subsetHold').prepend($('ul#subset'));
     

@@ -4,7 +4,6 @@ from django.views.decorators.cache import cache_page
 
 from BeautifulSoup import BeautifulSoup, Tag, NavigableString
 from datetime import datetime
-import urllib2
 import requests
 import re
 
@@ -46,9 +45,9 @@ def reset_attrs(tag, excluding=[], recurse=True):
         return
     #print tag, tag.attrs
     for attr in tag.attrs:
-        print attr, excluding
+        #print attr, excluding
         if attr[0] in excluding:
-            print "excluding"
+            #print "excluding"
             continue
         del(tag[attr[0]])
     if recurse and hasattr(tag, 'contents') and len(tag.contents) > 0:
@@ -91,7 +90,7 @@ def get_hm_menu(today):
     week = today.isocalendar()[1]
     if today.month < 7: # also, they're ordered by WEEKS OF THE SEMESTER. what. the. fuck.
         week = week - 2
-        if today.isocalendar()[2] in range(5,7):
+        if today.isocalendar()[2] in range(5,8):
             week = week + 1
     elif today.month > 8:
         pass
@@ -297,7 +296,7 @@ def get_frary_menu(today):
     if day_div == None:
         raise Exception('No menu available for today')
     
-    table = fr_soup.findAll('table', {'class':'menu'})[today.isoweekday()-1] # find the right menu
+    table = fr_soup.findAll('table', {'class':re.compile('menu')})[today.isoweekday()-1] # find the right menu
     table.extract()
     
     table['class'] = 'mealtable'
@@ -428,7 +427,7 @@ def get_malott_menu(today):
     
     return final_table.prettify()
 
-@cache_page(60*60*7)
+@cache_page(60*60*24)
 def main(request):
     today = datetime.now()
     data = []

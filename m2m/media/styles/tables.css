@@ -8,7 +8,7 @@ table {
     margin-top: 10px;
 }
 
-tr td:first-child {
+tr td, tr th:first-child {
     padding-left: 5px;
 }
 
@@ -16,7 +16,7 @@ tr td:last-child{
     padding-right: 5px;
 }
 
-td {
+td, th {
     padding-top: 2px;
     padding-bottom: 2px;
 }
@@ -31,10 +31,10 @@ thead {
     font-weight: bold;
     }
 
-thead tr td:first-child{
+thead tr td:first-child, thead th:first-child{
     padding-left: 10px;
 }
-thead tr td:last-child{
+thead tr td:last-child, thead th:first-child{
     padding-right: 10px;
 }
     

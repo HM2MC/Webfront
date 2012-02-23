@@ -10,6 +10,15 @@ $(document).ready(function(){
     bindResultHandler('song');
     bindResultHandler('album');
     bindResultHandler('artist');
+    
+    $('#contentContainer').height(function(){
+    	h = 0
+    	$('section.results').each(function(){
+    		h += $(this).outerHeight();
+    	});
+    	return h+100;
+    });
+    
     });
     
 function bindResultHandler(type){
@@ -20,6 +29,15 @@ function bindResultHandler(type){
         dataType: "html",
         success: function(html,textStatus){
             $('#'+type+'s div').load("/advanced/music/subresult/"+type+"?q={{q}}&{{urlparams}} .results");
+             $('#contentContainer').height(function(){
+		    	h = 0
+		    	$('section.results').each(function(){
+		    		h += $(this).outerHeight();
+		    	});
+		    	return h+100;
+		    });
+		    
+    });
         },
         error: function(XMLHttpRequest,textStatus,errorThrown){
             $('#'+type+'s div').replaceWith("Couldn't get"+type+"s.");
@@ -42,14 +60,14 @@ function bindResultHandler(type){
 {% block extraContent %}
 {% if params.type == 'all' or params.type == 'Album' %}
 <div id="aawrap">
-<section id="albums"><h2>Albums</h2>
+<section id="albums" class="subresultsec results"><h2>Albums</h2>
 <div>
 <div style="width: 50px;margin-right: auto;margin-left:auto;text-align:center;"><img src="/media/images/ajax-loader.gif"/></div></div>
 </section>
 {% endif %}
 {% if params.type == 'all' or params.type == 'Artist' %}
 
-<section id="artists"><h2>Artists</h2>
+<section id="artists" class="subresultsec results"><h2>Artists</h2>
 <div>
 <div style="width: 50px;margin-right: auto;margin-left:auto;text-align:center;"><img src="/media/images/ajax-loader.gif"/></div></div>
 </section>
