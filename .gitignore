@@ -3,3 +3,5 @@ site-packages
 .*.sw[nop]
 .ropeproject
 .DS_Store
+.*
+*/build
