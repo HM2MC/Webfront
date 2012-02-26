@@ -114,7 +114,7 @@ def crawlForMovies(count=0):
     print "Filtering out non-({})".format(File.videoEndings)
     candidates = File.objects.filter(filenameend__regex=r'({})'.format(File.videoEndings))
     
-    dirExcludes = "^[pP]orn"
+    dirExcludes = "[pP]orn"
     print "Filtering out things in ({}) directories, things not in movies".format(dirExcludes)
     candidates = candidates.exclude(path__fullname__regex='({})'.format(dirExcludes))\
                            .filter(path__fullname__icontains='Movies')\
