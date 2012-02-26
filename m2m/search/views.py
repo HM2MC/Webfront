@@ -7,7 +7,7 @@ from django.db import transaction
 from m2m.search.models import File
 from m2m.browseNet.models import Path
 from m2m.stats.models import Status, Log
-from m2m.settings import SPHINX_SERVER, SPHINX_API_VERSION, SPHINX_PORT
+from m2m.settings import SPHINX_SERVER, SPHINX_PORT
 
 from sphinx.api278 import * 
 
@@ -345,7 +345,7 @@ def results(request,page='1'):
             resultants = result['matches']
             #populate a list with appropriate Files
             filesFound = []
-
+    
             #escapeLoop = False
             for fileThing in resultants:
     # N.B. -- we have to 'try' this, because sometimes the sphinx indices have
@@ -484,7 +484,6 @@ def results(request,page='1'):
                                 'files':'current',
                                 'q': searchstring, #so it displays all pretty-like
                                 'filesfound':filesFound,
-                                #'searchmeta':searchMeta,
                                 'words':wordsToLight,
                                 'params':params,
                                 'optionsUp':optionsUp,
@@ -511,29 +510,12 @@ def results(request,page='1'):
             #            %s" % e
         #except AttributeError, e:
         #    error = "Well, shit; I don't know. Probably we don't have {} <br/> ({})".format(q, e)
-        error = e
         return render_to_response('search/results.html',
                               {
                                 'title': "M2M - Resu-no, shit. What?",
                                 'q':q,
-                                'error':error,
+                                'error':e,
                                 'mode':params['mode'],
                                 'optionsUp':optionsUp,
                                 'page': 'WTF',
                               },)
-    
-
-def movies(request, page="q"):
-
-    if page == "q":
-        return render_to_response('base_page.html',
-                                {
-                                    'title':"M2M - Movies",
-                                    'search':'current',
-                                    'movies':'current',
-                                },)
-                                    
-
-# are you in tears?
-# call me, that i might bathe in them.
-# 703 - 943 - 9385
