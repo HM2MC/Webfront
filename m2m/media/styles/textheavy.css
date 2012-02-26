@@ -1,5 +1,6 @@
 .blurb {
-	max-width: 500px;
+	max-width: 50em;
+	margin: 0 auto;
 }
 
 .blurp p {
