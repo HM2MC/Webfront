@@ -210,6 +210,7 @@ class LogoNode(template.Node):
         'music': styling % (reverse('advancedsearch.views.musicSplash'),'usic'),
         'shows': styling % (reverse('advancedsearch.views.showSplash'),'TV'),
         'menu': styling % (reverse('menu.views.main'),'eals'),
+        'accounts': styling % (reverse('useraccounts.views.view_home'),'e'),
         'None':"",
     }
     
@@ -237,7 +238,7 @@ class LogoNode(template.Node):
     def render(self, context):
         try:
             return "\
-            <a href=\"%(index)s\"><span>\
+            <a href=\"{index}\"><span>\
                         <img  id='leftlogo' src='{static}images/{left}.png'/>\
                         <img  id='arrowlogo' src='{static}images/{arrow}.png'/>\
                         <img  id='rightlogo' src='{static}images/{right}.png'/></span></a>{extra}" .format(**{

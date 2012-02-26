@@ -1,5 +1,12 @@
 {% extends "base_page.html" %}
+{% load search_extras %}
+{% load staticfiles %}
 {% load useraccounts_extras %}
+
+{% block stylin %}
+	<link rel="stylesheet" type="text/css" href="{% static 'styles/accounts.css' %}"/>
+{% endblock%}
+
 {% block scriptin %}
 <script>
 	$(function(){
@@ -11,8 +18,12 @@
 {% block searchbar %}
 {% endblock %}
 
+{%block logohold %}
+{% logo accounts %}
+{%endblock %}
 
 {% block content %}
+<section class="blurb">
 <h1>{{user.get_full_name}}</h1>
 <a href="../logout">logout</a>
 <ul>
@@ -20,6 +31,7 @@
 	You can add a new poll!
 	{% endif %}
 </ul>
+</section>
 {% endblock %}
 
 {% block extraContent %}
