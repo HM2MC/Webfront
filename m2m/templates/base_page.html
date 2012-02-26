@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load search_extras %}
+{% load staticfiles %}
 <html>
     <head>
         <title>{% block title %}{{title|default:"M2M"}}{%endblock%}</title>
@@ -8,9 +9,10 @@
             <script src ="http://html5shim.googlecode.com/svn/trunk/html5.js">
             </script>
         <![endif]-->
-        <link rel="stylesheet" media="screen" href="/media/styles/cleaned.css" />
-        <link rel="stylesheet" media="screen" href="/media/styles/searchbar.css" />
-        <link rel="stylesheet" media="screen" href="/media/styles/tables.css" />
+        <link rel="stylesheet" media="screen" href="{%static "styles/cleaned.css" %}" />
+        <link rel="stylesheet" media="screen" href="{%static "styles/searchbar.css" %}" />
+        <link rel="stylesheet" media="screen" href="{%static "styles/tables.css" %}" />
+        <link rel="stylesheet" media="screen" href="{%static "styles/textheavy.css" %}" />
         {% extra_styles %}
         {% block stylin %}{% endblock %}
         
@@ -30,8 +32,8 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta name="robots" content="all" />
         
-        <link rel="icon" href="/media/favicon.png" type="image/x-icon" />
-        <link rel="shortcut icon" href="/media/favicon.png" type="image/x-icon" />
+        <link rel="icon" href="{%static "favicon.png" %}" type="image/x-icon" />
+        <link rel="shortcut icon" href="{%static "favicon.png" %}" type="image/x-icon" />
         
 
     </head>
@@ -228,9 +230,9 @@
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
         <script type="text/javascript" src="http://ui.jquery.com/latest/ui/jquery.effects.core.js"></script>
         <script src="http://ui.jquery.com/latest/ui/jquery.effects.slide.js"></script>
-        <script type="text/javascript" src="/media/styles/javascript.js"></script>
-        <script type="text/javascript" src="/media/scripts/jquery.tools.min.js"></script>
-        <script type="text/javascript" src="/media/scripts/cleaned.js"></script>
+        <script type="text/javascript" src="{% static "styles/javascript.js" %}"></script>
+        <script type="text/javascript" src="{% static "scripts/jquery.tools.min.js" %}"></script>
+        <script type="text/javascript" src="{% static "scripts/cleaned.js" %}"></script>
         <script type="text/javascript">
          $(document).ready(function () {
             if (typeof pageTracker != 'undefined') {

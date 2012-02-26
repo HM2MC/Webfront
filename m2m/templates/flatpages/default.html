@@ -1,6 +1,12 @@
 {% extends "base_page.html" %}
 		{% block title %} {{flatpage.title}} {% endblock %}
 {% block content %}
+	<section class="blurb">
 		<h1> {{ flatpage.title}}</h1>
 		{{flatpage.content}}
+	</section>
+{% endblock %}
+
+{% block extraContent %}
+
 {% endblock %}
