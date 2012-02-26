@@ -2,12 +2,14 @@ from django.shortcuts import render_to_response
 from django.utils.safestring import mark_safe
 from django.db import transaction
 
-from sphinx.api278 import *
 
-from search.models import File
-from browseNet.models import Path
-from stats.models import Status, Log
 
+from m2m.search.models import File
+from m2m.browseNet.models import Path
+from m2m.stats.models import Status, Log
+from m2m.settings import SPHINX_SERVER, SPHINX_API_VERSION, SPHINX_PORT
+
+from sphinx.api278 import * 
 
 import re, time
 from datetime import datetime
@@ -62,7 +64,7 @@ def index(request):
     """
     # for april fools
     if datetime.now().day == 1 and datetime.now().month==4:
-        from aprilfools.views import yearcaller
+        from m2m.aprilfools.views import yearcaller
         return yearcaller(request)
     return render_to_response('base_page.html',
                               {
@@ -157,7 +159,7 @@ def results(request,page='1'):
         
         # april fools queries
         if datetime.now().day == 1 and datetime.now().month==4:
-            from aprilfools.views import resultcaller
+            from m2m.aprilfools.views import resultcaller
             q = resultcaller()
         searchstring = q
         for char in escape_chars:
@@ -322,7 +324,7 @@ def results(request,page='1'):
         
     # create client instances, filling in required attrs 
     client = SphinxClient()
-    client.SetServer('laview.st.hmc.edu',9312)
+    client.SetServer(SPHINX_SERVER,SPHINX_PORT)
     client.SetMatchMode(moding)
     client.SetSortMode(sorting,sortby)
     # this pre-slices the results:
@@ -344,7 +346,7 @@ def results(request,page='1'):
             #populate a list with appropriate Files
             filesFound = []
 
-            escapeLoop = False
+            #escapeLoop = False
             for fileThing in resultants:
     # N.B. -- we have to 'try' this, because sometimes the sphinx indices have
     #         records that no longer exist in the actual database.
@@ -416,13 +418,13 @@ def results(request,page='1'):
             else:
                 prev = page - 1
             if page == max(paginator) - 1:
-                    next = page
+                    next_page = page
             else:
-                next = page + 2
+                next_page = page + 2
         else:
             paginator = 1
             prev = 1
-            next = 1
+            next_page = 1
             
         # In case no results were found, we need to set these to something
         # to avoid a NameError exception when the template loads.
@@ -431,7 +433,7 @@ def results(request,page='1'):
         except:
             paginator = 0
             prev = 1
-            next = 1
+            next_page = 1
             
     ##############################################################
     # ---- Log results of the search ---- #
@@ -456,11 +458,10 @@ def results(request,page='1'):
         try:
             client = request.META['HTTP_X_FORWARDED_FOR']
         except KeyError:
-         # REMOTE_ADDR is *always* 127.0.0.1
-         # unless we're on test server!
+        # REMOTE_ADDR is *always* 127.0.0.1
+        # unless we're on test server!
             client = request.META['REMOTE_ADDR']
-            
-        from stats.models import Log
+        
         newest = Log(time=time.mktime(time.localtime()),
              client=client,
              found=result['total'],
@@ -490,7 +491,7 @@ def results(request,page='1'):
                                 'test':test,
                                 'page':int(page)+1,
                                 'prev':prev,
-                                'next':next,
+                                'next_page':next_page,
                                 'paginator':paginator,
                                 'debug':DEBUG,
                                 'fileErrors':fileErrors,
