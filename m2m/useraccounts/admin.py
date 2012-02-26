@@ -2,6 +2,6 @@ from django.contrib import admin
 from models import UserProfile
 
 class UserProfileAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('user', 'studentid')
 
 admin.site.register(UserProfile, UserProfileAdmin)

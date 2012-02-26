@@ -2,6 +2,8 @@ from django.shortcuts import render_to_response, get_object_or_404
 
 # Create your views here.
 
+def http500handler(request):
+    return render_to_response('500.html',{})
 
 def sitewide(request):
     

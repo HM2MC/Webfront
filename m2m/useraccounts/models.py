@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 
+from m2m.stats.models import Log
 from m2m.browseNet.models import Host
 from m2m.courses.models import Course, Major
 # Create your models here.
@@ -10,22 +11,26 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
     
     # security stuff
-    activation_key = models.CharField(max_length=40)
-    key_expires = models.DateTimeField()
+    activation_key = models.CharField(max_length=40, blank=True)
+    key_expires = models.DateTimeField(null=True, blank=True)
     
     # ---------------------
     # who is this person?
     #
     studentid = models.IntegerField(unique=True)
-    major = models.ForeignKey(Major)
-    taken_courses = models.ManyToManyField(Course)
     
-    nname = models.CharField(max_length=10)
-    birthday = models.DateField()
+    nname = models.CharField(max_length=10, null=True, blank=True)
+    birthday = models.DateField(null=True, blank=True)
+        
+    major = models.ForeignKey(Major, null=True, blank=True)
+    taken_courses = models.ManyToManyField(Course, null=True, blank=True)
     
-    description = models.TextField(blank=True)
+    friends = models.ManyToManyField(User, related_name='friend_to', null=True)
+    description = models.TextField(null=True, blank=True)
+    
     #
     # ----------------------
+    
     # ----------------------
     # where is this person?
     #
@@ -41,13 +46,17 @@ class UserProfile(models.Model):
              (9,'CGU'),
              (10,'BPA'),
             )
-    dorm = models.IntegerField(choices=DORMS, default=5)
-    room = models.CharField(max_length=4)
+    dorm = models.IntegerField(choices=DORMS, default=5, null=True, blank=True)
+    room = models.CharField(max_length=4,null=True, blank=True)
     #
     # ----------------------
     
-    hosts = models.ManyToManyField(Host)
+    # ----------------------
+    # Does M2M care about them?
+    hosts = models.ManyToManyField(Host,null=True, blank=True)
     
+    #
+    # ---------------------
     @models.permalink
     def get_absolute_url(self):
         return ('view_user', None, {'username': self.user.username})

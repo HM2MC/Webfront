@@ -10,7 +10,8 @@ from m2m.coltrane.feeds import LatestEntriesFeed, CategoryFeed
 feeds = {'entries': LatestEntriesFeed,
          'categories': CategoryFeed}
 
-#from datetime import datetime
+# pretty server error page instead
+handler500 = 'problems.views.http500handler'
 
 urlpatterns = patterns('',
     # Example:

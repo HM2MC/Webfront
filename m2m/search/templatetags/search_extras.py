@@ -5,6 +5,7 @@ from datetime import datetime
 import re
 
 from m2m.coltrane.models import Entry
+from m2m.settings import STATIC_URL
 
 import urllib2
 
@@ -170,13 +171,13 @@ def status(object):
         object.pathsize
         return ''
     except AttributeError:
-        img = "<img class='statusind' style=\"float:right;margin-right:15px;\" src='/media/images/%(img)s' alt='%(alt)s'/>"
+        img = "<img class='statusind' style=\"float:right;margin-right:15px;\" src='"+str(STATIC_URL)+"images/{img}' alt='{alt}'/>"
         if object.goodfile == 1:
-            value = img % {'img':'goodfile.gif','alt':'File is good!'}
+            value = img.format(**{'img':'goodfile.gif','alt':'File is good!'})
         elif object.goodfile == 0:
-            value = img % {'img':'badfile.gif','alt':'File is bad.'}
+            value = img.format(**{'img':'badfile.gif','alt':'File is bad.'})
         else:
-            value = img % {'img':'goodfile.gif','alt':'File is contested.'}
+            value = img.format(**{'img':'goodfile.gif','alt':'File is contested.'})
         return mark_safe(value)
     except:
         return ''
@@ -237,15 +238,16 @@ class LogoNode(template.Node):
         try:
             return "\
             <a href=\"%(index)s\"><span>\
-                        <img  id='leftlogo' src='/media/images/%(left)s.png'/>\
-                        <img  id='arrowlogo' src='/media/images/%(arrow)s.png'/>\
-                        <img  id='rightlogo' src='/media/images/%(right)s.png'/></span></a>%(extra)s" % {
+                        <img  id='leftlogo' src='{static}images/{left}.png'/>\
+                        <img  id='arrowlogo' src='{static}images/{arrow}.png'/>\
+                        <img  id='rightlogo' src='{static}images/{right}.png'/></span></a>{extra}" .format(**{
+                                                                                    'static':STATIC_URL,
                                                                                     'left':self.left,
                                                                                     'right':self.right,
                                                                                     'arrow':self.arrow,
                                                                                     'extra':self.extra,
                                                                                     'index':reverse('search.views.index')
-                                                                                    }
+                                                                                    })
         except:
             return '<span style="font-size:6em;">Logo Unavailable</span>'
             
@@ -274,7 +276,7 @@ class ExtraStyles(template.Node):
         if self.stylesheet == []:
             return ''
         else:
-            return '\n'.join(["<link rel=\"stylesheet\" type=\"text/css\" href=\"/media/styles/{}.css\" />".format(x) for x in self.stylesheet])
+            return '\n'.join(["<link rel=\"stylesheet\" type=\"text/css\" href=\"{}styles/{}.css\" />".format(STATIC_URL, x) for x in self.stylesheet])
 
 
 from datetime import date, timedelta

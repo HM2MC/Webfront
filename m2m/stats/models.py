@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Status(models.Model):
@@ -27,7 +27,7 @@ class Status2(models.Model):
 class Log(models.Model):
     
     id = models.IntegerField(primary_key=True,db_column="LID")
-    
+    user = models.ForeignKey(User, null=True)
     # Time - timestamp of logged activity
     time = models.IntegerField(db_column="Time",max_length=10) # !! Turn this into datefield after production
     
