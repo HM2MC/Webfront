@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response
 from django.utils.safestring import mark_safe
 from django.db import transaction
-
+from django.template import RequestContext
 
 
 from m2m.search.models import File
@@ -72,7 +72,7 @@ def index(request):
                                 'search':'current',
                                 'files':'current',
                                 'debug':DEBUG,
-                               })
+                               }, context_instance=RequestContext(request))
     
     
 @transaction.autocommit

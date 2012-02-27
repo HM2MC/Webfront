@@ -2,6 +2,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import login_required
 
 from polls.models import Poll, Choice
 
@@ -16,7 +17,7 @@ def detail(request, poll_id):
     p = get_object_or_404(Poll, pk=poll_id)
     return render_to_response('polls/detail.html', {'poll': p})
 
-    
+@login_required
 def vote(request, poll_id):
     p = get_object_or_404(Poll,pk=poll_id)
     

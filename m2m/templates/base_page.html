@@ -128,8 +128,17 @@
                       </ul>
                     </nav>
                     <!-- End navigation -->
+        <div id="loginner">{% block logged_in %}
+    		{% if user.is_authenticated %}
+    			What's up, <a href="{%url useraccounts.views.view_home %}">{%firstof user.nname user.first_name%}</a>?
+    		{% else %}
+    			<a href="{% url login %}">Login</a>
+    		{% endif %}
+    	{% endblock %}</div>
     	<div id='wrapper'>
+    	
         <div id="container">
+        	
             {% block header %}
             <header id="pageHeader"><!-- Start page header -->
             
@@ -216,7 +225,7 @@
                     <li><a href="{%url faq.views.serviceTerms%}">TOS</a></li>
                     <li><a href="/flat/privacy.html">Privacy</a></li>
                     <li><a href="{%url faq.views.about %}">History</a></li>
-                    <li><a href="mailto:hsaxberg@hmc.edu"> Contact </a></li>
+                    <li><a href="labrain.st.hmc.edu:8081/projects/m2m-core/issues/new"> Contact </a></li>
                 </ul>
                 
                 

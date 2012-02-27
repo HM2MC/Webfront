@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * 
- *       GLOBAL STYLES
+ *       GLOBAL STYLES for normal sized screens
  * * * * * * * * * * * * * */
 * {
     margin: 0;
@@ -390,4 +390,26 @@ div#newNews p {
 
 tbody tr:nth-child(even){
     background-color: rgba(255,255,255,0.2);
+}
+
+#loginner {
+	color: white;
+	float: right;
+	position: relative;
+	top: 35px;
+	padding: 0.5em 1em;
+	text-align: center;
+	border-radius: 5px 0px 0px 5px;
+	background-color: rgba(100,149,237,1);
+	display: table-cell;
+	vertical-align: middle;
+	z-index: 100;
+	box-shadow: 0 0 4px rgba(0,0,0,0.5);
+    -mox-box-shadow: 0 0 4px rgba(0,0,0,0.5);
+    -khtml-box-shadow: 0 0 4px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0 0 4px rgba(0,0,0,0.5);
+}
+
+#loginner a {
+	color: rgba(56, 72, 58, 1);
 }

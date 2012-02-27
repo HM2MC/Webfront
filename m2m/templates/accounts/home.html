@@ -24,9 +24,10 @@
 
 {% block content %}
 <section class="blurb">
-<h1>{{user.get_full_name}}</h1>
-<a href="../logout">logout</a>
+<h1>{% firstof profile.nname user.get_full_name "Anonymous" %}</h1>
+<a href="{% url logout %}">logout</a>
 <ul>
+
 {% if user|has_perm:"polls.add_poll" %}
 	You can add a new poll!
 	{% endif %}

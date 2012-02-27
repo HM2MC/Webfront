@@ -64,6 +64,9 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.user.username
 
+# Would love to do this, but can't auto-create profiles because of mandatory fields.
+# User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
+
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
