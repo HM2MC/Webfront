@@ -21,7 +21,7 @@ class Poll(models.Model):
 class Choice(models.Model):
     poll = models.ForeignKey(Poll)
     choice = models.CharField(max_length=200)
-    users = models.ManyToManyField(User)
+    users = models.ManyToManyField(User, null=True, blank=True)
     
     @property
     def votes(self):

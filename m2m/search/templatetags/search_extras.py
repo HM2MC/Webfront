@@ -218,6 +218,12 @@ class LogoNode(template.Node):
         
     
         self.left = random.choice(self.mChoices)
+        
+        # if we're on the profile page, we should know
+        if module == "accounts":
+            self.personal = True
+        else:
+            self.personal = False
         self.right = random.choice(self.mChoices)
         self.arrow = random.choice(self.arrows)
 
@@ -236,6 +242,12 @@ class LogoNode(template.Node):
         else:
             self.extra = self.extras[module]
     def render(self, context):
+        
+        # let them have their own M, if possible. Just on the "Me" side, though.
+        if self.personal:
+            mname = "M_{}_{}".format(context['user'].first_name.lower(),context['user'].last_name.lower())
+            if mname in self.mChoices:
+                self.right = mname
         try:
             return "\
             <a href=\"{index}\"><span>\

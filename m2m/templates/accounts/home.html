@@ -1,9 +1,12 @@
 {% extends "base_page.html" %}
+{% load staticfiles %}
 {% load search_extras %}
+{% load request_extras %}
 {% load staticfiles %}
 {% load useraccounts_extras %}
 
 {% block stylin %}
+	<link rel="stylesheet" type="text/css" href="{% static 'styles/requests.css' %}"/>
 	<link rel="stylesheet" type="text/css" href="{% static 'styles/accounts.css' %}"/>
 {% endblock%}
 
@@ -15,6 +18,9 @@
 </script>
 {% endblock %}
 
+{% block logged_in %}
+{%endblock %}
+
 {% block searchbar %}
 {% endblock %}
 
@@ -23,18 +29,129 @@
 {%endblock %}
 
 {% block content %}
+<section class="summary">
+{% if perms.add_poll %}
+<h2>Your Polls <a href="" title="new poll"><img class="plus green" src="{% static "images/plus_green.png" %}"/></a></h2>
+<section id="polls" class="blurb">
+	{% for poll in user.poll_set.all %}
+		{% if forloop.first %}
+		<table class="polls">
+		<thead>
+			<tr>
+				<th>Poll Question</th>
+				<th> Choices and Votes </th>
+			</tr>
+		</thead>
+		{% endif %}
+		<tr>
+			<td class="poll_name">{{poll}}</td><td>
+			<table class="choices">
+				{% for choice in poll.choice_set.all %}
+					<tr> 
+						<td>{{choice.choice}}</td>
+						<td>{{choice.votes}}</td>
+					</tr>
+				{% endfor %}
+			</table></td>
+		</tr>
+		{% if forloop.last %}
+		</table>
+		{% endif %}
+		{% empty %}
+		
+	{% endfor %}
+</section>
+{% endif %}
+
+{% if perms.add_request %}
+<h2>Your Requests <a href="" title="new request"><img class="plus green" src="{% static "images/plus_green.png" %}"/></a></h2>
+<section id="requests" class="blurb">
+	{% for entry in user.comment_set.all %}
+		<table class="requestWrap{% if entry.completed %} completed{% else %}{% if entry.deleted %} deleted{%endif%}{%endif%}">
+            <tr class="requestmeta" style="">
+                <td class="requestername">
+                    {%if entry.server%}
+                        <a href="{% url browseNet.views.deepBrowse 'H' entry.server|hid %}">\\{{entry.server}}</a>
+                    {%endif%}
+                    {% if entry.server and entry.name%}
+                        {%if entry.name != 'Anonymous' %}
+                            <strong> - {{entry.name}}</strong>
+                        {%endif%}
+                    {%else%}
+                        {% if entry.name != 'Anonymous' and entry.name != ''%}
+                            <strong>{{entry.name}}</strong>
+                        {%else%}
+                            Anonymous
+                        {%endif%}
+                    {%endif%}
+                    {% if entry.completed == 1 %}
+                        {% if entry.completingName != 'Anonymous' and entry.completingName != None and entry.completingName != ''%}
+                            - completed by {{entry.completingName}} (<a href="{% url browseNet.views.deepBrowse 'H' entry.completingServer|hid %}">\\{% firstof entry.completingServer %}</a>)
+                        {%else%}
+                            - completed by <a href="{% url browseNet.views.deepBrowse 'H' entry.completingServer|hid %}">\\{{entry.completingServer}}</a>
+                        {%endif%}
+                    {%endif%}
+                </td>
+                <td align="right" class="actions">
+                    {%if entry.completed %}Completed: {{entry.completedTime|date:"m/d/Y"}}, Requested:
+                    {% elif entry.deleted %}Requested:
+                        {{entry.requestTime|date:"m/d/Y"}}
+                    {% else %}
+                            <a  href="{% url request.views.edit entry.CID %}">Edit</a>
+                            <a  href="{% url request.views.complete entry.CID %}">Complete</a>
+                            <a href="{% url request.views.delete entry.CID %}">Delete</a>
+                    {% endif %} {{entry.requestTime|date:"m/d/Y"}}
+                </td>
+            </tr>
+            <tr class="requestbody">
+                <td class="commentCell" colspan="2"><p>{{entry.request|toHTML}}</p>
+                {%if closedReq and entry.completerComment %}
+                    <strong>{{entry.completingServer|default:"Completer"}}'s Comment:</strong><br />
+                    <p>{{entry.completerComment|toHTML}}</p>
+                {% endif %}
+                {% if openReq or closedReq %}
+                    <div class="likes">
+                    {% if openReq %}
+                    <form class="likeform" action="" id="{{entry.CID}}" method="POST">
+                        {% csrf_token %}
+                        <input type=hidden name="id" value="{{entry.CID}}"/>
+                        <input type=hidden name="page" value="{{page}}"/>{%endif%}
+                        <em>{{entry.Likes}} like{{entry.Likes|pluralize}}</em>{%endif%}
+                        {% if openReq %}-
+                        <button class="as_link" title="like this" name="liker" onclick="doLike({{entry.CID}})"><strong><span>like this</span></strong></button>
+                    </form>
+                    
+                    </div>
+                        {% endif %}
+                </td>
+            </tr>
+        </table>
+	{% endfor %}
+</section>
+{% endif %}
+</section>
 <section class="blurb">
 <h1>{% firstof profile.nname user.get_full_name "Anonymous" %}</h1>
 <a href="{% url logout %}">logout</a>
 <ul>
-
-{% if user|has_perm:"polls.add_poll" %}
-	You can add a new poll!
-	{% endif %}
+	<li>Suggested Items?</li>
+	<li>{{user.mname}}</li>
+	<li></li>
 </ul>
+{% if user.host_set.all|length != 0 %}
+	<section id="server">
+		<h2>About your server{{user.host_set.all|length|pluralize}}</h2>
+		<ul>
+		{% for host in user.host_set.all %}
+		<li>{{host}}</li>
+		{% endfor %}
+		</ul>
+	</section>
+{% endif %}
 </section>
 {% endblock %}
 
 {% block extraContent %}
 
 {% endblock %}
+

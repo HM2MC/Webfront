@@ -82,7 +82,7 @@ Request!
                         {% csrf_token %}
                         <input type=hidden name="id" value="{{entry.CID}}"/>
                         <input type=hidden name="page" value="{{page}}"/>
-                        <button class="as_link" title="like this" type=" name="liker" onclick="doLike({{request.CID}})">
+                        <button class="as_link" title="like this" name="liker" onclick="doLike({{request.CID}})" >
                             {{request.Likes}} like{{request.Likes|pluralize}}
                         </button>
                     </form>
@@ -149,7 +149,7 @@ Request!
                         <input type=hidden name="page" value="{{page}}"/>{%endif%}
                         <em>{{entry.Likes}} like{{entry.Likes|pluralize}}</em>{%endif%}
                         {% if openReq %}-
-                        <button class="as_link" title="like this" type=" name="liker" onclick="doLike({{entry.CID}})"><strong><span>like this</span></strong></button>
+                        <button class="as_link" title="like this" name="liker" onclick="doLike({{entry.CID}})"><strong><span>like this</span></strong></button>
                     </form>
                     
                     </div>

@@ -413,3 +413,7 @@ tbody tr:nth-child(even){
 #loginner a {
 	color: rgba(56, 72, 58, 1);
 }
+
+img.plus {
+	width: 1em;
+}

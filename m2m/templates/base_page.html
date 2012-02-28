@@ -128,13 +128,13 @@
                       </ul>
                     </nav>
                     <!-- End navigation -->
-        <div id="loginner">{% block logged_in %}
+        {% block logged_in %}<div id="loginner">
     		{% if user.is_authenticated %}
     			What's up, <a href="{%url useraccounts.views.view_home %}">{%firstof user.nname user.first_name%}</a>?
     		{% else %}
     			<a href="{% url login %}">Login</a>
-    		{% endif %}
-    	{% endblock %}</div>
+    		{% endif %}</div>
+    	{% endblock %}
     	<div id='wrapper'>
     	
         <div id="container">
@@ -220,7 +220,7 @@
             <footer>
             {% block footer %}
             
-                    <p id="tagline">M2M - Because We're Family&trade; </p>
+                    <p id="tagline">M2M - {{footer_tagline|safe|default:"Because We're Family&trade;"}} </p>
                 <ul id="footlist">
                     <li><a href="{%url faq.views.serviceTerms%}">TOS</a></li>
                     <li><a href="/flat/privacy.html">Privacy</a></li>

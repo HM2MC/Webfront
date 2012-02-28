@@ -1,3 +1,34 @@
 #logo * {
 	vertical-align: middle!important;
 }
+
+section.summary {
+	width: 20em!important;
+	float: right;
+}
+
+section.summary h2 {
+	margin-bottom: .5em
+}
+
+section.summary section {
+	max-height: 20em;
+	overflow-y: auto;
+	margin-bottom: 2em;
+}
+
+table.choices td:first-child{
+	border-right: 1px solid black;
+}
+
+table.requestWrap {
+	/*width: 50em;*/
+}
+
+.requestWrap.completed {
+	background-color: rgba(0,200,95,.3);
+}
+
+img.plus {
+	float: right;
+}
