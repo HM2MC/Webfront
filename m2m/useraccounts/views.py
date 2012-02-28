@@ -11,8 +11,8 @@ from forms import LoginForm
 def view_home(request):
     user_profile = request.user.get_profile
     
-    return direct_to_template(request, 'accounts/home.html',
+    return direct_to_template(request, 'home.html',
                               extra_context={
-                               'footer_tagline':"Because we're <em>your</em> family&trade;"
+                               'footer_tagline':"Because We're <em>Your &nbsp;</em>Family&trade;"
                                },
                               )

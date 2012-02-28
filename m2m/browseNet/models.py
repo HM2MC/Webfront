@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+
 
 import re
 # Create your models here.
@@ -52,6 +54,9 @@ class Smb(models.Model):
 
 class Host(models.Model):
     hid = models.IntegerField(primary_key=True, db_column='HID') # Field name made lowercase.
+    
+    user = models.ForeignKey(User, null=True)
+    
     ip = models.CharField(max_length=48, db_column='IP') # Field name made lowercase.
     hosttype = models.IntegerField(db_column='HostType') # Field name made lowercase.
     expirecount = models.IntegerField(db_column='ExpireCount') # Field name made lowercase.

@@ -131,16 +131,17 @@
 {% endif %}
 </section>
 <section class="blurb">
-<h1>{% firstof profile.nname user.get_full_name "Anonymous" %}</h1>
+<h1>{{user.first_name}} "{% firstof user.profile.nname "boring" %}" {{user.last_name}}</h1>
 <a href="{% url logout %}">logout</a>
 <ul>
-	<li>Suggested Items?</li>
-	<li>{{user.mname}}</li>
+	<li>Suggested Itemss?</li>
+	<li></li>
 	<li></li>
 </ul>
 {% if user.host_set.all|length != 0 %}
 	<section id="server">
 		<h2>About your server{{user.host_set.all|length|pluralize}}</h2>
+		{{user.host_set.all|length}} 
 		<ul>
 		{% for host in user.host_set.all %}
 		<li>{{host}}</li>
