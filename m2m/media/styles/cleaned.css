@@ -7,6 +7,10 @@
     border-spacing: 0px;
 }
 
+body {
+
+}
+
 h1 { font-size: 2em;}
 
 li {
@@ -127,6 +131,7 @@ div#container{
     -mox-box-shadow: 0 0 4px rgba(0,0,0,0.5);
     -khtml-box-shadow: 0 0 4px rgba(0,0,0,0.5);
     -webkit-box-shadow: 0 0 4px rgba(0,0,0,0.5);
+
 }
 
 header#pageHeader {
@@ -152,6 +157,10 @@ div#logoContainer{
     -mox-box-shadow: 0 0 4px rgba(0,0,0,0.5);
     -khtml-box-shadow: 0 0 4px rgba(0,0,0,0.5);
     -webkit-box-shadow: 0 0 4px rgba(0,0,0,0.5);
+    	background-image: url(/media/images/M2M-koi.png);
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-position: 98% center;
 }
 #logo img{
     vertical-align: middle;
@@ -355,7 +364,7 @@ div.error{
 }
 
 div#hiddenkoi{
-    background: url(/media/images/koi.gif) no-repeat right;
+    background: url(/media/images/koi.png) no-repeat right;
     height: 100px;
     width: 50px;
     position: fixed;
