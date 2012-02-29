@@ -4,7 +4,7 @@ from django.db.models.signals import post_save
 
 from m2m.stats.models import Log
 from m2m.browseNet.models import Host
-from m2m.courses.models import Course, Major
+#from m2m.courses.models import Course, Major, Section
 # Create your models here.
 
 class UserProfile(models.Model):
@@ -22,8 +22,8 @@ class UserProfile(models.Model):
     nname = models.CharField(max_length=10, null=True, blank=True)
     birthday = models.DateField(null=True, blank=True)
         
-    major = models.ForeignKey(Major, null=True, blank=True)
-    taken_courses = models.ManyToManyField(Course, null=True, blank=True)
+    #major = models.ForeignKey(Major, null=True, blank=True)
+    #taken_courses = models.ManyToManyField(Section, null=True, blank=True)
     
     friends = models.ManyToManyField(User, related_name='friend_to', null=True)
     description = models.TextField(null=True, blank=True)
@@ -51,12 +51,6 @@ class UserProfile(models.Model):
     #
     # ----------------------
     
-    # ----------------------
-    # Does M2M care about them?
-    hosts = models.ManyToManyField(Host,null=True, blank=True)
-    
-    #
-    # ---------------------
     @models.permalink
     def get_absolute_url(self):
         return ('view_user', None, {'username': self.user.username})

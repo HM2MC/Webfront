@@ -259,7 +259,7 @@ class Major(models.Model):
 	title = models.CharField(max_length=50)
 	
 	department = models.ForeignKey('Department')
-	
+	students = models.ManyToManyField(User)
 	required_courses = models.ManyToManyField(Course, related_name='is_required_for')
 	
 	electives = models.ManyToManyField(Course, related_name='is_elective_for')

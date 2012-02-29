@@ -14,6 +14,14 @@
 <script>
 	$(function(){
 		$("#modifiers").remove();
+		
+		$(".expander").click(function(){
+			$(this).html(function(){
+				return $(this).html() == '+'?'-':'+';
+			});
+		});
+		
+		$('#accordion').accordion();
 	});
 </script>
 {% endblock %}
@@ -29,127 +37,197 @@
 {%endblock %}
 
 {% block content %}
-<section class="summary">
-{% if perms.add_poll %}
-<h2>Your Polls <a href="" title="new poll"><img class="plus green" src="{% static "images/plus_green.png" %}"/></a></h2>
-<section id="polls" class="blurb">
-	{% for poll in user.poll_set.all %}
-		{% if forloop.first %}
-		<table class="polls">
-		<thead>
-			<tr>
-				<th>Poll Question</th>
-				<th> Choices and Votes </th>
-			</tr>
-		</thead>
-		{% endif %}
-		<tr>
-			<td class="poll_name">{{poll}}</td><td>
-			<table class="choices">
-				{% for choice in poll.choice_set.all %}
-					<tr> 
-						<td>{{choice.choice}}</td>
-						<td>{{choice.votes}}</td>
-					</tr>
-				{% endfor %}
-			</table></td>
-		</tr>
-		{% if forloop.last %}
-		</table>
-		{% endif %}
-		{% empty %}
-		
-	{% endfor %}
-</section>
-{% endif %}
-
-{% if perms.add_request %}
-<h2>Your Requests <a href="" title="new request"><img class="plus green" src="{% static "images/plus_green.png" %}"/></a></h2>
-<section id="requests" class="blurb">
-	{% for entry in user.comment_set.all %}
-		<table class="requestWrap{% if entry.completed %} completed{% else %}{% if entry.deleted %} deleted{%endif%}{%endif%}">
-            <tr class="requestmeta" style="">
-                <td class="requestername">
-                    {%if entry.server%}
-                        <a href="{% url browseNet.views.deepBrowse 'H' entry.server|hid %}">\\{{entry.server}}</a>
-                    {%endif%}
-                    {% if entry.server and entry.name%}
-                        {%if entry.name != 'Anonymous' %}
-                            <strong> - {{entry.name}}</strong>
-                        {%endif%}
-                    {%else%}
-                        {% if entry.name != 'Anonymous' and entry.name != ''%}
-                            <strong>{{entry.name}}</strong>
-                        {%else%}
-                            Anonymous
-                        {%endif%}
-                    {%endif%}
-                    {% if entry.completed == 1 %}
-                        {% if entry.completingName != 'Anonymous' and entry.completingName != None and entry.completingName != ''%}
-                            - completed by {{entry.completingName}} (<a href="{% url browseNet.views.deepBrowse 'H' entry.completingServer|hid %}">\\{% firstof entry.completingServer %}</a>)
-                        {%else%}
-                            - completed by <a href="{% url browseNet.views.deepBrowse 'H' entry.completingServer|hid %}">\\{{entry.completingServer}}</a>
-                        {%endif%}
-                    {%endif%}
-                </td>
-                <td align="right" class="actions">
-                    {%if entry.completed %}Completed: {{entry.completedTime|date:"m/d/Y"}}, Requested:
-                    {% elif entry.deleted %}Requested:
-                        {{entry.requestTime|date:"m/d/Y"}}
-                    {% else %}
-                            <a  href="{% url request.views.edit entry.CID %}">Edit</a>
-                            <a  href="{% url request.views.complete entry.CID %}">Complete</a>
-                            <a href="{% url request.views.delete entry.CID %}">Delete</a>
-                    {% endif %} {{entry.requestTime|date:"m/d/Y"}}
-                </td>
-            </tr>
-            <tr class="requestbody">
-                <td class="commentCell" colspan="2"><p>{{entry.request|toHTML}}</p>
-                {%if closedReq and entry.completerComment %}
-                    <strong>{{entry.completingServer|default:"Completer"}}'s Comment:</strong><br />
-                    <p>{{entry.completerComment|toHTML}}</p>
-                {% endif %}
-                {% if openReq or closedReq %}
-                    <div class="likes">
-                    {% if openReq %}
-                    <form class="likeform" action="" id="{{entry.CID}}" method="POST">
-                        {% csrf_token %}
-                        <input type=hidden name="id" value="{{entry.CID}}"/>
-                        <input type=hidden name="page" value="{{page}}"/>{%endif%}
-                        <em>{{entry.Likes}} like{{entry.Likes|pluralize}}</em>{%endif%}
-                        {% if openReq %}-
-                        <button class="as_link" title="like this" name="liker" onclick="doLike({{entry.CID}})"><strong><span>like this</span></strong></button>
-                    </form>
-                    
-                    </div>
-                        {% endif %}
-                </td>
-            </tr>
-        </table>
-	{% endfor %}
-</section>
-{% endif %}
-</section>
-<section class="blurb">
 <h1>{{user.first_name}} "{% firstof user.profile.nname "boring" %}" {{user.last_name}}</h1>
-<a href="{% url logout %}">logout</a>
-<ul>
-	<li>Suggested Itemss?</li>
-	<li></li>
-	<li></li>
-</ul>
-{% if user.host_set.all|length != 0 %}
-	<section id="server">
-		<h2>About your server{{user.host_set.all|length|pluralize}}</h2>
-		{{user.host_set.all|length}} 
-		<ul>
-		{% for host in user.host_set.all %}
-		<li>{{host}}</li>
-		{% endfor %}
-		</ul>
-	</section>
-{% endif %}
+<section class="summary">
+	
+	
+	
 </section>
+
+<section class="blurb" id="">
+	
+	<a href="{% url logout %}">logout</a>
+	<ul>
+		<li>Suggested Items?</li>
+		<li>Hosts</li>
+		<li></li>
+	</ul>
+	<div id="accordion">
+	<h3><a href="#">Section 1</a></h3>
+	<div>
+		<p>
+		Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
+		ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
+		amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
+		odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
+		</p>
+	</div>
+	<h3><a href="#">Section 2</a></h3>
+	<div>
+		<p>
+		Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
+		purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
+		velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
+		suscipit faucibus urna.
+		</p>
+	</div>
+	<h3><a href="#">Section 3</a></h3>
+	<div>
+		<p>
+		Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis.
+		Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero
+		ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis
+		lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui.
+		</p>
+		<ul>
+			<li>List item one</li>
+			<li>List item two</li>
+			<li>List item three</li>
+		</ul>
+	</div>
+	<h3><a href="#">Section 4</a></h3>
+	<div>
+		<p>
+		Cras dictum. Pellentesque habitant morbi tristique senectus et netus
+		et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
+		faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+		mauris vel est.
+		</p>
+		<p>
+		Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus.
+		Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
+		inceptos himenaeos.
+		</p>
+	</div>
+</div>
+	<!--
+	{% if user.host_set.all|length != 0 %}
+		
+		<section id="server">
+			<h2><span class="expander">-</span> About your server{{user.host_set.all|length|pluralize}}</h2>
+			
+			
+			{% for host in user.host_set.all %}
+				{% if forloop.first %}
+				<table id="serverlisting"><thead><th>Server</th><th># Problems</th><th>Size</th><th>Last Crawled</th></thead>	
+				{% endif %}
+				<tr>
+					<td><a href="{% url browseNet.views.deepBrowse "H" host.hid %}">{{host.smb}}</a></td>
+					<td><a href="{% url problems.views.host host.hid %}">{{host.problems.count}}</a></td>
+					<td>{{host.totalfilesize|filesizeformat}}</td>
+					<td>{{host.lastscan|dateForm}}</td>
+				</tr>
+				{% if forloop.last %}
+					</table>
+				{% endif %}
+			{% endfor %}
+			<hr />
+		</section>
+	{% endif %}
+	
+	{% if perms.add_poll %}
+	<h2><span class="expander">-</span> Your Polls <a href="" title="new poll"><img class="plus green" src="{% static "images/plus_green.png" %}"/></a></h2>
+	<section id="polls" class="blurb">
+		{% for poll in user.poll_set.all %}
+			{% if forloop.first %}
+			<table class="polls">
+			<thead>
+				<tr>
+					<th>Poll Question</th>
+					<th> Choices and Votes </th>
+				</tr>
+			</thead>
+			{% endif %}
+			<tr>
+				<td class="poll_name">{{poll}}</td><td>
+				<table class="choices">
+					{% for choice in poll.choice_set.all %}
+						<tr> 
+							<td>{{choice.choice}}</td>
+							<td>{{choice.votes}}</td>
+						</tr>
+					{% endfor %}
+				</table></td>
+			</tr>
+			{% if forloop.last %}
+			</table>
+			{% endif %}
+			{% empty %}
+			
+		{% endfor %}
+		<hr />
+	</section>
+	{% endif %}
+	
+	{% if perms.add_request %}
+	<h2><span class="expander">-</span> Your Requests <a href="" title="new request"><img class="plus green" src="{% static "images/plus_green.png" %}"/></a></h2>
+	<section id="requests" class="blurb">
+		{% for entry in user.comment_set.all %}
+			<table class="requestWrap{% if entry.completed %} completed{% else %}{% if entry.deleted %} deleted{%endif%}{%endif%}">
+	            <tr class="requestmeta" style="">
+	                <td class="requestername">
+	                    {%if entry.server%}
+	                        <a href="{% url browseNet.views.deepBrowse 'H' entry.server|hid %}">\\{{entry.server}}</a>
+	                    {%endif%}
+	                    {% if entry.server and entry.name%}
+	                        {%if entry.name != 'Anonymous' %}
+	                            <strong> - {{entry.name}}</strong>
+	                        {%endif%}
+	                    {%else%}
+	                        {% if entry.name != 'Anonymous' and entry.name != ''%}
+	                            <strong>{{entry.name}}</strong>
+	                        {%else%}
+	                            Anonymous
+	                        {%endif%}
+	                    {%endif%}
+	                    {% if entry.completed == 1 %}
+	                        {% if entry.completingName != 'Anonymous' and entry.completingName != None and entry.completingName != ''%}
+	                            - completed by {{entry.completingName}} (<a href="{% url browseNet.views.deepBrowse 'H' entry.completingServer|hid %}">\\{% firstof entry.completingServer %}</a>)
+	                        {%else%}
+	                            - completed by <a href="{% url browseNet.views.deepBrowse 'H' entry.completingServer|hid %}">\\{{entry.completingServer}}</a>
+	                        {%endif%}
+	                    {%endif%}
+	                </td>
+	                <td align="right" class="actions">
+	                    {%if entry.completed %}Completed: {{entry.completedTime|date:"m/d/Y"}}, Requested:
+	                    {% elif entry.deleted %}Requested:
+	                        {{entry.requestTime|date:"m/d/Y"}}
+	                    {% else %}
+	                            <a  href="{% url request.views.edit entry.CID %}">Edit</a>
+	                            <a  href="{% url request.views.complete entry.CID %}">Complete</a>
+	                            <a href="{% url request.views.delete entry.CID %}">Delete</a>
+	                    {% endif %} {{entry.requestTime|date:"m/d/Y"}}
+	                </td>
+	            </tr>
+	            <tr class="requestbody">
+	                <td class="commentCell" colspan="2"><p>{{entry.request|toHTML}}</p>
+	                {%if closedReq and entry.completerComment %}
+	                    <strong>{{entry.completingServer|default:"Completer"}}'s Comment:</strong><br />
+	                    <p>{{entry.completerComment|toHTML}}</p>
+	                {% endif %}
+	                {% if openReq or closedReq %}
+	                    <div class="likes">
+	                    {% if openReq %}
+	                    <form class="likeform" action="" id="{{entry.CID}}" method="POST">
+	                        {% csrf_token %}
+	                        <input type=hidden name="id" value="{{entry.CID}}"/>
+	                        <input type=hidden name="page" value="{{page}}"/>{%endif%}
+	                        <em>{{entry.Likes}} like{{entry.Likes|pluralize}}</em>{%endif%}
+	                        {% if openReq %}-
+	                        <button class="as_link" title="like this" name="liker" onclick="doLike({{entry.CID}})"><strong><span>like this</span></strong></button>
+	                    </form>
+	                    
+	                    </div>
+	                        {% endif %}
+	                </td>
+	            </tr>
+	        </table>
+		{% endfor %}
+		<hr />
+	</section>
+	{% endif %}
+</section>
+-->
 {% endblock %}
 
 {% block extraContent %}

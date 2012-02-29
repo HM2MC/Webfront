@@ -2,8 +2,12 @@ from django import template
 from django.forms import ModelForm
 
 from m2m.polls.models import Poll, Choice
+from m2m.browseNet.templatetags.browseNet_extras import dateForm
+
 
 register = template.Library()
+
+@register.filter(dateForm)
 
 @register.filter
 def has_perm(user, perm):

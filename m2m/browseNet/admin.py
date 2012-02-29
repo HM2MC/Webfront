@@ -3,7 +3,7 @@ from django.contrib import admin
   
 class HostAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields':('ip','hosttype','expirecount','period',
+        (None, {'fields':('ip','hosttype','user','expirecount','period',
                           'counter','networkaddress','servesDirect','flags')})
     ]
     

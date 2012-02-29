@@ -4,11 +4,39 @@
 
 section.summary {
 	width: 20em!important;
+	position: relative;
 	float: right;
 }
 
-section.summary h2 {
-	margin-bottom: .5em
+#main_content {
+	width: 40em!important;
+	margin: 0;
+}
+
+#serverlisting td {
+	text-align: center;
+	border-left: 1px solid rgb(127, 157, 185);
+}
+#serverlisting td:first-child{
+	border-left: none;
+}
+
+hr {
+	width: 60em;
+	margin-left: -5em;
+	margin-top: 1em;
+}
+
+.expander {
+	margin-left: -.5em;
+	cursor: pointer;
+	color:rgb(127, 157, 185);
+}
+
+
+h2 {
+	margin-bottom: .5em;
+	margin-top: .5em;
 }
 
 section.summary section {
