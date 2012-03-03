@@ -247,15 +247,22 @@ def complete(request,id):
                     entry.completedTime = datetime.now()
                     
                     entry.save()
+                    
                     recipients = ['haak.erling@gmail.com']
                     if entry.email:
                         recipients += [entry.email]
+                    elif entry.user:
+                        recipients += [entry.user.email]
+                        
                     message = "From %(host)s:\n\n%(completercomment)s\n\nEnjoy!\n\n This is an automated message; please do not reply to this address" % {'host':entry.completingServer,'completercomment':entry.completerComment}
-                    send_mail('Request Completed!',
-                    message,
-                    'requests@m2m.st.hmc.edu',
-                    recipients,
-                    )
+                    try:
+                        send_mail('Request Completed!',
+                                  message,
+                                  'requests@m2m.st.hmc.edu',
+                                  recipients,
+                                  )
+                    except:
+                        pass
                     test = 3
                     return HttpResponseRedirect(reverse('request.views.completed',current_app='requests'))
                 except Exception,e:
