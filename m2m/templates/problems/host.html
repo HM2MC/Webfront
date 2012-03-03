@@ -6,6 +6,18 @@
 {%block title %} M2M - You done fucked up {%endblock%}
 {%block searchbar %} {%endblock%}
 
+{% block scriptin %}
+<script>
+$(function(){
+		$("#modifiers").remove();
+		});
+</script>
+{% endblock %}
+
+{% block logohold %}
+{% logo problems %}
+{% endblock %}
+
 {% block content %}
 <h1>{{host}}</h1>
 

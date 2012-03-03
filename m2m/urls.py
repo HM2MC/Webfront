@@ -36,7 +36,7 @@ urlpatterns = patterns('',
     
     (r'^menu/', include('menu.urls')),
     
-    (r'^polls', 'problems.views.polls'), # for maintenance, etc
+    #(r'^polls', 'problems.views.polls'), # for maintenance, etc
     (r'^polls/', include('polls.urls')),
     
     #(r'^servers', 'problems.views.browseNet'), # for maintenance, etc

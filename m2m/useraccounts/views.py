@@ -7,12 +7,14 @@ from django.template import RequestContext
 
 from forms import LoginForm
 
+from m2m.polls.models import Poll
+
 @login_required
 def view_home(request):
-    user_profile = request.user.get_profile
     
     return direct_to_template(request, 'home.html',
                               extra_context={
-                               'footer_tagline':"Because We're <em>Your &nbsp;</em>Family&trade;"
+                               'footer_tagline':"Because We're <em>Your &nbsp;</em>Family&trade;",
+                               'poll':Poll.objects.all().order_by('-pub_date')[0]
                                },
                               )

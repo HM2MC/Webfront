@@ -1,56 +1,157 @@
-#logo * {
-	vertical-align: middle!important;
+@import url("/media/styles/requests.css");
+
+#wrapper, #container {
+	width: 95%!important;
+	max-width: 1500px;
+	min-width: 1000px;
 }
 
-section.summary {
-	width: 20em!important;
-	position: relative;
+#content section {
+	border-radius: 5px;
+	border: 1px solid rgba(0,0,5,.2);
+	margin-bottom: 15px;
+	padding: 10px;
+}
+
+#logo img {
+	/*vertical-align: middle;*/
+}
+
+#logo {
+	text-align: left;
+	padding-left: 1em;
+}
+
+#ident {	
 	float: right;
+	margin-right: .25em;
+	margin-top: -15px;
+	font-weight: bold;
+	color:white;
+	font-size: 5em;
+	font-family: "Goudy Old Style", Garamond, serif;
+	
 }
 
-#main_content {
-	width: 40em!important;
-	margin: 0;
+.update_qty{
+	cursor: pointer;
+}
+
+#identID {
+	font-size: 18pt;
+	margin-top: -.5em;
+	text-align: center;
+}
+
+#primary_info {
+	width: 58%;
+}
+
+#poll {
+	
+}
+#poll_choices {
+	margin-bottom: 5px;
+}
+.poll_choice{
+	list-style-type:disc;
+	margin-left: 2em;
+	cursor: pointer;
+	margin-top: 5px;
+	padding: 3px;
+}
+
+.poll_choice:hover {
+	background-color: rgba(0,0,0,.05);
 }
 
 #serverlisting td {
 	text-align: center;
-	border-left: 1px solid rgb(127, 157, 185);
-}
-#serverlisting td:first-child{
-	border-left: none;
 }
 
-hr {
-	width: 60em;
-	margin-left: -5em;
-	margin-top: 1em;
+#sub_content{
+	display: inline;
+	width: 39%;
+	float: right;
 }
 
-.expander {
-	margin-left: -.5em;
-	cursor: pointer;
-	color:rgb(127, 157, 185);
+#requests h1{
+	margin-bottom: 5px;
+}
+.tabs { 
+	float:left;	
+	margin: 5px;
+	margin-top: 15px
 }
 
-
-h2 {
-	margin-bottom: .5em;
-	margin-top: .5em;
+.tabs.horizontal {
+	float:none;
+	list-style-type: none;
+	margin-top: 5px;
+	margin-left: 25px;
+}
+.tabs li{
+	margin-top: 15px;
+	text-align: center;
+	margin-right: -6px;
+	border-radius: 5px 0 0 5px;
+	background-color: rgba(220, 228, 230, 1);
+	padding: 5px;
 }
 
-section.summary section {
-	max-height: 20em;
+.tabs.horizontal li {
+	margin-top: 5px;
+	margin-bottom: -2px;
+	float:left;	
+	margin-right: 5px;
+	border-radius: 5px 5px 0 0;
+}
+
+.tabs a:hover{ 
+	text-decoration: none;
+}
+
+.tabs a.current li{
+	background-color: rgba(240, 248, 255, 1);
+	cursor: default;
+}
+
+.tabs.horizontal a.current li{
+	background-color:rgba(220, 228, 230, 1);
+	border-bottom: 2px solid rgba(0,0,0,1);
+}
+
+.panes {
+	background-color: rgba(240, 248, 255, 1);
+	border-radius: 5px;
+	overflow-y:auto;
+	height: 700px;
+	padding: 5px;
+}
+
+.panes > div {
+	float: right;
+	width: 100%;
+}
+
+.host_panes {
+	margin: 0 auto;
+	width: 95%;
+	border-radius: 5px;
+	background-color:rgba(220, 228, 230, 1);
+	padding: 5px;
 	overflow-y: auto;
-	margin-bottom: 2em;
 }
 
-table.choices td:first-child{
-	border-right: 1px solid black;
+.host_panes div {
+	float: none;
 }
 
 table.requestWrap {
-	/*width: 50em;*/
+	width: 100%;
+}
+table.requestWrap:first-child {
+	margin-top: 0px;
 }
 
 .requestWrap.completed {

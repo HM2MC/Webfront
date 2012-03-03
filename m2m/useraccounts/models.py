@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 
 from m2m.stats.models import Log
 from m2m.browseNet.models import Host
+from m2m.settings import INSTALLED_APPS
 #from m2m.courses.models import Course, Major, Section
 # Create your models here.
 
@@ -21,6 +22,8 @@ class UserProfile(models.Model):
     
     nname = models.CharField(max_length=10, null=True, blank=True)
     birthday = models.DateField(null=True, blank=True)
+    
+    phonenumber = models.CharField(max_length=15, blank=True)
         
     #major = models.ForeignKey(Major, null=True, blank=True)
     #taken_courses = models.ManyToManyField(Section, null=True, blank=True)
@@ -60,6 +63,10 @@ class UserProfile(models.Model):
 
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
+# request-specific properties; don't add these if the request app isn't installed yet
+if 'request' in INSTALLED_APPS:
+    User.completed_requests = property(lambda u: u.comment_set.all().filter(completed=True))
+    User.open_requests = property(lambda u: u.comment_set.all().filter(completed=False))
 
 def create_user_profile(sender, instance, created, **kwargs):
     if created:

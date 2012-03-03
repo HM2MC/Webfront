@@ -8,8 +8,13 @@ import datetime
 
 class Poll(models.Model):
     question = models.CharField(max_length=200)
+    
     pub_date = models.DateTimeField('date published')
+    expiry_date = models.DateField('date expires', blank=True, null=True)
+    
     user = models.ForeignKey(User)
+    
+    has_voted = models.ManyToManyField(User, related_name='polls_voted_set', null=True, blank=True)
     
     def was_published_today(self):
         return self.pub_date.date() == datetime.date.today()

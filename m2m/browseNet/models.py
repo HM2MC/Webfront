@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from m2m.settings import INSTALLED_APPS
 
 import re
 # Create your models here.
@@ -72,6 +73,16 @@ class Host(models.Model):
     servesDirect = models.BooleanField()
     directPort = models.IntegerField(db_column="directPort")
     
+    if 'request' in INSTALLED_APPS:
+        unfinished_requests = property(lambda u: u.comment_set.all().filter(completed=False))
+        finished_targetd_requests = property(lambda u: u.comment_set.all().filter(completed=True))
+        @property
+        def requests_completed_overall(self):
+            from m2m.request.models import Comment
+            c = Comment.objects.all().filter(completingServer=self.smb.hostname)
+                
+            return c
+        
     def __unicode__(self):
         if (re.search('dhcp',self.networkaddress,flags=re.IGNORECASE)) or (len(self.networkaddress) < 5): #dhcp links suck
             return self.ip

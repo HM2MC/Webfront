@@ -6,6 +6,6 @@ from django.views.generic import DetailView, ListView
 urlpatterns = patterns('browseNet.views',
         
         (r'^(?P<type>[HPS])/(?P<id>\d+)?','deepBrowse'),
-        (r'^(?P<page>\d*)','listAll'),
+        (r'^(?P<page>\d*)','listAll',),
         
     )

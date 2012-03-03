@@ -8,8 +8,8 @@ class ChoiceInline(admin.TabularInline):
 
 class PollAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,                  {'fields':['question','user']}),
-        ('Date Information',    {'fields':['pub_date'], 'classes':['collapse']}),
+        (None,                  {'fields':['question','user','has_voted']}),
+        ('Date Information',    {'fields':['pub_date', 'expiry_date'], 'classes':['collapse']}),
     ]
     
     list_display = ('question','pub_date','was_published_today')

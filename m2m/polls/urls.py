@@ -18,5 +18,8 @@ urlpatterns = patterns('polls.views',
             template_name='polls/results.html',
             ),
         name='poll_results'),
-    (r'^(?P<poll_id>\d+)/vote/$', 'vote'),
+    #(r'^(?P<poll_id>\d+)/vote/$', 'vote'),
+    
+    (r'^vote/$','vote_by_form'),
+    
 )

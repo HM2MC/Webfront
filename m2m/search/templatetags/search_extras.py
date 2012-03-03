@@ -211,6 +211,8 @@ class LogoNode(template.Node):
         'shows': styling % (reverse('advancedsearch.views.showSplash'),'TV'),
         'menu': styling % (reverse('menu.views.main'),'eals'),
         'accounts': styling % (reverse('useraccounts.views.view_home'),'e'),
+        'problems': styling % (reverse('browseNet.views.listAll',args=(0,)), 'alfunction'),
+        'stats': styling % ('','atlab'),
         'None':"",
     }
     
@@ -248,6 +250,10 @@ class LogoNode(template.Node):
             mname = "M_{}_{}".format(context['user'].first_name.lower(),context['user'].last_name.lower())
             if mname in self.mChoices:
                 self.right = mname
+            else:
+                if self.right == 'Mvivaldi':
+                    self.right = 'Mmath'
+            self.left = 'Mmath'
         try:
             return "\
             <a href=\"{index}\"><span>\

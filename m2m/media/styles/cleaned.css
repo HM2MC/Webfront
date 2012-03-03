@@ -163,13 +163,11 @@ div#logoContainer{
     background-position: 98% center;
 }
 #logo img{
-    vertical-align: middle;
+    /*vertical-align: middle;*/
 }
 
 #leftlogo, #rightlogo {
     height: 100px;
-    vertical-align: middle;
-    
 }
 
 #arrowlogo {

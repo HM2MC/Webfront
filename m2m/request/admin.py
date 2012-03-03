@@ -30,7 +30,7 @@ class CommentAdmin(admin.ModelAdmin):
     search_fields = ['request','completingServer']
     
     date_hierarchy = 'requestTime'
-    
+    raw_id_fields = ('target_host',)
     actions = [markDeleted]
 
 admin.site.register(Comment,CommentAdmin)

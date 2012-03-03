@@ -130,7 +130,7 @@
                     <!-- End navigation -->
         {% block logged_in %}<div id="loginner">
     		{% if user.is_authenticated %}
-    			What's up, <a href="{%url useraccounts.views.view_home %}">{%firstof user.nname user.first_name%}</a>?
+    			What's up, <a href="{%url useraccounts.views.view_home %}">{%firstof user.profile.nname user.first_name%}?</a>
     		{% else %}
     			<a href="{% url login %}">Login</a>
     		{% endif %}</div>
