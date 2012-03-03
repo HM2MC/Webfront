@@ -225,7 +225,7 @@ Coming soon!
 				</div>
 			{% endif %}
 		<div id="completed_requests">
-		{% for entry in user.completed_requests %}
+		{% for entry in user.completed_requests|order_by:'-completedTime'  %}
 			<table class="requestWrap{% if entry.completed %} completed{% else %}{% if entry.deleted %} deleted{%endif%}{%endif%}">
 	            <tr class="requestmeta" style="">
 	                <td class="requestername">
