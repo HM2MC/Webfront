@@ -28,7 +28,6 @@ class UserProfile(models.Model):
     #major = models.ForeignKey(Major, null=True, blank=True)
     #taken_courses = models.ManyToManyField(Section, null=True, blank=True)
     
-    friends = models.ManyToManyField(User, related_name='friend_to', null=True)
     description = models.TextField(null=True, blank=True)
     
     #
@@ -61,6 +60,16 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.user.username
 
+class Friendship(models.Model):
+    from_friend = models.ForeignKey(User, related_name='friend_set')
+    to_friend = models.ForeignKey(User, related_name='to_friend_set')
+    
+    def __unicode__(self):
+        return u"{} --> {}".format(self.from_friend.username, self.to_friend.username)
+    
+    class Meta:
+        unique_together = (('to_friend', 'from_friend'))
+
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
 # request-specific properties; don't add these if the request app isn't installed yet
@@ -71,5 +80,6 @@ if 'request' in INSTALLED_APPS:
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
-        
-post_save.connect(create_user_profile, sender=User)
+ 
+# this signal isn't needed because of the 'profile' property we set on Users above       
+#post_save.connect(create_user_profile, sender=User)
