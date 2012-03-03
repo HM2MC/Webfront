@@ -94,9 +94,12 @@ class Command(BaseCommand):
             sys.stdout.write("[{:20}] {:d}%".format('='*(int(float(complete)/100*20)), complete))
             sys.stdout.flush()
             counter += 1
-        print "\nEncountered errors:"
-        for error in errors:
-            print '\t{}'.format(error)
+        if len(errors) > 0:
+            print "\nEncountered errors:"
+            for error in errors:
+                print '\t{}'.format(error)
+        
+        print "Done."
         
 
         
