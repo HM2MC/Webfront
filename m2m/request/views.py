@@ -36,13 +36,18 @@ def open(request,page=1,error=''):
                     reqip = request.META['HTTP_X_REAL_IP']
                 except:
                     reqip = request.META['REMOTE_ADDR']
+                if request.user.is_authenticated():
+                    user = request.user
+                else:
+                    user = None
                 newRequest = Comment(
                                 request=form.cleaned_data['request'],
                                 name=form.cleaned_data['name'],
                                 server=form.cleaned_data['server'].upper(),
                                 email=form.cleaned_data['email'],
                                 requestIP=reqip,
-                                requestTime = datetime.now()
+                                requestTime = datetime.now(),
+                                user=user
                                 )
                 
                 newRequest.save()
