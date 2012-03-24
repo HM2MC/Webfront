@@ -78,6 +78,16 @@
 #requests h1{
 	margin-bottom: 5px;
 }
+
+#new_request {
+	display: none;
+	text-align: right;
+}
+
+#new_request #requestComment {
+	text-align: left;
+}
+
 .tabs { 
 	float:left;	
 	margin: 5px;

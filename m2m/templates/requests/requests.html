@@ -21,7 +21,9 @@ function likeHandler(){
                 $('#'+cid+" button").replaceWith("Thanks!");
             },
             error: function( XMLHttpRequest, textStatus, errorThrown){
-                $('#'+cid+" button").replaceWith("Sorry, no");
+            	if (errorThrown == "FORBIDDEN"){
+                	$('#'+cid+" button").replaceWith("Not logged in!");
+                }
             }
         
         });
@@ -148,8 +150,11 @@ Request!
                         <input type=hidden name="id" value="{{entry.CID}}"/>
                         <input type=hidden name="page" value="{{page}}"/>{%endif%}
                         <em>{{entry.Likes}} like{{entry.Likes|pluralize}}</em>{%endif%}
-                        {% if openReq %}-
-                        <button class="as_link" title="like this" name="liker" onclick="doLike({{entry.CID}})"><strong><span>like this</span></strong></button>
+                        {% if openReq %}- {% if user in entry.likers.all %} 
+                        <button class="as_link" title="like this" name="liker" onclick="unlike({{entry.CID}})"><strong><span>unlike</span></strong></button>
+                        {% else %}
+                        <button class="as_link" title="like this" name="liker" onclick="doLike({{entry.CID}})"><strong><span>like this</span></strong></button> 
+                        {% endif %}
                     </form>
                     
                     </div>

@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.core.urlresolvers import reverse
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.generic.simple import direct_to_template
 from django.views.decorators.csrf import csrf_exempt
 
@@ -15,7 +15,7 @@ def index(request):
     latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
     return direct_to_template('polls/index.html', {'latest_poll_list': latest_poll_list})
 
-
+@user_passes_test(lambda u: u.has_perm('polls.can_add_poll'))
 def detail(request, poll_id):
     p = get_object_or_404(Poll, pk=poll_id)
     return direct_to_template(request, 'polls/detail.html', extra_context={'poll': p})

@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.core.urlresolvers import reverse
 #from django.db import transaction
 
@@ -108,7 +108,7 @@ def open(request,page=1,error=''):
                                 'requests':'current',
                                 'openReq':'current', 
                                 'displaySet':displaySet,
-                                'toprequests': Comment.objects.filter(isDeleted=0,completed=0,Likes__gt=0).order_by('-Likes')[:PERPAGE+10],
+                                'toprequests': Comment.objects.filter(isDeleted=0,completed=0,likes__gt=0).order_by('-likes')[:PERPAGE+10],
                                 'page':page+1,
                                 'linkPages':linkPages,
                                 'setLen':setLen,
@@ -304,11 +304,21 @@ def delete(request,id):
         
         return HttpResponseRedirect(reverse('request.views.open',args=(2,),current_app='requests'))
 
+
 def like(request,id='q',page='q'):
+    if not request.user.is_authenticated():
+        return HttpResponseForbidden("You need to be logged in for that")
     try:
         entry = Comment.objects.get(pk=id)
-        entry.Likes += 1
-        entry.save()
+        
+        # keep track of who's liking what
+        if request.user != entry.user:
+            if request.user in entry.likers.all():
+                entry.likers.remove(request.user)
+            else:
+                entry.likers.add(request.user)
+        
+        print 'added {} as likers of {}'.format(request.user, id)
         
         return HttpResponseRedirect(reverse('request.views.open',current_app='requests'))
     except:

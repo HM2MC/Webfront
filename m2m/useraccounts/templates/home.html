@@ -2,7 +2,6 @@
 {% load staticfiles %}
 {% load search_extras %}
 {% load request_extras %}
-{% load staticfiles %}
 {% load useraccounts_extras %}
 
 {% block stylin %}
@@ -10,13 +9,25 @@
 {% endblock%}
 
 {% block scriptin %}
+<script src="http://www.appelsiini.net/download/jquery.jeditable.mini.js"></script>
 <script>
 	$(function(){
+		
+		/*
+		 * Global issues
+		 * 
+		 */
+	
 		$("#modifiers").remove();
 		
-		$('#nname_edit').live('click', function(){
-			alert("change your nickname!");
-		});
+		// update-on-click!
+    	$('.update_qty').editable('{% url useraccounts.views.inline_editable %}'); 
+    	
+    	
+		/*
+		 *  Poll panel scripts
+		 * 
+		 */
 
 		$('.poll_choice').click(function(){
 			var choice_id = parseInt($(this).attr('id'));
@@ -30,9 +41,27 @@
 				 }
 			);		
 		});
+		
+		/*
+		 * Request panel scripts
+		 * 
+		 */
 		$("#request_tabs").tabs("div.panes > div");
 		
 		$('#request_host_switch').tabs('div.host_panes > div');
+		
+		$('#show_request_form').click(function(){
+			$('#new_request').slideToggle('slow', function(){
+				// Animation Complete
+			});
+		});
+  		
+  		// since we don't use a traditional submit button
+  		$("#submitrequest").click(function(){
+        	$('#requester').submit();
+    	});
+    	
+    	
 	});
 </script>
 {% endblock %}
@@ -126,7 +155,33 @@ Coming soon!
 	{% if perms.add_request %}
 	
 	<section id="requests" class="blurb">
-		<h1>Requests <a href="" title="new request"><img class="plus green" src="{% static "images/plus_green.png" %}"/></a></h1>
+		<h1>Requests <a href="#" id="show_request_form" title="new request"><img class="plus green" src="{% static "images/plus_green.png" %}"/></a></h1>
+		<div id="new_request">
+			<form id="requester" method=post>
+				{% csrf_token %}
+                    <div id="requestComment"><label for="id_request">Your comment/request/idea:</label><br />
+                    {{request_form.request}}
+                    </div>
+                    
+                    <div id="noncommentrequest">
+                    <ul >
+                        <li><label for="id_name" class="required">Your name:</label>
+                        {{ request_form.name }}
+                        </li>
+
+                        <li id="requestServer">
+                        <label for="id_server">Your server:</label>{{request_form.server}}
+                        </li>
+
+                        <li id="requestEmail"><label for="id_email">Your email:</label>
+                        {{request_form.email}}
+                        </li>
+                    </ul><div id="requestSub">
+                    <a class="green button" id="submitrequest"><span>Submit</span></a>
+                    </div>
+                    </div>
+			</form>
+		</div>
 		<ul class="tabs" id='request_tabs'>
 			{% if user.host_set.all|length > 0 %}
 				<a href="#"><li>@You</li></a>
@@ -135,6 +190,7 @@ Coming soon!
 			<a href="#"><li>IP</li></a>
 		</ul>
 		<div class="panes" id='request_panes'>
+		{# if they have a host, show the requests that are unfulfilled #}
 			{% if user.host_set.all|length > 0 %}
 				<div id='your_requests'>
 					<ul id="request_host_switch" class='tabs horizontal'>
@@ -224,8 +280,10 @@ Coming soon!
 					
 				</div>
 			{% endif %}
+			
+		{# show requests they've made or have supported that are completed #}
 		<div id="completed_requests">
-		{% for entry in user.completed_requests|order_by:'-completedTime'  %}
+		{% for entry in user.profile.completed_requests|order_by:'-completedTime'  %}
 			<table class="requestWrap{% if entry.completed %} completed{% else %}{% if entry.deleted %} deleted{%endif%}{%endif%}">
 	            <tr class="requestmeta" style="">
 	                <td class="requestername">
@@ -293,8 +351,9 @@ Coming soon!
 	        </table>
 		{% endfor %}
 		</div>
+		{# and finally show requests that haven't been completed #}
 		<div id='open_requests'>
-		{% for entry in user.open_requests %}
+		{% for entry in user.profile.open_requests %}
 			<table class="requestWrap{% if entry.completed %} completed{% else %}{% if entry.deleted %} deleted{%endif%}{%endif%}">
 	            <tr class="requestmeta" style="">
 	                <td class="requestername">

@@ -32,7 +32,12 @@ class Comment(models.Model):
     server = models.CharField(max_length=60, null=True,blank=True)
     requestIP = models.IPAddressField(max_length=64,null=True,blank=True)
     # ala facebook
-    Likes = models.IntegerField(default=0)
+    likes = models.IntegerField(default=0)
+
+    likers = models.ManyToManyField(User, related_name='supported_requests')
+
+    def Likes(self):
+        return self.likes + self.likers.all().count()
 
     target_host = models.ForeignKey(Host, null=True, blank=True)
 

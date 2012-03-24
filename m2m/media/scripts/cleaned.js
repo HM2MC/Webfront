@@ -6,6 +6,17 @@ $(function(){
     $(window).resize(function(){
         $('#container').css('min-height',$(window).height()-25)
     });
+    
+    // hide login extras until mouseover
+    $('#loginner').hover(
+    	function(){
+    		$(this).children('.hidden').toggle('medium');
+    	}, 
+    	function(){
+    		$(this).children('.hidden').toggle('medium');
+    	});
+    
+    
     // move params around
     $('#searchParams').css('left',function(index,value){
                 $(this).width(function(){

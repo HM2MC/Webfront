@@ -6,6 +6,8 @@ from m2m.stats.models import Log
 from m2m.browseNet.models import Host
 from m2m.settings import INSTALLED_APPS
 #from m2m.courses.models import Course, Major, Section
+
+from itertools import chain
 # Create your models here.
 
 class UserProfile(models.Model):
@@ -52,6 +54,19 @@ class UserProfile(models.Model):
     room = models.CharField(max_length=4,null=True, blank=True)
     #
     # ----------------------
+    
+    @property
+    def requests(self):
+        """Fetches all requests associated with a user, as a QuerySet. """
+        return self.user.comment_set.all() | self.user.supported_requests.all()
+    
+    def completed_requests(self):
+        """Returns all completed requests associated with a user"""
+        return self.requests.filter(completed=True)
+    
+    def open_requests(self):
+        """Returns all non-completed requests associated with a user"""
+        return self.requests.filter(completed=False)
     
     @models.permalink
     def get_absolute_url(self):

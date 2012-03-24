@@ -61,6 +61,10 @@ a.current img {
     -webkit-box-shadow: 0 0 6px rgba(255,255,255,0.5);
 }
 
+.hidden {
+	display: none;
+}
+
 .disabled {
     opacity: 0.4;
 }
@@ -419,8 +423,11 @@ tbody tr:nth-child(even){
 
 #loginner a {
 	color: rgba(56, 72, 58, 1);
+	
 }
-
+#loginner div {
+	text-align: left;
+}
 img.plus {
 	width: 1em;
 }
