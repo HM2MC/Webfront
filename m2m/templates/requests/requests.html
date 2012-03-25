@@ -10,19 +10,20 @@
 function likeHandler(){
     $('.likeform').submit(function(){
         cid = $(this).attr('id');
+        var $form = $(this);
         $.ajax({
             type: "POST",
             data: $(this).serialize(),
-            url: "/requests/like/"+cid+"/{{page}}",
+            url: "{% url request.views.like %}",
             cache: false,
             dataType:'html',
             success: function(html,textStatus){
-                $('#'+cid+" em").load('{% url request.views.open page%} #'+cid+' em');
-                $('#'+cid+" button").replaceWith("Thanks!");
+                $form.children('.number').html(html);
+                $form.children("button").replaceWith("Thanks!");
             },
             error: function( XMLHttpRequest, textStatus, errorThrown){
             	if (errorThrown == "FORBIDDEN"){
-                	$('#'+cid+" button").replaceWith("Not logged in!");
+                	$form.children("button").replaceWith("Not logged in!");
                 }
             }
         
@@ -30,6 +31,10 @@ function likeHandler(){
         return false;
     });
 }
+
+$(document).ready(function(){
+	likeHandler();
+});
 </script>
 {% endblock %}
 
@@ -78,18 +83,18 @@ Request!
     <tbody>
     {% for request in toprequests %}
         <tr>
-        <td style="padding-right: 5px;padding-left: 2px;">{{request.request|toHTML|truncatewords_html:20}}</td>
-        <td style="text-align: center; padding-right: 5px;"> 
-            <form class="likeform" action="" id="{{entry.CID}}" method="POST">
-                        {% csrf_token %}
-                        <input type=hidden name="id" value="{{entry.CID}}"/>
-                        <input type=hidden name="page" value="{{page}}"/>
-                        <button class="as_link" title="like this" name="liker" onclick="doLike({{request.CID}})" >
-                            {{request.Likes}} like{{request.Likes|pluralize}}
-                        </button>
-                    </form>
-        </td>
-        <td class="actions"><a  href="{% url request.views.complete request.CID %}">Complete</a></td>
+	        <td style="padding-right: 5px;padding-left: 2px;">{{request.request|toHTML|truncatewords_html:20}}</td>
+	        <td style="text-align: center; padding-right: 5px;"> 
+	            <form class="likeform" action=""  method="POST">
+	                        {% csrf_token %}
+	                        <input type=hidden name="id" value="{{request.CID}}"/>
+	                        <input type=hidden name="page" value="{{page}}"/>
+	                        <button class="as_link number" title="like this" name="liker" onclick="doLike({{request.CID}})" >
+	                            <span>{{request.Likes}}</span> like{{request.Likes|pluralize}}
+	                        </button>
+	                    </form>
+	        </td>
+	        <td class="actions"><a  href="{% url request.views.complete request.CID %}">Complete</a></td>
         </tr>    
     {% endfor %}
     </tbody>
@@ -149,11 +154,11 @@ Request!
                         {% csrf_token %}
                         <input type=hidden name="id" value="{{entry.CID}}"/>
                         <input type=hidden name="page" value="{{page}}"/>{%endif%}
-                        <em>{{entry.Likes}} like{{entry.Likes|pluralize}}</em>{%endif%}
-                        {% if openReq %}- {% if user in entry.likers.all %} 
-                        <button class="as_link" title="like this" name="liker" onclick="unlike({{entry.CID}})"><strong><span>unlike</span></strong></button>
+                        <em class='number'>{{entry.Likes}} like{{entry.Likes|pluralize}}</em>{%endif%}
+                        {% if openReq %}- {% if user in entry.likers %} 
+                        <button class="as_link" title="like this" name="liker"><strong><span>unlike</span></strong></button>
                         {% else %}
-                        <button class="as_link" title="like this" name="liker" onclick="doLike({{entry.CID}})"><strong><span>like this</span></strong></button> 
+                        <button class="as_link" title="like this" name="liker"><strong><span>like this</span></strong></button> 
                         {% endif %}
                     </form>
                     

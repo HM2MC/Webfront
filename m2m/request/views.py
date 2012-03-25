@@ -1,10 +1,10 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotAllowed, HttpResponseNotFound
 from django.core.urlresolvers import reverse
-#from django.db import transaction
+from django.db.models import Count, Sum
 
-from models import Comment
+from models import Comment, Like
 from formClasses import RequestForm, ModifyForm
 
 from datetime import datetime
@@ -108,7 +108,10 @@ def open(request,page=1,error=''):
                                 'requests':'current',
                                 'openReq':'current', 
                                 'displaySet':displaySet,
-                                'toprequests': Comment.objects.filter(isDeleted=0,completed=0,likes__gt=0).order_by('-likes')[:PERPAGE+10],
+                                'toprequests': Comment.open_objects\
+                                                      .annotate(likers_count=Sum('like_set__value'))\
+                                                      .filter(likers_count__gt=0)\
+                                                      .order_by('-likers_count')[:PERPAGE],
                                 'page':page+1,
                                 'linkPages':linkPages,
                                 'setLen':setLen,
@@ -305,24 +308,33 @@ def delete(request,id):
         return HttpResponseRedirect(reverse('request.views.open',args=(2,),current_app='requests'))
 
 
-def like(request,id='q',page='q'):
+def like(request):
     if not request.user.is_authenticated():
         return HttpResponseForbidden("You need to be logged in for that")
+    #if request.method != "POST":
+    #   return HttpResponseNotAllowed(['POST']) 
     try:
-        entry = Comment.objects.get(pk=id)
-        
+        print "finding request {}".format(request.POST['id'])
+        entry = Comment.objects.get(pk=request.POST['id'])
         # keep track of who's liking what
-        if request.user != entry.user:
-            if request.user in entry.likers.all():
-                entry.likers.remove(request.user)
-            else:
-                entry.likers.add(request.user)
+        print 'Creating/finding the like'
+        like, new = Like.objects.get_or_create(user=request.user, comment=entry)
+        if not new:
+            # if it's not a new like, just toggle 'activation'
+            print 'toggling active for extant like'
+            like.active = True if not like.active else False 
+            like.save()
+        
+        
+        
         
         print 'added {} as likers of {}'.format(request.user, id)
-        
-        return HttpResponseRedirect(reverse('request.views.open',current_app='requests'))
-    except:
-        entry = None
-    finally:
-        return HttpResponseRedirect(reverse('request.views.open',current_app='requests'))
+        if entry.Likes > 1 or entry.Likes == 0:
+            string = "likes"
+        else:
+            string = "like"
+        return HttpResponse("{} {}".format(entry.Likes,string))
+    except Exception, e:
+        raise e
+        #return HttpResponseNotFound(request.POST['id'])
         

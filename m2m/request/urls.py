@@ -11,5 +11,5 @@ urlpatterns = patterns('request.views',
         (r'^edit/(\d+)$','edit'),
         (r'^complete/(\d+)$','complete'),
         (r'^delete/(\d+)$','delete'),
-		(r'^like/(?P<id>\d+)/(?P<page>\d+)$','like'),
+		(r'^like/$','like'),
     )

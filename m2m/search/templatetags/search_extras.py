@@ -272,6 +272,20 @@ class LogoNode(template.Node):
             
 @register.tag(name="logo")
 def do_logo(parser,token):
+    """
+    Handles generating the witty logo words.
+    
+    Usage::
+    
+        {% logo [module_name] %}
+    
+    You'll need to overwrite this in the ``logohold`` block in the templates.
+    
+    Examples::
+    
+        {% logo movies %}
+        {% logo music %}
+    """
     try:
         tag_name, module = token.split_contents()
     except ValueError:
@@ -282,6 +296,17 @@ def do_logo(parser,token):
 
 @register.tag(name="extra_styles")
 def do_extra_styles(parser,token):
+    """
+    Includes extra stylesheets for special occasions.
+    
+    Usage::
+    
+        {% extra_styles %}
+        
+    The parser will hand everything; this is included on the base template of every page on M2M, so you shouldn't need to 
+    add it anywhere.
+    """
+    
     return ExtraStyles()
     
 class ExtraStyles(template.Node):
@@ -317,6 +342,13 @@ class NewNewsNode(template.Node):
             
 @register.tag(name="latestnews")
 def do_newNews(parser,token):
+    """
+    Creates pretty notifier about new news posts.
+    
+    Usage::
+    
+        {% latestnews %}
+    """
     try:
         tag_name = token.split_contents()
     except:

@@ -12,8 +12,6 @@ function extraRequestHandler(){
 }
 
 $(document).ready(function(){ 
-    likeHandler();
-    
     // make sure the request form is positioned properly
     $("#requestForm").width(function(){
         return $("#requestComment").width() + $("#noncommentrequest").width()+10;

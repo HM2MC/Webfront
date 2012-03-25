@@ -5,6 +5,7 @@ from django.db.models.signals import post_save
 from m2m.stats.models import Log
 from m2m.browseNet.models import Host
 from m2m.settings import INSTALLED_APPS
+from m2m.request.models import Comment, Like
 #from m2m.courses.models import Course, Major, Section
 
 from itertools import chain
@@ -57,13 +58,18 @@ class UserProfile(models.Model):
     
     @property
     def requests(self):
-        """Fetches all requests associated with a user, as a QuerySet. """
-        return self.user.comment_set.all() | self.user.supported_requests.all()
+        """Fetches all requests associated with a user, as a QuerySet. 
+        
+        Associated means that the user either made the request themself, or expressed support by having an active 'like'
+        attached to that request."""
+        return self.user.comment_set.all() | Comment.objects.filter(like_set__user=self.user, like_set__active=True)
     
+    @property
     def completed_requests(self):
         """Returns all completed requests associated with a user"""
         return self.requests.filter(completed=True)
     
+    @property
     def open_requests(self):
         """Returns all non-completed requests associated with a user"""
         return self.requests.filter(completed=False)
@@ -76,6 +82,7 @@ class UserProfile(models.Model):
         return self.user.username
 
 class Friendship(models.Model):
+    """Describes a friendship between two users. """
     from_friend = models.ForeignKey(User, related_name='friend_set')
     to_friend = models.ForeignKey(User, related_name='to_friend_set')
     
