@@ -409,7 +409,8 @@ tbody tr:nth-child(even){
 	position: relative;
 	top: 35px;
 	padding: 0.5em 1em;
-	text-align: center;
+	text-align: right;
+	overflow: hidden;
 	border-radius: 5px 0px 0px 5px;
 	background-color: rgba(100,149,237,1);
 	display: table-cell;
@@ -425,9 +426,7 @@ tbody tr:nth-child(even){
 	color: rgba(56, 72, 58, 1);
 	
 }
-#loginner div {
-	text-align: left;
-}
+
 img.plus {
 	width: 1em;
 }

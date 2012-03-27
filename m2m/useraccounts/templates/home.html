@@ -67,11 +67,14 @@
 {% endblock %}
 
 {% block logged_in %}
-<div id="loginner">
+    		<div id="loginner">
     		{% if user.is_authenticated %}
-    			<a href="{%url logout %}">Logout?</a>
+    			{% block logged_in_as %}Logged in as: <a href="{%url useraccounts.views.view_home %}">{%firstof user.profile.nname user.first_name%}</a>{%endblock%}
+    			<div class='hidden'> 
+	    			<div id='changepwd'><a href="{% url change_password %}"> change password </a></div>
+    			</div>
     		{% else %}
-    			<a href="{% url login %}">How did you even get here??</a>
+    			<a href="{% url login %}">Login</a>
     		{% endif %}</div>
 {%endblock %}
 
@@ -170,11 +173,7 @@ Coming soon!
                         </li>
 
                         <li id="requestServer">
-                        <label for="id_server">Your server:</label>{{request_form.server}}
-                        </li>
-
-                        <li id="requestEmail"><label for="id_email">Your email:</label>
-                        {{request_form.email}}
+                        <label for="id_server">For server:</label>{{request_form.server}}
                         </li>
                     </ul><div id="requestSub">
                     <a class="green button" id="submitrequest"><span>Submit</span></a>

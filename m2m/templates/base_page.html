@@ -130,7 +130,7 @@
                     <!-- End navigation -->
         {% block logged_in %}<div id="loginner">
     		{% if user.is_authenticated %}
-    			Logged in as: <a href="{%url useraccounts.views.view_home %}">{%firstof user.profile.nname user.first_name%}</a>
+    			{% block logged_in_as %}Logged in as: <a href="{%url useraccounts.views.view_home %}">{%firstof user.profile.nname user.first_name%}</a>{%endblock%}
     			<div class='hidden'> 
 	    			<div id='logout_link'> <a href="{% url logout %}">logout</a> </div>
 	    			<div id='changepwd'><a href="{% url change_password %}"> change password </a></div>

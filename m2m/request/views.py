@@ -309,10 +309,15 @@ def delete(request,id):
 
 
 def like(request):
+    """
+    Allows asynchronous liking/unliking.
+    
+    Requires a POST argument, which requires an `id`` key, specifying which ``Comment`` to update.
+    """
     if not request.user.is_authenticated():
         return HttpResponseForbidden("You need to be logged in for that")
-    #if request.method != "POST":
-    #   return HttpResponseNotAllowed(['POST']) 
+    if request.method != "POST":
+        return HttpResponseNotAllowed(['POST']) 
     try:
         print "finding request {}".format(request.POST['id'])
         entry = Comment.objects.get(pk=request.POST['id'])

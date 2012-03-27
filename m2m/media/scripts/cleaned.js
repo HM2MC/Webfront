@@ -10,10 +10,10 @@ $(function(){
     // hide login extras until mouseover
     $('#loginner').hover(
     	function(){
-    		$(this).children('.hidden').toggle('medium');
+    		$(this).children('.hidden').toggle();
     	}, 
     	function(){
-    		$(this).children('.hidden').toggle('medium');
+    		$(this).children('.hidden').toggle();
     	});
     
     
