@@ -175,6 +175,10 @@ def year2012(request):
         # penis vegetables song
         q = "pretty bad porn"
         embed = YOUTUBE_EMBED.format("seRxE3b6m_w")
+    elif choice == 12:
+        # horse outside
+        q = "fuck your 4.0"
+        embed = YOUTUBE_EMBED.format("ljPFZrRD3J8")
     else:
         # FBI warning
         q = "fuuuuu"
@@ -201,6 +205,15 @@ def year2012(request):
 def results2012():
     '''Evil Results'''
     queries = ["terrible, terrible porn",
+               "it's just not your day",
+               "may the odds be ever in your favor",
+               "congratulations! you won!",
+               "get your hands off my man",
+               "don't you wanna",
+               "mhm",
+               "I'm watching you, you know",
+               "M2M: She does not forgive, and she does not forget.",
+               "Help! We need more sacrifices for the hate-engines!"
                ]
     q = random.choice(queries)
     return q  
