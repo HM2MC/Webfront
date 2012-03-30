@@ -137,7 +137,7 @@ def year2012(request):
         embed = YOUTUBE_EMBED.format("9hBpF_Zj4OA")
     elif choice == 2:
         # rotate your owl
-        q = "PETA's on the way"
+        q = "attractive people complaining about stems"
         embed = YOUTUBE_EMBED.format("9hBpF_Zj4OA")
     elif choice == 3:
         # stoned with dinosaurs
@@ -213,7 +213,8 @@ def results2012():
                "mhm",
                "I'm watching you, you know",
                "M2M: She does not forgive, and she does not forget.",
-               "Help! We need more sacrifices for the hate-engines!"
+               "Help! We need more sacrifices for the hate-engines!",
+               "how to grow a neard"
                ]
     q = random.choice(queries)
     return q  
