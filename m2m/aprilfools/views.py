@@ -122,7 +122,7 @@ def results2011():
     return q   
 
 def year2012(request):
-    choice = random.choice(range(14))
+    choice = random.choice(range(15))
     
     q = ""
     script = ""
@@ -179,6 +179,10 @@ def year2012(request):
         # horse outside
         q = "fuck your 4.0"
         embed = YOUTUBE_EMBED.format("ljPFZrRD3J8")
+    elif choice == 13:
+        # jeff goldblum laugning for ten minutes
+        q = "the voice of reason"
+        embed = YOUTUBE_EMBED.format("lS9D6w1GzGY")
     else:
         # FBI warning
         q = "fuuuuu"
