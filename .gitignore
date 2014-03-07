@@ -5,3 +5,4 @@ site-packages
 .DS_Store
 .*
 */build
+local_settings.py
